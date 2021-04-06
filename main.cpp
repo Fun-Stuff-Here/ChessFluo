@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 #include <gsl/span>
 #include <cppitertools/range.hpp>
 #include <cppitertools/enumerate.hpp>
@@ -17,6 +18,12 @@
 //#if __has_include("gtest/gtest.h")
 //#include "gtest/gtest.h"
 //#endif
+
+//catch framework
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+#include "Pieces.h"
+#include "Board.h"
 
 #if __has_include("bibliotheque_cours.hpp")
 #include "bibliotheque_cours.hpp"
@@ -42,22 +49,110 @@ void initialiserBibliothequeCours([[maybe_unused]] int argc, [[maybe_unused]] ch
 	#endif
 }
 
-using namespace std;
-using namespace std::literals;
-using namespace iter;
-using namespace gsl;
-
 #pragma endregion//}
 
 
 
-int main(int argc, char* argv[])
-{
-	initialiserBibliothequeCours(argc, argv);
+using namespace ChessModel;
 
-	// Exemple d'affichage: (si la bibliothèque est bien chargée, l'accent devrait sortir correctement et la couleur aussi)
-	cout << "Bonjour à tous!\n"
-		<< "\033[35mEn couleur!\033[0m\n";
-	// Exemple d'affichage de débogage, devrait être dans la fenêtre "Sortie" de Visual Studio:
-	cdbg << "Bonjour débogueur!\n";
+//Tests
+TEST_CASE("Verify possible moves king", "[King]") {
+
+	
+	auto board = std::make_shared<Board>();
+	Position position = {5,1};
+	std::string couleur = "bluefluosuperpasbo";
+	King king{position,couleur,board};
+	std::vector<Position> expected =
+	{
+		{4,1},
+		{4,2},
+		{5,2},
+		{6,2},
+		{6,1},
+	};
+
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = king.getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected== gotten);
+}
+
+TEST_CASE("Verify possible moves knight", "[Knight]") {
+
+	auto board = std::make_shared<Board>();
+	Position position = { 5,1 };
+	std::string couleur = "bluefluosuperpasbo";
+	Knight knigth{ position,couleur,board };
+	std::vector<Position> expected =
+	{
+		{3,2},
+		{4,3},
+		{6,3},
+		{7,2}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = knigth.getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected == gotten);
+}
+
+
+TEST_CASE("Verify possible moves bishop", "[Bishop]") {
+
+	auto board = std::make_shared<Board>();
+	Position position = { 5,1 };
+	std::string couleur = "bluefluosuperpasbo";
+	Bishop bishop{ position,couleur,board };
+	std::vector<Position> expected =
+	{
+		{4,2},
+		{3,3},
+		{2,4},
+		{1,5},
+		{6,2},
+		{7,3},
+		{8,4}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = bishop.getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected == gotten);
+}
+
+
+TEST_CASE("Verify possible moves bishop with piece in his way", "[Bishop]") {
+
+	auto board = std::make_shared<Board>();
+	Position position = { 5,1 };
+	std::string couleur = "bluefluosuperpasbo";
+	Bishop bishop{ position,couleur,board };
+	std::vector<Position> expected =
+	{
+		{4,2},
+		{3,3},
+		{2,4},
+		{1,5},
+		{6,2},
+		{7,3},
+		{8,4}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = bishop.getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected == gotten);
+}
+
+
+
+TEST_CASE("Construction du board", "[Board]") {
+
+	Board board{};
+
+	for (auto&& it: board.getPieces())
+	{
+		//std::cout << typeid(it).name() <<" " << it.second->getPosition().first<<","<< it.second->getPosition().second << " " << it.second->getColor()<< std::endl;
+	}
+
+	REQUIRE(false);
 }

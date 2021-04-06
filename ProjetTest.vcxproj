@@ -24,6 +24,7 @@
     <ProjectGuid>{ad842a42-a570-40bc-8c72-fd8c83d02f86}</ProjectGuid>
     <RootNamespace>ProjetTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Chess</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -161,7 +162,12 @@
   <ItemGroup>
     <ClCompile Include="bibliotheque_cours\bibliotheque_cours.cpp" />
     <ClCompile Include="bibliotheque_cours\verification_allocation.cpp" />
+    <ClCompile Include="Bishop.cpp" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="King.cpp" />
+    <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Piece.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
@@ -169,6 +175,16 @@
   <ItemGroup>
     <None Include="..\doc\Classroom.md" />
     <None Include="..\doc\Vcpkg.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bishop.h" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="catch.hpp" />
+    <ClInclude Include="King.h" />
+    <ClInclude Include="Knight.h" />
+    <ClInclude Include="NotImplemented.h" />
+    <ClInclude Include="Piece.h" />
+    <ClInclude Include="Pieces.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
