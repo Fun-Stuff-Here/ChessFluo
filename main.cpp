@@ -55,6 +55,44 @@ void initialiserBibliothequeCours([[maybe_unused]] int argc, [[maybe_unused]] ch
 
 using namespace ChessModel;
 
+TEST_CASE("Construction board", "[Board]") {
+
+	Board board{};
+
+	for (auto&& it : board.getPieces())
+	{
+		std::cout << typeid(it).name() << " " << it.second->getPosition().first << "," << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
+	}
+
+	REQUIRE(false);
+}
+
+TEST_CASE("move pieces board", "[Board]") {
+
+	Board board{};
+
+	PiecePtr bishop = board.getPiece({ 3,1 });
+	board.move(bishop, { 5,2 });
+	board.move(bishop, { 4,2 });
+
+	std::vector<Position> expected =
+	{
+		{3,3},
+		{2,4},
+		{1,5},
+		{5,3},
+		{6,4},
+		{7,5},
+		{8,6}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = bishop->getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected == gotten);
+
+}
+
+
 //Tests
 TEST_CASE("Verify possible moves king", "[King]") {
 
@@ -62,11 +100,14 @@ TEST_CASE("Verify possible moves king", "[King]") {
 	auto board = std::make_shared<Board>();
 	Position position = {5,1};
 	std::string couleur = "bluefluosuperpasbo";
+	PiecePtr bishop = board->getPiece({ 3,1 });
+	board->move(bishop, { 5,2 });
+	board->move(bishop, { 4,2 });
 	King king{position,couleur,board};
 	std::vector<Position> expected =
 	{
 		{4,1},
-		{4,2},
+		//{4,2}, blocked by bishop
 		{5,2},
 		{6,2},
 		{6,1},
@@ -121,6 +162,9 @@ TEST_CASE("Verify possible moves bishop", "[Bishop]") {
 }
 
 
+
+
+
 TEST_CASE("Verify possible moves bishop with piece in his way", "[Bishop]") {
 
 	auto board = std::make_shared<Board>();
@@ -144,15 +188,3 @@ TEST_CASE("Verify possible moves bishop with piece in his way", "[Bishop]") {
 }
 
 
-
-TEST_CASE("Construction du board", "[Board]") {
-
-	Board board{};
-
-	for (auto&& it: board.getPieces())
-	{
-		//std::cout << typeid(it).name() <<" " << it.second->getPosition().first<<","<< it.second->getPosition().second << " " << it.second->getColor()<< std::endl;
-	}
-
-	REQUIRE(false);
-}
