@@ -54,17 +54,12 @@ PiecePtr Board::move(PiecePtr& piece, Position& position)
 	if (it == moves.end())
 		throw impossibleMove();
 	
-	PiecePtr pieceEaten=nullptr;
-	try
-	{
-		pieceEaten = pieces_.at(position);
-		pieces_.erase(position);
-	}
-	catch (const std::out_of_range&)
-	{
-		pieceEaten = nullptr;
-	}
+	PiecePtr pieceEaten = getPiece(position);
 
+	if (pieceEaten!=nullptr)
+		pieces_.erase(position);
+
+	pieces_.erase(piece->getPosition());
 	piece->setPosition(position);
 	pieces_.insert({ position, piece });
 
@@ -83,11 +78,17 @@ mapPieces Board::getPieces()
 
 PiecePtr Board::getPiece(Position& position)
 {
-	auto it = pieces_.find(position);
-	if (it == pieces_.end())
-		return nullptr;
-	else
-		return it->second;
+	PiecePtr piece = nullptr;
+	try
+	{
+		piece = pieces_.at(position);
+	}
+	catch (const std::out_of_range&)
+	{
+		piece = nullptr;
+	}
+
+		return piece;
 }
 
 PiecePtr Board::getPiece(Position&& position)

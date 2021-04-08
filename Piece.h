@@ -29,7 +29,7 @@ namespace ChessModel
 		Position position_;
 		std::string color_;
 		Board* board_;
-		bool isOutofBound(Position position) const;
+		bool isOutofBound(Position& position) const;
 	};
 
 }

@@ -25,7 +25,7 @@ std::string Piece::getColor() const
 }
 
 
-bool Piece::isOutofBound(Position position) const
+bool Piece::isOutofBound(Position& position) const
 {
 	bool isOutOfBound = position.first > topLimit;
 	isOutOfBound |= position.first < bottomLimit;

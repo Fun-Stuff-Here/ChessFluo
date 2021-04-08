@@ -91,15 +91,18 @@ TEST_CASE("Construction board", "[Board]") {
 }
 
 
-TEST_CASE("move pieces board", "[Board]") {
+TEST_CASE("test blocked by piece moves bishop", "[Bishop]") {
 
 	Board board{};
 
 	PiecePtr bishop = board.getPiece({3, 1});
 	board.move(bishop, { 4,2 });
+	PiecePtr king = board.getPiece({4,1});
+	board.move(king, { 5,1 });
 
 	std::vector<Position> expected =
 	{
+		{3,1},
 		{3,3},
 		{2,4},
 		{1,5},
@@ -116,31 +119,52 @@ TEST_CASE("move pieces board", "[Board]") {
 }
 
 
-//Tests
-TEST_CASE("Verify possible moves king", "[King]") {
+TEST_CASE("test blocked by piece moves king", "[King]") {
 
-	
+
 	Board board;
-	Position position = {5,1};
 	std::string couleur = "bluefluosuperpasbo";
 	PiecePtr bishop = board.getPiece({ 3,1 });
-	CHECK_THROWS_AS(board.move(bishop, { 5,2 }), impossibleMove );
+	CHECK_THROWS_AS(board.move(bishop, { 5,2 }), impossibleMove);
 	board.move(bishop, { 4,2 });
-	King king{position,couleur,&board};
+	PiecePtr king = board.getPiece({4,1});
 	std::vector<Position> expected =
 	{
-		{4,1},
+		{3,1},
 		//{4,2}, blocked by bishop
+		{3,2},
+		{5,1},
 		{5,2},
-		{6,2},
-		{6,1},
 	};
 
 	std::sort(expected.begin(), expected.end());
-	std::vector<Position> gotten = king.getMoves();
+	std::vector<Position> gotten = king->getMoves();
 	std::sort(gotten.begin(), gotten.end());
 	REQUIRE(expected== gotten);
 }
+
+TEST_CASE("test blocked by piece moves knight", "[Knight]") {
+
+
+	Board board;
+	std::string couleur = "bluefluosuperpasbo";
+	PiecePtr bishop = board.getPiece({ 3,1 });
+	CHECK_THROWS_AS(board.move(bishop, { 5,2 }), impossibleMove);
+	board.move(bishop, { 4,2 });
+	PiecePtr knight = board.getPiece({ 2,1 });
+	std::vector<Position> expected =
+	{
+		{1,3},
+		//{4,2}, blocked by bishop
+		{3,3}
+	};
+
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = knight->getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected == gotten);
+}
+
 
 TEST_CASE("Verify possible moves knight", "[Knight]") {
 
@@ -183,9 +207,6 @@ TEST_CASE("Verify possible moves bishop", "[Bishop]") {
 	std::sort(gotten.begin(), gotten.end());
 	REQUIRE(expected == gotten);
 }
-
-
-
 
 
 TEST_CASE("Verify possible moves bishop with piece in his way", "[Bishop]") {
