@@ -1,10 +1,10 @@
 #include "Board.h"
+#include <algorithm>
 
 using namespace ChessModel;
 
 Board::Board()
 {
-	auto board = std::make_shared<Board>(this);
 
 	std::string colorPlayer1 = "bluelaite";
 	std::string colorPlayer2 ="vertmoisi";
@@ -12,45 +12,90 @@ Board::Board()
 	Position bishopleft1{ 3,1 },
 		bishopright1{ 6,1 },
 		bishopleft2{ 3,8 },
-		bishopright2{ 6,8 };
+		bishopright2{ 6,8 },
+		positionLeftKnight1{ 2, 1 },
+		positionRightKnight1{ 7, 1 },
+		positionLeftKnight2{ 2, 8 },
+		positionRightKnight2{ 7, 8 },
+		positionKing1{ 4,1 },
+		positionKing2{ 4,8 };
 
 
-	Bishop left1{ bishopleft1,colorPlayer1,board },
-		right1{ bishopright1,colorPlayer1,board },
-		left2{ bishopleft2,colorPlayer2,board },
-		right2{ bishopright2,colorPlayer2,board };
+	PiecePtr bishopLeft1(new Bishop{ bishopleft1,colorPlayer1,this }),
+		bishopRight1(new Bishop{ bishopright1,colorPlayer1,this }),
+		bishopLeft2(new Bishop{ bishopleft2,colorPlayer2,this }),
+		bishopRight2(new Bishop{ bishopright2,colorPlayer2,this }),
+		knightLeft1(new Knight{ positionLeftKnight1, colorPlayer1, this }),
+		knightRight1(new Knight{ positionRightKnight1, colorPlayer1, this }),
+		knightLeft2(new Knight{ positionLeftKnight2, colorPlayer2, this }),
+		knightRight2(new Knight{ positionRightKnight2, colorPlayer2, this }),
+		king1(new King{ positionKing1, colorPlayer1,this }),
+		king2(new King{ positionKing2,colorPlayer2,this });
 
-
-	Position posLeftKnight1 = { 2, 1 },
-		posRightKnight1 = { 7, 1 },
-		 posLeftKnight2 = { 2, 8 },
-		posRightKnight2 = { 7, 8 };
-
-	Knight leftKnight1{ posLeftKnight1, colorPlayer1, board },
-		rightKnight1{ posRightKnight1, colorPlayer1, board },
-		leftKnight12{ posLeftKnight2, colorPlayer1, board},
-		rightKnight2{ posRightKnight2, colorPlayer1, board };
+	pieces_.insert({ bishopLeft1->getPosition(),bishopLeft1 });
+	pieces_.insert({ bishopRight1->getPosition(),bishopRight1 });
+	pieces_.insert({ bishopLeft2->getPosition(),bishopLeft2 });
+	pieces_.insert({ bishopRight2->getPosition(),bishopRight2 });
+	pieces_.insert({ knightLeft1->getPosition(),knightLeft1 });
+	pieces_.insert({ knightRight1->getPosition(),knightRight1 });
+	pieces_.insert({ knightLeft2->getPosition(),knightLeft2 });
+	pieces_.insert({ knightRight2->getPosition(),knightRight2 });
+	pieces_.insert({ king1->getPosition(),king1 });
+	pieces_.insert({ king2->getPosition(),king2 });
 
 }
 
-void Board::move(PiecePtr piece, Position position)
+PiecePtr Board::move(PiecePtr& piece, Position& position)
 {
-	throw NotImplemented();
+	
+	auto moves = piece->getMoves();
+	auto it = std::find_if(moves.begin(), moves.end(), [&position](Position possiblePosition)->bool {return possiblePosition == position; });
+	
+	if (it == moves.end())
+		throw impossibleMove();
+	
+	PiecePtr pieceEaten=nullptr;
+	try
+	{
+		pieceEaten = pieces_.at(position);
+		pieces_.erase(position);
+	}
+	catch (const std::out_of_range&)
+	{
+		pieceEaten = nullptr;
+	}
+
+	piece->setPosition(position);
+	pieces_.insert({ position, piece });
+
+	return pieceEaten;
 }
 
+PiecePtr Board::move(PiecePtr& piece, Position&& position)
+{
+	return move(piece,position);
+}
 
 mapPieces Board::getPieces()
 {
 	return pieces_;
 }
 
-PiecePtr Board::getPiece(Position position)
+PiecePtr Board::getPiece(Position& position)
 {
 	auto it = pieces_.find(position);
-	return it!=pieces_.end() ? it->second : nullptr;
+	if (it == pieces_.end())
+		return nullptr;
+	else
+		return it->second;
 }
 
-bool Board::isUnoccupied(Position position)
+PiecePtr Board::getPiece(Position&& position)
 {
-	return getPiece(position)!=nullptr;
+	return getPiece(position);
+}
+
+bool Board::isUnoccupied(Position& position)
+{
+	return getPiece(position)==nullptr;
 }

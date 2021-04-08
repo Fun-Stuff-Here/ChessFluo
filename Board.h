@@ -24,10 +24,12 @@ namespace ChessModel
 	public:
 		Board();
 		~Board()=default;
-		void move(PiecePtr piece, Position position);
+		PiecePtr move(PiecePtr& piece, Position& position);// return eaten piece or nullptr if nothing
+		PiecePtr move(PiecePtr& piece, Position&& position);// return eaten piece or nullptr if nothing
 		mapPieces getPieces();
-		PiecePtr getPiece(Position position);
-		bool isUnoccupied(Position position);
+		PiecePtr getPiece(Position& position);
+		PiecePtr getPiece(Position&& position);
+		bool isUnoccupied(Position& position);
 
 	private:
 		mapPieces pieces_;

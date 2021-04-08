@@ -81,7 +81,7 @@
     <ClInclude Include="Pieces.h">
       <Filter>Header Files\Pieces</Filter>
     </ClInclude>
-    <ClInclude Include="NotImplemented.h">
+    <ClInclude Include="exepctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

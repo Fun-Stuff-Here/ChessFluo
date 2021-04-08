@@ -58,21 +58,44 @@ using namespace ChessModel;
 TEST_CASE("Construction board", "[Board]") {
 
 	Board board{};
+	// Redirect cout to our stringstream 
+	std::stringstream buffer;
+	std::streambuf* sbuf = std::cout.rdbuf();
+	std::cout.rdbuf(buffer.rdbuf());
+
 
 	for (auto&& it : board.getPieces())
 	{
-		std::cout << typeid(it).name() << " " << it.second->getPosition().first << "," << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
+		std::cout << typeid(*it.second).name() << " " << it.second->getPosition().first << ", " << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
 	}
 
-	REQUIRE(false);
+	std::string expected = 
+		"class ChessModel::Knight 2, 8 vertmoisi\n"
+		"class ChessModel::Bishop 3, 1 bluelaite\n"
+		"class ChessModel::Knight 7, 8 vertmoisi\n"
+		"class ChessModel::Bishop 6, 1 bluelaite\n"
+		"class ChessModel::Knight 2, 1 bluelaite\n"
+		"class ChessModel::Bishop 3, 8 vertmoisi\n"
+		"class ChessModel::Knight 7, 1 bluelaite\n"
+		"class ChessModel::Bishop 6, 8 vertmoisi\n"
+		"class ChessModel::King 4, 1 bluelaite\n"
+		"class ChessModel::King 4, 8 vertmoisi\n";
+
+	std::string text = buffer.str();
+	// When done redirect cout to its old self
+	std::cout.rdbuf(sbuf);
+		
+	REQUIRE(text == expected);
+
+	
 }
+
 
 TEST_CASE("move pieces board", "[Board]") {
 
 	Board board{};
 
-	PiecePtr bishop = board.getPiece({ 3,1 });
-	board.move(bishop, { 5,2 });
+	PiecePtr bishop = board.getPiece({3, 1});
 	board.move(bishop, { 4,2 });
 
 	std::vector<Position> expected =
@@ -97,13 +120,13 @@ TEST_CASE("move pieces board", "[Board]") {
 TEST_CASE("Verify possible moves king", "[King]") {
 
 	
-	auto board = std::make_shared<Board>();
+	Board board;
 	Position position = {5,1};
 	std::string couleur = "bluefluosuperpasbo";
-	PiecePtr bishop = board->getPiece({ 3,1 });
-	board->move(bishop, { 5,2 });
-	board->move(bishop, { 4,2 });
-	King king{position,couleur,board};
+	PiecePtr bishop = board.getPiece({ 3,1 });
+	CHECK_THROWS_AS(board.move(bishop, { 5,2 }), impossibleMove );
+	board.move(bishop, { 4,2 });
+	King king{position,couleur,&board};
 	std::vector<Position> expected =
 	{
 		{4,1},
@@ -121,10 +144,10 @@ TEST_CASE("Verify possible moves king", "[King]") {
 
 TEST_CASE("Verify possible moves knight", "[Knight]") {
 
-	auto board = std::make_shared<Board>();
+	Board board;
 	Position position = { 5,1 };
 	std::string couleur = "bluefluosuperpasbo";
-	Knight knigth{ position,couleur,board };
+	Knight knigth{ position,couleur,&board };
 	std::vector<Position> expected =
 	{
 		{3,2},
@@ -141,10 +164,10 @@ TEST_CASE("Verify possible moves knight", "[Knight]") {
 
 TEST_CASE("Verify possible moves bishop", "[Bishop]") {
 
-	auto board = std::make_shared<Board>();
+	Board board;
 	Position position = { 5,1 };
 	std::string couleur = "bluefluosuperpasbo";
-	Bishop bishop{ position,couleur,board };
+	Bishop bishop{ position,couleur,&board };
 	std::vector<Position> expected =
 	{
 		{4,2},
@@ -167,10 +190,10 @@ TEST_CASE("Verify possible moves bishop", "[Bishop]") {
 
 TEST_CASE("Verify possible moves bishop with piece in his way", "[Bishop]") {
 
-	auto board = std::make_shared<Board>();
+	Board board;
 	Position position = { 5,1 };
 	std::string couleur = "bluefluosuperpasbo";
-	Bishop bishop{ position,couleur,board };
+	Bishop bishop{ position,couleur,&board };
 	std::vector<Position> expected =
 	{
 		{4,2},

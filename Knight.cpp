@@ -2,7 +2,7 @@
 
 using namespace ChessModel;
 
-Knight::Knight(Position& position, std::string& color, std::shared_ptr<Board> board)
+Knight::Knight(Position& position, std::string& color, Board* board)
 	:Piece(position, color,board)
 {}
 
