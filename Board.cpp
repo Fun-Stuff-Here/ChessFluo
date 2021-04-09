@@ -100,3 +100,18 @@ bool Board::isUnoccupied(Position& position)
 {
 	return getPiece(position)==nullptr;
 }
+
+bool Board::isOccupiedByOtherColor(Position& position, std::string color)
+{
+	if (!isUnoccupied(position))
+	{
+		PiecePtr piece = getPiece(position);
+		return (piece->getColor() != color);
+	}
+	return false;
+}
+
+void Board::addPiece(PiecePtr& pieceToAdd)
+{
+	pieces_.insert({ pieceToAdd->getPosition(), pieceToAdd});
+}

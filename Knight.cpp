@@ -28,7 +28,7 @@ std::vector<Position> Knight::getMoves() const
 		possiblePosition = position_;
 		possiblePosition.first += offset.first;
 		possiblePosition.second += offset.second;
-		if (!isOutofBound(possiblePosition))
+		if (!isOutofBound(possiblePosition) && (board_->isUnoccupied(possiblePosition) || board_->isOccupiedByOtherColor(possiblePosition, color_)))
 			positions.push_back(possiblePosition);
 	}
 	return positions;

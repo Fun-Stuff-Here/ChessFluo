@@ -1,5 +1,5 @@
 #include "King.h"
-
+//#include "Board.h"
 using namespace ChessModel;
 
 King::King(Position& position, std::string& color, Board* board)
@@ -27,7 +27,7 @@ std::vector<Position> King::getMoves() const
 		possiblePosition = position_;
 		possiblePosition.first += offset.first;
 		possiblePosition.second += offset.second;
-		if (!isOutofBound(possiblePosition))
+		if (!isOutofBound(possiblePosition) && (board_->isUnoccupied(possiblePosition) || board_->isOccupiedByOtherColor(possiblePosition, color_)))
 			positions.push_back(possiblePosition);
 	}
 	return positions;

@@ -30,6 +30,8 @@ namespace ChessModel
 		PiecePtr getPiece(Position& position);
 		PiecePtr getPiece(Position&& position);
 		bool isUnoccupied(Position& position);
+		bool isOccupiedByOtherColor(Position& position, std::string color);
+		void addPiece(PiecePtr& pieceToAdd);
 
 	private:
 		mapPieces pieces_;

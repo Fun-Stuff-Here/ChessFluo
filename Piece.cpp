@@ -31,6 +31,6 @@ bool Piece::isOutofBound(Position& position) const
 	isOutOfBound |= position.first < bottomLimit;
 	isOutOfBound |= position.second > topLimit;
 	isOutOfBound |= position.second < bottomLimit;
-	isOutOfBound |= !board_->isUnoccupied(position);
+	//isOutOfBound |= !board_->isUnoccupied(position);
 	return isOutOfBound;
 }

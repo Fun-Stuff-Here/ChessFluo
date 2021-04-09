@@ -205,7 +205,7 @@ TEST_CASE("Verify possible moves bishop", "[Bishop]") {
 	std::sort(expected.begin(), expected.end());
 	std::vector<Position> gotten = bishop.getMoves();
 	std::sort(gotten.begin(), gotten.end());
-	REQUIRE(expected == gotten);
+	REQUIRE(expected == gotten);	
 }
 
 
@@ -232,3 +232,86 @@ TEST_CASE("Verify possible moves bishop with piece in his way", "[Bishop]") {
 }
 
 
+
+TEST_CASE("Verify possible moves bishop with other-color piece in its way", " [Bishop] ") {
+	Board board;
+	PiecePtr piece = board.getPiece({ 3,8 });
+	CHECK_THROWS_AS(board.move(piece, { 5,2 }), impossibleMove);
+	board.move(piece, { 6,5 });
+
+	Position posBishop1 = { 7 ,4 };
+	std::string color1 = "bluelaite";
+	Bishop bishop1 = { posBishop1, color1, &board };
+
+	std::vector<Position> expected =
+	{
+		{6, 5},
+		{8, 5},
+		{6, 3},
+		{5, 2},
+		{8, 3}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = bishop1.getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected == gotten);
+
+}
+
+
+TEST_CASE("Verify possible moves knight with other-color piece in its way", " [Knight] ") {
+	Board board;
+	PiecePtr piece = board.getPiece({ 3,8 });
+	CHECK_THROWS_AS(board.move(piece, { 5,2 }), impossibleMove);
+	board.move(piece, { 6,5 });
+
+	Position posKnight1 = { 7 ,3 };
+	std::string color1 = "bluelaite";
+	Knight bishop1 = { posKnight1, color1, &board };
+
+	std::vector<Position> expected =
+	{
+		{6, 5},
+		{8, 5},
+		{5, 2},
+		{5, 4},
+		{8, 1}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = bishop1.getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	REQUIRE(expected == gotten);
+
+}
+
+//Doesn't work for some reason
+
+//TEST_CASE("Verify piece is removed when eaten", "[Bishop]") {
+//	Board board;
+//	PiecePtr bishopRight2 = board.getPiece({ 6,8 });
+//	//CHECK_THROWS_AS(board.move(bishopRight2, { 1,3 }), impossibleMove);
+//	board.move(bishopRight2, { 1,3 });
+//
+//	PiecePtr bishopLeft1 = board.getPiece({ 3,1 });
+//	CHECK_THROWS_AS(board.move(bishopLeft1, { 1,3 }), impossibleMove);
+//	PiecePtr eatenPiece = board.move(bishopLeft1, { 1,3 });
+//	REQUIRE(&bishopRight2 == &eatenPiece);
+//}
+
+//Weird things happen 
+//TEST_CASE("Verify piece is removed when eaten", "[Bishop]") {
+//	Board board;
+//	PiecePtr bishopLeft2 = board.getPiece({ 3,8 });
+//	//CHECK_THROWS_AS(board.move(bishopLeft2, { 6,5 }), impossibleMove);
+//	board.move(bishopLeft2, { 6,5 });
+//
+//	bishopLeft2 = board.getPiece({ 6,5 });
+//	CHECK_THROWS_AS(board.move(bishopLeft2, { 4,3 }), impossibleMove);
+//	board.move(bishopLeft2, { 4,3 });
+//
+//	PiecePtr bishopRight1 = board.getPiece({ 6,1 });
+//	CHECK_THROWS_AS(board.move(bishopRight1, { 4,3 }), impossibleMove);
+//	PiecePtr eatenPiece = board.move(bishopRight1, { 4,3 });
+//
+//	REQUIRE(eatenPiece == bishopLeft2);
+//}

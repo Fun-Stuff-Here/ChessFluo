@@ -1,6 +1,6 @@
 #pragma once
 #include "Piece.h"
-
+#include "Board.h"
 
 namespace ChessModel
 {

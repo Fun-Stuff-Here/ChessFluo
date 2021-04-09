@@ -19,7 +19,16 @@ std::vector<Position> Bishop::getMoves() const
 	{
 		if (possiblePosition == position_)
 			continue;
-		positions.push_back(possiblePosition);
+		if (board_->isUnoccupied(possiblePosition))
+		{
+			positions.push_back(possiblePosition);
+			continue;
+		}
+		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
+		{
+			positions.push_back(possiblePosition);
+			break;
+		}
 	}
 
 	//top left diagonal
@@ -27,7 +36,16 @@ std::vector<Position> Bishop::getMoves() const
 	{
 		if (possiblePosition == position_)
 			continue;
-		positions.push_back(possiblePosition);
+		if (board_->isUnoccupied(possiblePosition))
+		{
+			positions.push_back(possiblePosition);
+			continue;
+		}
+		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
+		{
+			positions.push_back(possiblePosition);
+			break;
+		}
 	}
 
 	//buttom right diagonal
@@ -35,7 +53,16 @@ std::vector<Position> Bishop::getMoves() const
 	{
 		if (possiblePosition == position_)
 			continue;
-		positions.push_back(possiblePosition);
+		if (board_->isUnoccupied(possiblePosition))
+		{
+			positions.push_back(possiblePosition);
+			continue;
+		}
+		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
+		{
+			positions.push_back(possiblePosition);
+			break;
+		}
 	}
 
 	//buttom left diagonal
@@ -43,7 +70,16 @@ std::vector<Position> Bishop::getMoves() const
 	{
 		if (possiblePosition == position_)
 			continue;
-		positions.push_back(possiblePosition);
+		if (board_->isUnoccupied(possiblePosition))
+		{
+			positions.push_back(possiblePosition);
+			continue;
+		}
+		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
+		{
+			positions.push_back(possiblePosition);
+			break;
+		}
 	}
 
 	return positions;
