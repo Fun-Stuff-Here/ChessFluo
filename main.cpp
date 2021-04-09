@@ -56,7 +56,6 @@ void initialiserBibliothequeCours([[maybe_unused]] int argc, [[maybe_unused]] ch
 
 using namespace ChessModel;
 
-/*
 
 TEST_CASE("Construction board", "[Board]") {
 
@@ -339,7 +338,7 @@ TEST_CASE("Verify piece is removed when eaten 2", "[Bishop]") {
 
 TEST_CASE("Inserting pieces to the board","[Board]")
 {
-	Board board{ Empty{} };
+	Board board{ KingOnly{} };
 
 	std::string color = COLORPLAYER1;
 	Position p1{ 3, 1 };
@@ -362,7 +361,9 @@ TEST_CASE("Inserting pieces to the board","[Board]")
 
 	std::string expected =
 		"Already a piece at position 3, 1\n"
-		"class ChessModel::Bishop 3, 1 bleulaite\n";
+		"class ChessModel::King 4, 1 bluelaite\n"
+		"class ChessModel::King 4, 8 vertmoisi\n"
+		"class ChessModel::Bishop 3, 1 bluelaite\n";
 
 	// When done redirect cout to its old self
 	std::string text = buffer.str();
@@ -370,7 +371,6 @@ TEST_CASE("Inserting pieces to the board","[Board]")
 	REQUIRE(text == expected);
 }
 
-*/
 
 TEST_CASE("checking", "[Board]")
 {
@@ -386,6 +386,11 @@ TEST_CASE("checking", "[Board]")
 	Position p2{ 6, 6 };
 	PiecePtr piece2(new King{ p2,color2,&board });
 	board.addPiece(piece2);
+
+	std::string colorking = COLORPLAYER1;
+	Position pking{ 1, 1 };
+	PiecePtr king(new King{ pking,colorking,&board });
+	board.addPiece(king);
 
 	CHECK_THROWS_AS(board.verifieCheck(color2),Check);
 

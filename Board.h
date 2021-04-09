@@ -22,13 +22,15 @@ namespace ChessModel
 
 	struct Empty
 	{};
+	struct KingOnly
+	{};
 
 	class Board
 	{
 	public:
 		Board();
 		Board(Empty empty);
-
+		Board(KingOnly kingOnly);
 		~Board()=default;
 		PiecePtr move(PiecePtr& piece, Position& position);// return eaten piece or nullptr if nothing
 		PiecePtr move(PiecePtr& piece, Position&& position);// return eaten piece or nullptr if nothing

@@ -49,12 +49,30 @@ Board::Board()
 }
 
 Board::Board(Empty empty)
-	{}
+{
+}
+
+Board::Board(KingOnly kingOnly)
+{
+	std::string colorPlayer1 = COLORPLAYER1;
+	std::string colorPlayer2 = COLORPLAYER2;
+
+	Position positionKing1{ 4,1 },
+		positionKing2{ 4,8 };
+
+	PiecePtr king1(new King{ positionKing1, colorPlayer1,this }),
+		king2(new King{ positionKing2,colorPlayer2,this });
+
+	pieces_.insert({ king1->getPosition(),king1 });
+	pieces_.insert({ king2->getPosition(),king2 });
+}
+
+
 
 PiecePtr Board::move(PiecePtr& piece, Position& position)
 {
 	
-	auto PieceEaten = moveTry(piece,position);
+	auto pieceEaten = moveTry(piece,position);
 	try
 	{
 		verifieCheck(piece->getColor());
@@ -64,11 +82,12 @@ PiecePtr Board::move(PiecePtr& piece, Position& position)
 	{
 		pieces_.insert({ piece->getPosition(), piece });
 		pieces_.erase(position);
-		if (PieceEaten != nullptr)
-			pieces_.insert({ PieceEaten->getPosition(), PieceEaten });
+		if (pieceEaten != nullptr)
+			pieces_.insert({ pieceEaten->getPosition(), pieceEaten });
 		throw ImpossibleMove();
 	}
 	verifieCheck(getOpponentColor(piece->getColor()));
+	return pieceEaten;
 }
 
 
@@ -159,13 +178,13 @@ void Board::verifieCheck(const std::string& color)
 			[&kingPosition](Position position)->bool {return kingPosition == position; });
 				
 		if (positionOfPieceCheck != moves.end())
-			throw Check(getPiece(*positionOfPieceCheck), color);
+			throw Check(piece, color);
 	}
 
 }
 
 std::string Board::getOpponentColor(const std::string& color)
 {
-	return color == COLORPLAYER1 ? COLORPLAYER1 : COLORPLAYER2;
+	return color == COLORPLAYER1 ? COLORPLAYER2 : COLORPLAYER1;
 }
 
