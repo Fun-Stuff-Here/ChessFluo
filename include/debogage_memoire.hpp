@@ -9,5 +9,4 @@ void* operator new  (size_t sz, const char* nom_fichier, int ligne_fichier);
 void* operator new[](size_t sz, const char* nom_fichier, int ligne_fichier);
 void operator delete  (void* ptr, const char* nom_fichier, int ligne_fichier) noexcept;
 void operator delete[](void* ptr, const char* nom_fichier, int ligne_fichier) noexcept;
-#define new_ new  // Pour pouvoir utiliser le new normal.
-//#define new new( __FILE__ , __LINE__ )
+#define new new( __FILE__ , __LINE__ )

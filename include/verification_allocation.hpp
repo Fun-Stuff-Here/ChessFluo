@@ -12,10 +12,18 @@
 
 namespace bibliotheque_cours {
 
+using MarqueurVerificationAllocation = size_t;
+static constexpr MarqueurVerificationAllocation depuisDebutVerificationAllocation = 0;
+
 struct InfoBlocMemoire {
 	size_t taille;
 	bool est_tableau;
 	const char* nom_fichier; int ligne_fichier;
+	size_t numero_allocation;
+
+	bool a_numero_ligne() const;
+	bool est_depuis(MarqueurVerificationAllocation depuis) const;
+	bool repond_aux_criteres(bool seulement_avec_numeros_ligne, MarqueurVerificationAllocation depuis) const;
 };
 
 enum class SorteErreurDelete {
@@ -48,9 +56,12 @@ void activer_verification_allocation();
 void desactiver_verification_allocation();
 void afficher_fuites();
 
-bool tous_les_new_ont_un_delete();
-void dump_blocs_alloues();
+bool tous_les_new_ont_un_delete(bool seulement_avec_numeros_ligne = false, MarqueurVerificationAllocation depuis = depuisDebutVerificationAllocation);
+void dump_blocs_alloues(bool seulement_avec_numeros_ligne = false, MarqueurVerificationAllocation depuis = depuisDebutVerificationAllocation);
 bool tester_tous_blocs_alloues();
+
+MarqueurVerificationAllocation get_marqueur_verification_allocation();
+
 
 //void remplir_bloc_verification_corruption_a(void* ptr, size_t sz);
 //bool tester_bloc_verification_corruption_a(void* ptr);
@@ -82,6 +93,20 @@ private:
 	} };
 	static inline bool est_phase_apres_main = false;
 };
+
+void set_breakpoint_sur_allocations(std::size_t* numeros, std::size_t nNumeros);
+
+template <std::size_t N>
+class BreakpointSurAllocations {
+public:
+	template <typename... Ts>
+	BreakpointSurAllocations(Ts... numeros) : numeros_{numeros...} { set_breakpoint_sur_allocations(numeros_, N); }
+	~BreakpointSurAllocations() { set_breakpoint_sur_allocations(nullptr, 0); }
+private:
+	std::size_t numeros_[N];
+};
+template <typename... Ts>
+BreakpointSurAllocations(Ts...) -> BreakpointSurAllocations<sizeof...(Ts)>;
 
 std::unordered_map<void*, InfoBlocMemoire>& get_blocs_alloues();
 // Utiliser get_blocs_alloues au lieu de la référence dans les opérateurs new/delete qui pourraient être appelés avant l'initialisation de cette variable.

@@ -5,6 +5,13 @@
 /// \since   2020-04
 
 #include "verification_allocation.hpp"
+
+#if defined(_WIN32) && !defined(__CYGWIN__)
+#define NOMINMAX 1
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#endif
+
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
@@ -12,6 +19,9 @@
 #include <limits>
 #include <string>
 #include <cstring>
+#include <csignal>
+#include "gsl/span"
+using namespace gsl;
 using namespace std;
 
 // Configuration si on veut afficher les erreur à la console et si on veut terminer l'exécution sur une erreur de désallocation.  Définir ou non les macros suivantes.
@@ -38,7 +48,7 @@ const char* get_message_erreur_delete() {
 	return messages[unsigned(derniere_erreur_delete)];
 }
 
-static const InfoBlocMemoire pas_de_bloc = { numeric_limits<size_t>::max(), false, nullptr, 0 };
+static const InfoBlocMemoire pas_de_bloc = { numeric_limits<size_t>::max(), false, nullptr, 0, 0 };
 static void lancer_erreur_delete(SorteErreurDelete erreur, const InfoBlocMemoire& info = pas_de_bloc) {
 	derniere_erreur_delete = erreur;
 #if defined(TERMINATE_SUR_ERREUR_DELETE) || defined(AFFICHER_ERREUR_DELETE)
@@ -73,6 +83,7 @@ void remise_a_zero_compteurs_allocation() {
 	derniere_erreur_delete = SorteErreurDelete::no_error;
 }
 void remise_a_zero_verification() {
+	SansVerifierAllocations sva;
 	get_blocs_alloues().clear();
 	remise_a_zero_compteurs_allocation();
 }
@@ -141,12 +152,70 @@ bool tester_verification_corruption_sur_allocation(void* ptr, size_t sz = numeri
 	return tester_bloc_verification_corruption_a(pointeur_octets(ptr) + sz);
 }
 
+void assurer_taille_allocation_possible(size_t sz)
+{
+	// On ne supporte pas actuellement l'allocation de blocs plus gros de 4GB, ni que la taille plus la taille de la vérification de corruption dépasse un size_t.
+	if (sz > std::min<size_t>(numeric_limits<TypeValeurVerificationCorruption>::max(), numeric_limits<size_t>::max() - 2 * taille_verification_corruption))
+		throw std::runtime_error("Allocation trop grosse ou negative.");
+}
+
+bool debogage_allocation_est_actif()
+{
+#ifdef _MSC_VER
+	// GoogleTest utilise ce flag pour indiquer les allocations pour lesquelles il ne fera pas de désallocation (voir MemoryIsNotDeallocated dans gtest-port.cc).
+	auto flags_presents = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+	return (flags_presents & _CRTDBG_ALLOC_MEM_DF) != 0;
+#else
+	// Sur gcc/clang, GoogleTest ne fait rien... Il faudrait le "patcher" pour utiliser une technique similaire qui désactive notre vérification d'allocation.
+	return true;
+#endif
+}
+
+span<size_t> breakpoint_sur_allocations;
+
+void set_breakpoint_sur_allocations(size_t* numeros, size_t nNumeros)
+{
+	breakpoint_sur_allocations = span(numeros, nNumeros);
+}
+
+#if defined(_MSC_VER)
+#define POINT_ARRET() __debugbreak()
+#elif defined(_WINDOWS_)
+#define POINT_ARRET() DebugBreak()
+#elif defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
+#define POINT_ARRET() __asm__("int $3")
+#elif defined(SIGTRAP)
+#define POINT_ARRET() std::raise(SIGTRAP)
+#else
+#define POINT_ARRET() std::raise(SIGINT)
+#endif
+
+size_t compte_allocations(bool donne_compte_sans_augmenter = false)
+{
+	static size_t compteur_allocations = 0;
+	if (donne_compte_sans_augmenter)
+		return compteur_allocations;
+	compteur_allocations++;
+#ifdef _WINDOWS_
+	if (IsDebuggerPresent())
+#endif
+	{
+		for (auto&& break_sur_numero : breakpoint_sur_allocations) {
+			if (compteur_allocations == break_sur_numero) {
+				POINT_ARRET(); // Point d'arrêt sur allocation: regarder la "Pile des appels" pour voir où cette allocation a été faite.
+			}
+		}
+	}
+	return compteur_allocations;
+}
+
+MarqueurVerificationAllocation get_marqueur_verification_allocation() {
+	return compte_allocations(false);
+}
 
 void* notre_operator_new(size_t sz, bool est_tableau, const char* nom_fichier = nullptr, int ligne_fichier = 0) {
 	SansVerifierAllocations sva;
-	// On ne supporte pas actuellement l'allocation de blocs plus gros de 4GB.
-	if (sz > std::min<size_t>(numeric_limits<TypeValeurVerificationCorruption>::max(), numeric_limits<size_t>::max() - 2 * taille_verification_corruption))
-		throw std::runtime_error("Allocation trop grosse ou negative.");
+	assurer_taille_allocation_possible(sz);
 	// On met la vérification de corruption partout, même pour les blocs "sans vérifier allocation", pour ne pas que les adresses soient différentes dans les deux cas.  "sans vérifier allocation" indique donc seulement de ne pas mettre les blocs dans le map des blocs_alloues.
 	void* ptr = std::malloc(sz + 2 * taille_verification_corruption);
 	if (ptr == nullptr)
@@ -155,9 +224,9 @@ void* notre_operator_new(size_t sz, bool est_tableau, const char* nom_fichier = 
 	mettre_verification_corruption_sur_allocation(ptr, sz);
 	memset(ptr, 0xCC, sz);  // Pour ne pas qu'on puisse supposer que l'allocation initialise à zéro.
 
-	if (!sva.etait_deja_actif()) {
+	if (!sva.etait_deja_actif() && debogage_allocation_est_actif()) {
 		// Attention que l'ajout aux blocs_alloues fait possiblement une allocation, et doit donc absolument être contrôlée pour ne pas faire une récursion infinie.
-		get_blocs_alloues()[ptr] = { sz, est_tableau, nom_fichier, ligne_fichier };
+		get_blocs_alloues()[ptr] = { sz, est_tableau, nom_fichier, ligne_fichier, compte_allocations() };
 		compteur_de_new++;
 	}
 
@@ -206,24 +275,55 @@ void notre_operator_delete(void* ptr, bool est_tableau) noexcept {
 	std::free(pointeur_octets(ptr) - taille_verification_corruption);
 }
 
-bool tous_les_new_ont_un_delete() {
-	return get_blocs_alloues().empty();
+bool InfoBlocMemoire::a_numero_ligne()const {
+	return ligne_fichier != 0;
 }
-void dump_blocs_alloues() {
-	SansVerifierAllocations sva;
+bool InfoBlocMemoire::est_depuis(MarqueurVerificationAllocation depuis) const {
+	return numero_allocation > depuis;
+}
+bool InfoBlocMemoire::repond_aux_criteres(bool seulement_avec_numeros_ligne, MarqueurVerificationAllocation depuis) const {
+	return ( !seulement_avec_numeros_ligne || a_numero_ligne() ) && est_depuis(depuis);
+}
+
+/// Si seulement_avec_numeros_ligne, vérifie uniquement les blocs qui ont un numéro de ligne, donc qui ont été alloués avec le "new" spécial défini dans debogage_memoire.hpp .
+bool tous_les_new_ont_un_delete(bool seulement_avec_numeros_ligne, MarqueurVerificationAllocation depuis) {
+	if (!seulement_avec_numeros_ligne && depuis == depuisDebutVerificationAllocation)
+		return get_blocs_alloues().empty();
+
 	for (const auto& [ptr, info] : get_blocs_alloues()) {
-		cout << ptr << " new" << (info.est_tableau ? "[] " : "   ") << info.taille << " octets";
-		if (info.nom_fichier)
-			cout << ", ligne '" << info.nom_fichier << "':" << info.ligne_fichier;
-		cout << endl;
+		if (info.repond_aux_criteres(seulement_avec_numeros_ligne, depuis))
+			return false;
 	}
+	return true;
 }
+
+ostream& operator<< (ostream& os, const InfoBlocMemoire& info) {
+	os << "new" << (info.est_tableau ? "[] " : "   ") << info.taille << " octets";
+	if (info.nom_fichier)
+		os << ", ligne '" << info.nom_fichier << "':" << info.ligne_fichier;
+	os << "  (#" << info.numero_allocation << ")";
+	return os;
+}
+
+/// Si seulement_avec_numeros_ligne, affiche uniquement les blocs qui ont un numéro de ligne, donc qui ont été alloués avec le "new" spécial défini dans debogage_memoire.hpp .
+void dump_blocs_alloues(bool seulement_avec_numeros_ligne, MarqueurVerificationAllocation depuis) {
+	SansVerifierAllocations sva;
+	for (const auto& [ptr, info] : get_blocs_alloues())
+		if (info.repond_aux_criteres(seulement_avec_numeros_ligne, depuis))
+			cout << ptr << " " << info << endl;
+}
+
 void afficher_fuites() {
 	if (tous_les_new_ont_un_delete())
 		cout << endl << "Aucune fuite detectee." << endl;
 	else {
 		cout << endl << "Fuite detectee:" << endl;
 		dump_blocs_alloues();
+		cout << endl << "Pour arreter sur ces # allocations la prochaine execution, ajouter la variable globale suivante (si le programme fait toujours les memes allocations; attention que l'execution dans le debogueur vs sans debogueur peut changer les allocations):" << endl
+			<< "bibliotheque_cours::BreakpointSurAllocations breakpointSurAllocations = { ";
+		for (const auto& [ptr, info] : get_blocs_alloues())
+			cout << info.numero_allocation << "U, ";
+		cout << "};" << endl;
 	}
 }
 bool tester_tous_blocs_alloues() {

@@ -1,14 +1,14 @@
-#include "Bishop.h"
+﻿#include "Bishop.h"
 
 
 using namespace ChessModel;
 
 
 Bishop::Bishop(Position& position, std::string& color, Board* board)
-	:Piece(position, color,board)
+	:Piece(position, color, board)
 {}
 
-std::vector<Position> Bishop::getMoves() const 
+std::vector<Position> Bishop::getMoves() const
 {
 	std::vector<Position> positions;
 
@@ -84,4 +84,3 @@ std::vector<Position> Bishop::getMoves() const
 
 	return positions;
 }
-
