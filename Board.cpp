@@ -1,13 +1,16 @@
 #include "Board.h"
 #include <algorithm>
+#include <iostream>
+#include "exepctions.h"
+#include "Pieces.h"
 
 using namespace ChessModel;
 
 Board::Board()
 {
 
-	std::string colorPlayer1 = "bluelaite";
-	std::string colorPlayer2 ="vertmoisi";
+	std::string colorPlayer1 = COLORPLAYER1;
+	std::string colorPlayer2 = COLORPLAYER2;
 	
 	Position bishopleft1{ 3,1 },
 		bishopright1{ 6,1 },
@@ -45,26 +48,49 @@ Board::Board()
 
 }
 
+Board::Board(Empty empty)
+	{}
+
 PiecePtr Board::move(PiecePtr& piece, Position& position)
 {
 	
+	auto PieceEaten = moveTry(piece,position);
+	try
+	{
+		verifieCheck(piece->getColor());
+		piece->setPosition(position);
+	}
+	catch (const Check&)
+	{
+		pieces_.insert({ piece->getPosition(), piece });
+		pieces_.erase(position);
+		if (PieceEaten != nullptr)
+			pieces_.insert({ PieceEaten->getPosition(), PieceEaten });
+		throw ImpossibleMove();
+	}
+	verifieCheck(getOpponentColor(piece->getColor()));
+}
+
+
+PiecePtr Board::moveTry(PiecePtr& piece, Position& position)
+{
 	auto moves = piece->getMoves();
 	auto it = std::find_if(moves.begin(), moves.end(), [&position](Position possiblePosition)->bool {return possiblePosition == position; });
-	
+
 	if (it == moves.end())
-		throw impossibleMove();
-	
+		throw ImpossibleMove();
+
 	PiecePtr pieceEaten = getPiece(position);
 
-	if (pieceEaten!=nullptr)
+	if (pieceEaten != nullptr)
 		pieces_.erase(position);
 
 	pieces_.erase(piece->getPosition());
-	piece->setPosition(position);
 	pieces_.insert({ position, piece });
 
 	return pieceEaten;
 }
+
 
 PiecePtr Board::move(PiecePtr& piece, Position&& position)
 {
@@ -88,7 +114,7 @@ PiecePtr Board::getPiece(Position& position)
 		piece = nullptr;
 	}
 
-		return piece;
+	return piece;
 }
 
 PiecePtr Board::getPiece(Position&& position)
@@ -101,7 +127,7 @@ bool Board::isUnoccupied(Position& position)
 	return getPiece(position)==nullptr;
 }
 
-bool Board::isOccupiedByOtherColor(Position& position, std::string color)
+bool Board::isOccupiedByOtherColor(Position& position, const std::string& color)
 {
 	if (!isUnoccupied(position))
 	{
@@ -113,5 +139,33 @@ bool Board::isOccupiedByOtherColor(Position& position, std::string color)
 
 void Board::addPiece(PiecePtr& pieceToAdd)
 {
-	pieces_.insert({ pieceToAdd->getPosition(), pieceToAdd});
+	if (getPiece(pieceToAdd->getPosition()) == nullptr)
+		pieces_.insert({ pieceToAdd->getPosition(), pieceToAdd });
+	else
+		std::cout << "Already a piece at position " << pieceToAdd->getPosition().first << ", " << pieceToAdd->getPosition().second << std::endl;
 }
+
+void Board::verifieCheck(const std::string& color)
+{
+
+	auto king = std::find_if(pieces_.begin(), pieces_.end(),
+		[&color](auto it)->bool {return color == it.second->getColor()&&dynamic_cast<King*>(it.second.get()); });
+	auto kingPosition = king->first;
+	for (auto&& [position,piece] : pieces_)
+	{
+
+		auto moves = piece->getMoves();
+		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(), 
+			[&kingPosition](Position position)->bool {return kingPosition == position; });
+				
+		if (positionOfPieceCheck != moves.end())
+			throw Check(getPiece(*positionOfPieceCheck), color);
+	}
+
+}
+
+std::string Board::getOpponentColor(const std::string& color)
+{
+	return color == COLORPLAYER1 ? COLORPLAYER1 : COLORPLAYER2;
+}
+

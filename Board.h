@@ -19,10 +19,16 @@ namespace ChessModel
 	using PiecePtr = std::shared_ptr<Piece>;
 	using mapPieces = std::unordered_map<Position, PiecePtr, pair_hash>;
 
+
+	struct Empty
+	{};
+
 	class Board
 	{
 	public:
 		Board();
+		Board(Empty empty);
+
 		~Board()=default;
 		PiecePtr move(PiecePtr& piece, Position& position);// return eaten piece or nullptr if nothing
 		PiecePtr move(PiecePtr& piece, Position&& position);// return eaten piece or nullptr if nothing
@@ -30,10 +36,13 @@ namespace ChessModel
 		PiecePtr getPiece(Position& position);
 		PiecePtr getPiece(Position&& position);
 		bool isUnoccupied(Position& position);
-		bool isOccupiedByOtherColor(Position& position, std::string color);
+		bool isOccupiedByOtherColor(Position& position, const std::string& color);
 		void addPiece(PiecePtr& pieceToAdd);
+		void verifieCheck(const std::string& color);
+		std::string getOpponentColor(const std::string& color);
 
 	private:
+		PiecePtr moveTry(PiecePtr& piece, Position& position);
 		mapPieces pieces_;
 
 	};

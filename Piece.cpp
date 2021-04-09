@@ -8,7 +8,6 @@ Piece::Piece(Position& position, std::string& color, Board* board)
 	:position_{position},color_{color},board_{board}
 {}
 
-
 Position Piece::getPosition() const
 {
 	return position_;

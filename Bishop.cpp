@@ -84,3 +84,4 @@ std::vector<Position> Bishop::getMoves() const
 
 	return positions;
 }
+

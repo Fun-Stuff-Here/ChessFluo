@@ -84,5 +84,8 @@
     <ClInclude Include="exepctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
