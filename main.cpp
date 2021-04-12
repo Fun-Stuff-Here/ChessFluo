@@ -1,22 +1,23 @@
-﻿#pragma region "Bibliothèques"//{
+﻿/*
+* Main du jeu d'echec, Projet-INF1015
+*\file		main.cpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
+#pragma region "Bibliothèques"//{
 
 #include <iostream>
-#include <iomanip>
-#include <sstream>
 #include <string>
-#include <fstream>
-#include <cctype>
-#include <cmath>
-#include <cstdint>
-#include <cstdlib>
-#include <ctime>
 #include <algorithm>
 #include <gsl/span>
 #include <cppitertools/range.hpp>
 #include <cppitertools/enumerate.hpp>
 
+#pragma warning(push, 0) // Sinon Qt fait des avertissements à /W4.
 #include <qapplication.h>
 #include <qmainwindow.h>
+#pragma pop()
 
 #if __has_include("bibliotheque_cours.hpp")
 #include "bibliotheque_cours.hpp"

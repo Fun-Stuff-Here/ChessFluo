@@ -1,4 +1,11 @@
-﻿#include "Bishop.h"
+﻿/*
+* Implémentation de la Classe Bishop, Projet-INF1015
+*\file		Bishop.cpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
+#include "Bishop.h"
 
 
 using namespace ChessModel;

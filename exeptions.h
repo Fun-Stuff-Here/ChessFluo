@@ -1,3 +1,10 @@
+/*
+* Définition des classes d'exeptions, Projet-INF1015
+*\file		exeptions.hpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
 #pragma once
 
 #include <stdexcept>
@@ -24,6 +31,6 @@ public:
     class Check : public std::domain_error
     {
     public:
-        Check(std::shared_ptr<Piece> piece, const std::string& color) : std::domain_error{ "Check on " + color + " King by" + piece->getColor() } {}
+        Check(std::shared_ptr<Piece>& piece, const std::string& color) : std::domain_error{ "Check on " + color + " King by" + piece->getColor() } {}
     };
 }

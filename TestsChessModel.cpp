@@ -1,4 +1,12 @@
-﻿#if __has_include("gtest/gtest.h")
+﻿
+/*
+* Tests sur le model du jeu d'echec, Projet-INF1015
+*\file		TestsChessModel.cpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
+#if __has_include("gtest/gtest.h")
 #include "gtest/gtest.h"
 #endif
 #ifdef TEST
@@ -18,9 +26,12 @@
 #include <cppitertools/range.hpp>
 #include <cppitertools/enumerate.hpp>
 
-#include "Pieces.h"
+#include "Piece.h"
 #include "Board.h"
-#include "exepctions.h"
+#include "exeptions.h"
+#include "Bishop.h"
+#include "King.h"
+#include "Knight.h"
 
 
 
@@ -155,6 +166,13 @@ TEST(Knight, moves) {
 	std::vector<Position> gotten = knigth.getMoves();
 	std::sort(gotten.begin(), gotten.end());
 	EXPECT_EQ(expected , gotten);
+}
+
+TEST(Piece, move_out_of_bound) {
+
+	Board board;
+	auto piece = board.getPiece({3,1});
+	EXPECT_THROW(board.move(piece, {14,19}),ImpossibleMove);
 }
 
 

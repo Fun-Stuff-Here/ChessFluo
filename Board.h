@@ -1,6 +1,13 @@
+/*
+* Définition de la Classe Board, Projet-INF1015
+*\file		Board.hpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
 #pragma once
 
-#include "Pieces.h"
+#include "Piece.h"
 #include <unordered_map>
 #include <memory>
 
@@ -29,8 +36,8 @@ namespace ChessModel
 	{
 	public:
 		Board();
-		Board(Empty empty);
-		Board(KingOnly kingOnly);
+		Board(Empty);
+		Board(KingOnly);
 		~Board()=default;
 		PiecePtr move(PiecePtr& piece, Position& position);// return eaten piece or nullptr if nothing
 		PiecePtr move(PiecePtr& piece, Position&& position);// return eaten piece or nullptr if nothing
@@ -42,6 +49,7 @@ namespace ChessModel
 		void addPiece(PiecePtr& pieceToAdd);
 		void verifieCheck(const std::string& color);
 		std::string getOpponentColor(const std::string& color);
+		const PiecePtr pieceNotFound = nullptr;
 
 	private:
 		PiecePtr moveTry(PiecePtr& piece, Position& position);

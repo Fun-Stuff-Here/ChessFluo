@@ -1,8 +1,18 @@
+/*
+* Implémentation de la Classe Board, Projet-INF1015
+*\file		Board.cpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
 #include "Board.h"
 #include <algorithm>
 #include <iostream>
-#include "exepctions.h"
-#include "Pieces.h"
+#include "exeptions.h"
+#include "Piece.h"
+#include "Bishop.h"
+#include "Knight.h"
+#include "King.h"
 
 using namespace ChessModel;
 
@@ -48,11 +58,11 @@ Board::Board()
 
 }
 
-Board::Board(Empty empty)
+Board::Board(Empty)
 {
 }
 
-Board::Board(KingOnly kingOnly)
+Board::Board(KingOnly)
 {
 	std::string colorPlayer1 = COLORPLAYER1;
 	std::string colorPlayer2 = COLORPLAYER2;
@@ -82,7 +92,7 @@ PiecePtr Board::move(PiecePtr& piece, Position& position)
 	{
 		pieces_.insert({ piece->getPosition(), piece });
 		pieces_.erase(position);
-		if (pieceEaten != nullptr)
+		if (pieceEaten != pieceNotFound)
 			pieces_.insert({ pieceEaten->getPosition(), pieceEaten });
 		throw ImpossibleMove();
 	}
@@ -101,7 +111,7 @@ PiecePtr Board::moveTry(PiecePtr& piece, Position& position)
 
 	PiecePtr pieceEaten = getPiece(position);
 
-	if (pieceEaten != nullptr)
+	if (pieceEaten != pieceNotFound)
 		pieces_.erase(position);
 
 	pieces_.erase(piece->getPosition());
@@ -123,14 +133,14 @@ mapPieces Board::getPieces()
 
 PiecePtr Board::getPiece(Position& position)
 {
-	PiecePtr piece = nullptr;
+	PiecePtr piece = pieceNotFound;
 	try
 	{
 		piece = pieces_.at(position);
 	}
 	catch (const std::out_of_range&)
 	{
-		piece = nullptr;
+		piece = pieceNotFound;
 	}
 
 	return piece;
@@ -143,7 +153,7 @@ PiecePtr Board::getPiece(Position&& position)
 
 bool Board::isUnoccupied(Position& position)
 {
-	return getPiece(position)==nullptr;
+	return getPiece(position)== pieceNotFound;
 }
 
 bool Board::isOccupiedByOtherColor(Position& position, const std::string& color)
@@ -158,7 +168,7 @@ bool Board::isOccupiedByOtherColor(Position& position, const std::string& color)
 
 void Board::addPiece(PiecePtr& pieceToAdd)
 {
-	if (getPiece(pieceToAdd->getPosition()) == nullptr)
+	if (getPiece(pieceToAdd->getPosition()) == pieceNotFound)
 		pieces_.insert({ pieceToAdd->getPosition(), pieceToAdd });
 	else
 		std::cout << "Already a piece at position " << pieceToAdd->getPosition().first << ", " << pieceToAdd->getPosition().second << std::endl;

@@ -1,3 +1,10 @@
+/*
+* Implémentation de la Classe Piece, Projet-INF1015
+*\file		Piece.cpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
 #include "Piece.h"
 #include "Board.h"
 
@@ -13,7 +20,7 @@ Position Piece::getPosition() const
 	return position_;
 }
 
-void Piece::setPosition(Position position)
+void Piece::setPosition(Position& position)
 {
 	position_ = position;
 }

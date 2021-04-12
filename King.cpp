@@ -1,5 +1,12 @@
+/*
+* Implémentation de la Classe King, Projet-INF1015
+*\file		King.cpp
+*\author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544
+*\date		12 avril 2021
+* Créé le	10 avril 2021
+*/
 #include "King.h"
-//#include "Board.h"
+
 using namespace ChessModel;
 
 King::King(Position& position, std::string& color, Board* board)
