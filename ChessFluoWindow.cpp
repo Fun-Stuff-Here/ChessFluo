@@ -27,38 +27,20 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	QMainWindow(parent)
 {
 	auto mainWidget = new QWidget(this);
-	auto mainLayout = new QGridLayout(mainWidget);
-
-	//auto case11 = new ChessBox(mainWidget);
-	//auto case12 = new ChessBox(mainWidget);
-
-	//auto label1 = new QLabel(mainWidget);
-	//auto label2 = new QLabel(mainWidget);
-	//label1->setText("label 1");
-	//label2->setText("label 2");
-
-	//label1->setMinimumWidth(100);
-	//label2->setMinimumWidth(100);
-
-	//mainLayout->addWidget(case11);//, 2, 2, Qt::AlignHCenter, Qt::AlignHCenter);
-	//mainLayout->addSpacing(10);
-	//mainLayout->addWidget(case12);//, 1, 1, Qt::AlignHCenter, Qt::AlignHCenter);
-	//mainLayout->addSpacing(10);
-	//mainLayout->addWidget(label1);//, 0, 0, Qt::AlignHCenter, Qt::AlignHCenter);
-	//mainLayout->addSpacing(10);
-	//mainLayout->addWidget(label2);//, 3, 3, Qt::AlignHCenter, Qt::AlignHCenter);
-	QPushButton* button1 = new QPushButton("One");
-	QPushButton* button2 = new QPushButton("Two");
-	QPushButton* button3 = new QPushButton("Three");
-	QPushButton* button4 = new QPushButton("Four");
-	QPushButton* button5 = new QPushButton("Five");
-
-	//QGridLayout* layout = new QGridLayout(mainWidget);
-	mainLayout->addWidget(button1, 0, 0);
-	mainLayout->addWidget(button2, 0, 1);
-	mainLayout->addWidget(button3, 1, 0, 1, 2);
-	mainLayout->addWidget(button4, 2, 0);
-	mainLayout->addWidget(button5, 2, 1);
+	QGridLayout *mainGridLayout = new QGridLayout(mainWidget);
+	//auto layout = new QHBoxLayout();
+	//mainLayout->addLayout(layout);
+	const QSize btnSize = QSize(2500, 1500);
+	QString name = "allo";
+	for (int i = 0; i < 3; ++i)
+	{
+		auto button = new QPushButton(mainWidget);
+		button->setText(name);
+		button->setFixedSize(btnSize);
+		mainGridLayout->addWidget(button, 0, i);
+		mainGridLayout->setSpacing(0);
+	}
+	mainWidget->setLayout(mainGridLayout);
 
 }
 
