@@ -20,11 +20,23 @@
     <Filter Include="Sources Bibliotheques">
       <UniqueIdentifier>{68ace6f3-7624-4063-b7e8-0b2c755fbfc8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Pieces">
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{969d8f78-c052-4a9f-ae7e-e8fb7b6b3dac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model\Pieces">
+      <UniqueIdentifier>{5e76a9fd-6fa8-429f-8825-264586a8a580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View">
+      <UniqueIdentifier>{c93b9ae7-17dc-46b3-8a22-2c070494ccff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model">
+      <UniqueIdentifier>{dd31ba0e-a1c0-4ec1-ab96-4d30c43002ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model\Pieces">
       <UniqueIdentifier>{3cc4c4ca-2f19-4a60-9180-65669130de53}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Pieces">
-      <UniqueIdentifier>{5e76a9fd-6fa8-429f-8825-264586a8a580}</UniqueIdentifier>
+    <Filter Include="Header Files\View">
+      <UniqueIdentifier>{fb0d6bdc-9061-4ced-b50b-214940b05125}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,49 +49,63 @@
     <ClCompile Include="googletest\src\gtest-all.cc">
       <Filter>Sources Bibliotheques</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestsChessModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Bishop.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Model\Pieces</Filter>
     </ClCompile>
     <ClCompile Include="King.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Model\Pieces</Filter>
     </ClCompile>
     <ClCompile Include="Knight.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Model\Pieces</Filter>
     </ClCompile>
     <ClCompile Include="Piece.cpp">
-      <Filter>Source Files\Pieces</Filter>
+      <Filter>Source Files\Model\Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="TestsChessModel.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessFluoWindow.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="ChessBox.cpp">
+      <Filter>Source Files\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Model\Pieces</Filter>
     </ClInclude>
     <ClInclude Include="King.h">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Model\Pieces</Filter>
     </ClInclude>
     <ClInclude Include="Knight.h">
-      <Filter>Header Files\Pieces</Filter>
+      <Filter>Header Files\Model\Pieces</Filter>
     </ClInclude>
     <ClInclude Include="Piece.h">
-      <Filter>Header Files\Pieces</Filter>
-    </ClInclude>
-    <ClInclude Include="Constant.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Model\Pieces</Filter>
     </ClInclude>
     <ClInclude Include="Board.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Constant.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="exeptions.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="ChessBox.h">
+      <Filter>Header Files\View</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ChessFluoWindow.h">
+      <Filter>Header Files\View</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

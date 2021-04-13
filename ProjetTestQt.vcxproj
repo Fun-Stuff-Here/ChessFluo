@@ -117,6 +117,8 @@
     <ClCompile Include="bibliotheque_cours\verification_allocation.cpp" />
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="ChessBox.cpp" />
+    <ClCompile Include="ChessFluoWindow.cpp" />
     <ClCompile Include="googletest\src\gtest-all.cc" />
     <ClCompile Include="King.cpp" />
     <ClCompile Include="Knight.cpp" />
@@ -127,6 +129,8 @@
   <ItemGroup>
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
+    <QtMoc Include="ChessFluoWindow.h" />
+    <ClInclude Include="ChessBox.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="exeptions.h" />
     <ClInclude Include="King.h" />

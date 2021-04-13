@@ -19,6 +19,8 @@
 #include <qmainwindow.h>
 #pragma pop()
 
+#include "ChessFluoWindow.h"
+
 #if __has_include("bibliotheque_cours.hpp")
 #include "bibliotheque_cours.hpp"
 #define BIBLIOTHEQUE_COURS_INCLUS
@@ -50,7 +52,7 @@ int main(int argc, char* argv[])
 	QApplication app(argc, argv);
 	initialiserBibliothequeCours(argc, argv);
 
-	QMainWindow window{};
+	ChessView::ChessFluoWindow window{};
 	window.show();
 
 	return app.exec();
