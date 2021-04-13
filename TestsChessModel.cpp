@@ -399,4 +399,32 @@ TEST(Board , checking)
 	EXPECT_THROW(board.move(piece4, { 7,7 }), Check);
 }
 
+TEST(Board, too_many_kings)
+{
+	Board board{ Empty{} };
+
+
+	Position  kingPosition1{ 4,4 };	
+	std::string color = COLORPLAYER1;
+	PiecePtr  king(new King{ kingPosition1,color,&board });
+
+	board.addPiece(king);
+
+	EXPECT_THROW(board.move(king, {4,5}), NotTwoKings);
+
+	Position  kingPosition2{ 5,6 };
+	std::string color2 = COLORPLAYER1;
+	PiecePtr  king2(new King{ kingPosition2,color2,&board });
+
+	Position  kingPosition3{ 3,3 };
+	std::string color3 = COLORPLAYER2;
+	PiecePtr  king3(new King{ kingPosition3,color3,&board });
+
+	EXPECT_THROW(board.addPiece(king2), NotTwoKings);
+	board.addPiece(king3);
+	EXPECT_THROW(board.addPiece(king), NotTwoKings);
+
+}
+
+
 #endif

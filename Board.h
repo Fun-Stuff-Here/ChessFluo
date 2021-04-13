@@ -47,13 +47,18 @@ namespace ChessModel
 		bool isUnoccupied(Position& position);
 		bool isOccupiedByOtherColor(Position& position, const std::string& color);
 		void addPiece(PiecePtr& pieceToAdd);
+		void addPieces(std::vector<PiecePtr>&& piecesToAdd);
 		void verifieCheck(const std::string& color);
 		std::string getOpponentColor(const std::string& color);
 		const PiecePtr pieceNotFound = nullptr;
 
+
 	private:
 		PiecePtr moveTry(PiecePtr& piece, Position& position);
 		mapPieces pieces_;
+		int nKing_ = 0;
+		std::string kingColorInserted;
+
 
 	};
 }
