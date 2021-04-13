@@ -17,16 +17,9 @@ endif()
 project(ProjetTest)
 
 # On met les fichiers sources (incluant les entêtes)
+file(GLOB autopilot_sources ./**.cpp ./**.h ./**.ui)
 set(ALL_FILES
-	"main.cpp"
-	"Calc.cpp"
-	"Calc.hpp"
-	"TestCalc.cpp"
-	"CalcWindow.cpp"
-	"CalcWindow.hpp"
-	"bibliotheque_cours/bibliotheque_cours.cpp"
-	"bibliotheque_cours/verification_allocation.cpp"
-	"googletest/src/gtest-all.cc"
+    ${autopilot_sources}
 )
 
 add_executable(${PROJECT_NAME} ${ALL_FILES})
@@ -42,7 +35,7 @@ find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Widgets)
 
 # Les flags de compilation. Ceux-ci reproduisent un peu le comportement de MSVC avec /W4.
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a -fsigned-char -Wall -Wextra -Wpedantic -Woverloaded-virtual -Wno-unknown-pragmas -Wno-enum-compare --coverage")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std:c++17 -fsigned-char -Wall --coverage")
 
 # On ajoute le dossier include/ fourni, comme des fichiers d'inclusion du système.
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE "include")
