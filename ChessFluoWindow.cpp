@@ -30,17 +30,25 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	QGridLayout *mainGridLayout = new QGridLayout(mainWidget);
 	//auto layout = new QHBoxLayout();
 	//mainLayout->addLayout(layout);
-	const QSize btnSize = QSize(2500, 1500);
+	const QSize buttonSize = QSize(150, 150);
 	QString name = "allo";
-	for (int i = 0; i < 3; ++i)
+	
+	for (int i = 0; i < 8; ++i)
 	{
-		auto button = new QPushButton(mainWidget);
-		button->setText(name);
-		button->setFixedSize(btnSize);
-		mainGridLayout->addWidget(button, 0, i);
-		mainGridLayout->setSpacing(0);
+		for (size_t j = 0; j < 8; j++)
+		{
+			auto button = new QPushButton(mainWidget);
+			button->setText(name);
+			button->setMinimumSize(buttonSize);
+			QString style = (j+i) % 2 == 0 ? "background-color: black;" : "background-color: white; border: 2px solid black;";
+			button->setStyleSheet(style);
+			mainGridLayout->addWidget(button, i, j);
+			mainGridLayout->setSpacing(0);
+		}
 	}
 	mainWidget->setLayout(mainGridLayout);
+	const QSize mainSize{ 8 * 150, 8 * 150 };
+	mainWidget->setMinimumSize(mainSize);
 
 }
 
