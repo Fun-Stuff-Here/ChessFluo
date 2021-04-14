@@ -32,8 +32,8 @@
 #include "Bishop.h"
 #include "King.h"
 #include "Knight.h"
-
-
+#include "Rook.h"
+#include "Queen.h"
 
 
 using namespace ChessModel;
@@ -63,7 +63,13 @@ TEST(Board, Creation) {
 		"class ChessModel::Knight 7, 1 bluelaite\n"
 		"class ChessModel::Bishop 6, 8 vertmoisi\n"
 		"class ChessModel::King 4, 1 bluelaite\n"
-		"class ChessModel::King 4, 8 vertmoisi\n";
+		"class ChessModel::King 4, 8 vertmoisi\n"
+		"class ChessModel::Rook 1, 1 bluelaite\n"
+		"class ChessModel::Rook 8, 8 vertmoisi\n"
+		"class ChessModel::Rook 8, 1 bluelaite\n"
+		"class ChessModel::Rook 1, 8 vertmoisi\n"
+		"class ChessModel::Queen 5, 1 bluelaite\n"
+		"class ChessModel::Queen 5, 8 vertmoisi\n";
 
 	std::string text = buffer.str();
 	// When done redirect cout to its old self
@@ -76,10 +82,12 @@ TEST(Board, Creation) {
 
 TEST(Bishop, test_block_move) {
 
-	Board board{};
+	Board board{ KingOnly{} };
 
-	PiecePtr bishop = board.getPiece({ 3, 1 });
-	board.move(bishop, { 4,2 });
+	std::string color = COLORPLAYER1;
+	Position position{ 4,2 };
+	PiecePtr bishop(new Bishop{ position,color,&board });
+	board.addPiece(bishop);
 	PiecePtr king = board.getPiece({ 4,1 });
 	board.move(king, { 5,1 });
 
@@ -116,7 +124,7 @@ TEST(King ,test_block_move) {
 		{3,1},
 		//{4,2}, blocked by bishop
 		{3,2},
-		{5,1},
+		//{5,1}, blocked by queen
 		{5,2},
 	};
 
@@ -198,6 +206,81 @@ TEST(Bishop, moves) {
 	EXPECT_EQ(expected , gotten);
 }
 
+TEST(Rook, moves)
+{
+	Board board{ KingOnly{} };
+
+	std::string color = COLORPLAYER1;
+	Position position{4,3};
+	PiecePtr rook(new Rook{ position,color,&board });
+
+	board.addPiece(rook);
+	std::vector<Position> expected =
+	{
+		{4,8},
+		{4,7},
+		{4,6},
+		{4,5},
+		{4,4},
+		{4,2},
+		{1,3},
+		{2,3},
+		{3,3},
+		{5,3},
+		{6,3},
+		{7,3},
+		{8,3}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = rook->getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	EXPECT_EQ(expected, gotten);
+}
+
+
+TEST(Queen, moves)
+{
+	Board board{ KingOnly{} };
+
+	std::string color = COLORPLAYER1;
+	Position position{ 4,3 };
+	PiecePtr queen(new Queen{ position,color,&board });
+
+	board.addPiece(queen);
+	std::vector<Position> expected =
+	{
+		{4,8},
+		{4,7},
+		{4,6},
+		{4,5},
+		{4,4},
+		{4,2},
+		{1,3},
+		{2,3},
+		{3,3},
+		{5,3},
+		{6,3},
+		{7,3},
+		{8,3},
+		{3,2},
+		{2,1},
+		{5,4},
+		{6,5},
+		{7,6},
+		{8,7},
+		{5,2},
+		{6,1},
+		{3,4},
+		{2,5},
+		{1,6}
+	};
+	std::sort(expected.begin(), expected.end());
+	std::vector<Position> gotten = queen->getMoves();
+	std::sort(gotten.begin(), gotten.end());
+	EXPECT_EQ(expected, gotten);
+}
+
+
 
 TEST(Bishop , block_move) {
 
@@ -264,8 +347,7 @@ TEST(Knight, eat) {
 		{6, 5},
 		{8, 5},
 		{5, 2},
-		{5, 4},
-		{8, 1}
+		{5, 4}
 	};
 	std::sort(expected.begin(), expected.end());
 	std::vector<Position> gotten = bishop1.getMoves();
@@ -312,6 +394,12 @@ TEST(Bishop, piece_remove) {
 		"class ChessModel::Knight 7, 1 bluelaite\n"
 		"class ChessModel::King 4, 1 bluelaite\n"
 		"class ChessModel::King 4, 8 vertmoisi\n"
+		"class ChessModel::Rook 1, 1 bluelaite\n"
+		"class ChessModel::Rook 8, 8 vertmoisi\n"
+		"class ChessModel::Rook 8, 1 bluelaite\n"
+		"class ChessModel::Rook 1, 8 vertmoisi\n"
+		"class ChessModel::Queen 5, 1 bluelaite\n"
+		"class ChessModel::Queen 5, 8 vertmoisi\n"
 		"class ChessModel::Bishop 1, 3 bluelaite\n";
 
 	std::string text = buffer.str();

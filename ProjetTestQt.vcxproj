@@ -123,12 +123,18 @@
     <ClCompile Include="King.cpp" />
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Queen.cpp" />
+    <ClCompile Include="Rook.cpp" />
     <ClCompile Include="TestsChessModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="Pawn.h" />
+    <ClInclude Include="Queen.h" />
+    <ClInclude Include="Rook.h" />
     <QtMoc Include="ChessFluoWindow.h" />
     <ClInclude Include="ChessBox.h" />
     <ClInclude Include="Constant.h" />

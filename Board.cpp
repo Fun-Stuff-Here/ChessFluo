@@ -13,6 +13,9 @@
 #include "Bishop.h"
 #include "Knight.h"
 #include "King.h"
+#include "Rook.h"
+#include "Queen.h"
+#include "Pawn.h"
 
 using namespace ChessModel;
 
@@ -30,8 +33,14 @@ Board::Board()
 		positionRightKnight1Position{ 7, 1 },
 		positionLeftKnight2Position{ 2, 8 },
 		positionRightKnight2Position{ 7, 8 },
-		positionKing1Position{ 4,1 },
-		positionKing2Position{ 4,8 };
+		positionKing1Position{ 5,1 },
+		positionKing2Position{ 5,8 },
+		positionRookLeft1{1,1},
+		positionRookRight1{8,1},
+		positionRookLeft2{1,8},
+		positionRookRight2{8,8},
+		positionQueen1{4,1},
+		positionQueen2{4,8};
 
 
 	PiecePtr bishopleft1(new Bishop{ bishopleft1Position,colorPlayer1,this }),
@@ -43,7 +52,13 @@ Board::Board()
 		knightLeft2(new Knight{ positionLeftKnight2Position, colorPlayer2, this }),
 		knightRight2(new Knight{ positionRightKnight2Position, colorPlayer2, this }),
 		king1(new King{ positionKing1Position, colorPlayer1,this }),
-		king2(new King{ positionKing2Position,colorPlayer2,this });
+		king2(new King{ positionKing2Position,colorPlayer2,this }),
+		rookLeft1(new Rook{positionRookLeft1,colorPlayer1,this}),
+		rookRight1(new Rook{ positionRookRight1,colorPlayer1,this }),
+		rookLeft2(new Rook{ positionRookLeft2,colorPlayer2,this }),
+		rookRight2(new Rook{ positionRookRight2,colorPlayer2,this }),
+		queen1(new Queen{positionQueen1,colorPlayer1,this}),
+		queen2(new Queen{positionQueen2,colorPlayer2,this});
 
 	addPieces(
 		{
@@ -56,9 +71,31 @@ Board::Board()
 			knightLeft2,
 			knightRight2,
 			king1,
-			king2
+			king2,
+			rookLeft1,
+			rookRight1,
+			rookLeft2,
+			rookRight2,
+			queen1,
+			queen2
 		}
 	);
+
+		//pawn player1
+		for(size_t i = 1; i <= NCOLUMNS; i++)
+		{
+			Position position{i,2};
+			PiecePtr pawn(new Pawn{ position , colorPlayer1,this });
+			addPiece(pawn);
+		}
+		//pawn player2
+		for (size_t i = 1; i <= NCOLUMNS; i++)
+		{
+			Position position{ i,7 };
+			PiecePtr pawn(new Pawn{ position , colorPlayer2,this });
+			addPiece(pawn);
+		}
+
 
 }
 

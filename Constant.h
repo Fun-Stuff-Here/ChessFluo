@@ -18,7 +18,10 @@ namespace ChessModel {
 
 	const std::string COLORPLAYER1 = "bluelaite";
 	const std::string COLORPLAYER2 = "vertmoisi";
+	const unsigned int NROWS{ 8 };
+	const unsigned int  NCOLUMNS{ 8 };
 }
+
 
 namespace ChessView
 {

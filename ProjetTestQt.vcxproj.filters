@@ -79,6 +79,15 @@
     <ClCompile Include="ChessBox.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
+    <ClCompile Include="Rook.cpp">
+      <Filter>Source Files\Model\Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="Queen.cpp">
+      <Filter>Source Files\Model\Pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="Pawn.cpp">
+      <Filter>Source Files\Model\Pieces</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h">
@@ -104,6 +113,15 @@
     </ClInclude>
     <ClInclude Include="Constant.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rook.h">
+      <Filter>Header Files\Model\Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="Queen.h">
+      <Filter>Header Files\Model\Pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="Pawn.h">
+      <Filter>Header Files\Model\Pieces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
