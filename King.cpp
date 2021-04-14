@@ -11,7 +11,10 @@ using namespace ChessModel;
 
 King::King(Position& position, std::string& color, Board* board)
 	:Piece(position, color,board)
-{}
+{
+	canBigCastle_ = true;
+	canSmallCastle_ = true;
+}
 
 std::vector<Position> King::getMoves() const
 {
@@ -38,4 +41,30 @@ std::vector<Position> King::getMoves() const
 			positions.push_back(possiblePosition);
 	}
 	return positions;
+}
+
+bool King::canSmallCastle()
+{
+	return canSmallCastle_;
+}
+
+bool King::canBigCastle()
+{
+	return canBigCastle_;
+}
+
+void King::moved()
+{
+	canBigCastle_ = false;
+	canSmallCastle_ = false;
+}
+
+void King::smallCastlingRookMoved()
+{
+	canSmallCastle_ = false;
+}
+
+void King::bigCastlingRookMoved()
+{
+	canBigCastle_ = false;
 }

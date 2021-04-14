@@ -17,8 +17,15 @@ namespace ChessModel
 		King(Position& position, std::string& color, Board* board);
 		~King() = default;
 		std::vector<Position> getMoves() const override;
+		bool canSmallCastle();
+		bool canBigCastle();
+		void moved();
+		void smallCastlingRookMoved();
+		void bigCastlingRookMoved();
 
 	private:
+		bool canSmallCastle_;
+		bool canBigCastle_;
 
 	};
 }

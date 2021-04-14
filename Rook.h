@@ -18,6 +18,8 @@ namespace ChessModel
 		~Rook() = default;
 		std::vector<Position> getMoves() const override;
 
+	private:
+
 
 	};
 }

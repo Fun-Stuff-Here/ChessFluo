@@ -79,7 +79,7 @@ Board::Board()
 			queen1,
 			queen2
 		}
-	);
+		);
 
 		//pawn player1
 		for(size_t i = 1; i <= NCOLUMNS; i++)
@@ -96,6 +96,8 @@ Board::Board()
 			addPiece(pawn);
 		}
 
+		kingColor1_ = dynamic_cast<King*>(king1.get());
+		kingColor2_ = dynamic_cast<King*>(king2.get());
 
 }
 
@@ -120,6 +122,8 @@ Board::Board(KingOnly)
 			king2
 		}
 	);
+	kingColor1_ = dynamic_cast<King*>(king1.get());
+	kingColor2_ = dynamic_cast<King*>(king2.get());
 }
 
 
@@ -132,6 +136,29 @@ PiecePtr Board::move(PiecePtr& piece, Position& position)
 	{
 		verifieCheck(piece->getColor());
 		piece->setPosition(position);
+		auto pawn = dynamic_cast<Pawn*>(piece.get());
+		if (pawn && (pawn->getPosition().second == 0 || pawn->getPosition().second == NROWS))
+			throw Promotion(piece);
+
+		auto king = dynamic_cast<King*>(piece.get());
+		auto rook = dynamic_cast<Rook*>(piece.get());
+
+		auto castlingPos = std::find(castlingPositions_.begin(),castlingPositions_.end(),position);
+		if (king && king->canSmallCastle() && castlingPos != castlingPositions_.end())
+		{
+
+		}
+		if (king && king->canRightCastle() && castlingPos != castlingPositions_.end())
+		{
+
+		}
+
+
+
+		if (king || rook)
+			rook->getColor() == kingColor1_->getColor() ?kingColor1_->rookOrKingMoved() : kingColor2_->rookOrKingMoved();
+
+
 	}
 	catch (const Check&)
 	{
@@ -248,7 +275,6 @@ void Board::verifieCheck(const std::string& color)
 	auto kingPosition = king->first;
 	for (auto&& [position,piece] : pieces_)
 	{
-
 		auto moves = piece->getMoves();
 		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(), 
 			[&kingPosition](Position position)->bool {return kingPosition == position; });
@@ -259,8 +285,27 @@ void Board::verifieCheck(const std::string& color)
 
 }
 
+
+
 std::string Board::getOpponentColor(const std::string& color)
 {
 	return color == COLORPLAYER1 ? COLORPLAYER2 : COLORPLAYER1;
 }
 
+bool Board::isCheckable(Position& position , std::string& color)
+{
+
+	for (auto&& [positionKey, piece] : pieces_)
+	{
+		if (piece->getColor() == color)
+			continue;
+
+		auto moves = piece->getMoves();
+		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(),
+			[&position](Position position)->bool {return position == position; });
+
+		if (positionOfPieceCheck != moves.end())
+			return true;
+	}
+	return false;
+}

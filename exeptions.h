@@ -41,4 +41,10 @@ namespace ChessModel
     };
 
 
+    class Promotion : public std::domain_error
+    {
+    public:
+        Promotion(ChessModel::PiecePtr piece): std::domain_error{ "Promotion of a pawn"} {}
+    };
+
 }
