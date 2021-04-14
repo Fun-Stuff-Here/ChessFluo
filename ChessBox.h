@@ -17,13 +17,28 @@
 
 #include <memory>
 
-class ChessBox: public QWidget
+#include "Board.h"
+
+
+namespace ChessView
 {
-public:
-	ChessBox(QWidget* parent = nullptr);
-	~ChessBox()=default;
+	using BoardPtr = std::shared_ptr<ChessModel::Board>;
+	class ChessBox : public QWidget
+	{
+		
+	public:
+		ChessBox(BoardPtr& board, ChessModel::Position position, QWidget* parent = nullptr);
+		~ChessBox() = default;
 
-private:
+	private:
+		ChessModel::PiecePtr piece_;
+		ChessModel::Position position_;
+		BoardPtr board_;
 
-	std::shared_ptr<QLabel> label_;
-};
+
+	};
+}
+
+
+
+

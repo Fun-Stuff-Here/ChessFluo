@@ -38,6 +38,9 @@
     <Filter Include="Header Files\View">
       <UniqueIdentifier>{fb0d6bdc-9061-4ced-b50b-214940b05125}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Images">
+      <UniqueIdentifier>{a1c9d11c-d4f8-47b8-a3d6-6cea95607b9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bibliotheque_cours\bibliotheque_cours.cpp">
@@ -93,14 +96,14 @@
     <ClInclude Include="Board.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Constant.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="exeptions.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="ChessBox.h">
       <Filter>Header Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="Constant.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

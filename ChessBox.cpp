@@ -7,14 +7,25 @@
 */
 
 #include "ChessBox.h"
+#include "Constant.h"
+#include "ChessFluoWindow.h"
+#include <string>
+#include <algorithm>
+#include <typeinfo>
 
+using namespace ChessView;
 
-ChessBox::ChessBox(QWidget* parent )
-	:QWidget(parent)
+ChessBox::ChessBox(BoardPtr& board, ChessModel::Position position, QWidget* parent)
+	:QWidget(parent), board_(board), position_(position)
 {
+	piece_ = board_->getPiece(position_);
+	setMinimumSize(CHESSBOXSIZE);
+	QString style = (position.first + position.second) % 2 == 0 ? "background-color: Chartreuse;" : "background-color: Coral;";
+	QString image = QString::fromStdString((piece_ != ChessModel::Board::pieceNotFound)
+		? "border-image: url( './Images/Pieces/" +
+		static_cast<std::string>(typeid(*piece_).name()).substr(static_cast<std::string>(typeid(*piece_).name()).find_last_of(':') + 1) +
+		"_" + piece_->getColor() + ".png') 0 0 0 0 stretch stretch;"
+		:"");
 
-	rect();
-	label_ = std::make_shared<QLabel>();
-	label_->setText("case icittteeee");
-
+	setStyleSheet(style+image);
 }

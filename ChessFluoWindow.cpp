@@ -20,35 +20,30 @@
 #pragma pop()
 
 #include "ChessBox.h"
+#include "Constant.h"
 
 using namespace ChessView;
 
 ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	QMainWindow(parent)
 {
+	board_ = std::make_shared<ChessModel::Board>();
+
 	auto mainWidget = new QWidget(this);
 	QGridLayout *mainGridLayout = new QGridLayout(mainWidget);
-	//auto layout = new QHBoxLayout();
-	//mainLayout->addLayout(layout);
-	const QSize buttonSize = QSize(150, 150);
-	QString name = "allo";
 	
 	for (int i = 0; i < 8; ++i)
 	{
 		for (size_t j = 0; j < 8; j++)
 		{
-			auto button = new QPushButton(mainWidget);
-			button->setText(name);
-			button->setMinimumSize(buttonSize);
-			QString style = (j+i) % 2 == 0 ? "background-color: black;" : "background-color: white; border: 2px solid black;";
-			button->setStyleSheet(style);
-			mainGridLayout->addWidget(button, i, j);
+			ChessModel::Position position{j+1,i+1};
+			auto chessBox = new ChessBox{board_,position,mainWidget};
+			mainGridLayout->addWidget(chessBox, i, j);
 			mainGridLayout->setSpacing(0);
 		}
 	}
 	mainWidget->setLayout(mainGridLayout);
-	const QSize mainSize{ 8 * 150, 8 * 150 };
-	mainWidget->setMinimumSize(mainSize);
+	mainWidget->setMinimumSize(NROWS * CHESSBOXSIZE);
 
 }
 

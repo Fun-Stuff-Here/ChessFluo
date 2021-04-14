@@ -18,6 +18,8 @@
 
 namespace ChessView
 {
+	
+	using BoardPtr = std::shared_ptr<ChessModel::Board>;
 	class ChessFluoWindow : public QMainWindow
 	{
 		Q_OBJECT
@@ -34,7 +36,7 @@ namespace ChessView
 		//template <typename T = decltype(nullptr)>
 		//QPushButton* nouveauBouton(const QString & text, const T & slot = nullptr);
 
-		ChessModel::Board board_;  // Le Modèle (pourrait être un pointeur mais pas nécessaire dans ce cas).
+		BoardPtr board_;  // Le Modèle (pourrait être un pointeur mais pas nécessaire dans ce cas).
 
 	};
 }

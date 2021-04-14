@@ -6,12 +6,23 @@
 * Créé le	10 avril 2021
 */
 #pragma once
-#include <string>
+#pragma warning(push, 0) // Sinon Qt fait des avertissements à /W4.
+#include <qsize.h>
+#include <QLabel>
+#include <QString>
+#pragma pop()
 
-#include <QApplication>
+#include <string>
 
 namespace ChessModel {
 
 	const std::string COLORPLAYER1 = "bluelaite";
 	const std::string COLORPLAYER2 = "vertmoisi";
+}
+
+namespace ChessView
+{
+	const QSize CHESSBOXSIZE{ 150, 150 };
+	const unsigned int NROWS{ 8 };
+	const unsigned int  NCOLUMNS{ 8 };
 }

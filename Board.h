@@ -50,7 +50,7 @@ namespace ChessModel
 		void addPieces(std::vector<PiecePtr>&& piecesToAdd);
 		void verifieCheck(const std::string& color);
 		std::string getOpponentColor(const std::string& color);
-		const PiecePtr pieceNotFound = nullptr;
+		inline static const PiecePtr pieceNotFound = nullptr;
 
 
 	private:
