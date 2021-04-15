@@ -47,18 +47,18 @@ std::vector<Position> King::getMoves() const
 	{
 		if (color_ == COLORPLAYER1)
 		{
-			if (!(board_->isCheckable({ 6,1 }, color_)) &&
-				!(board_->isCheckable({ 7,1 }, color_)) &&
-				board_->isUnoccupied({ 6,1 }) &&
-				board_->isUnoccupied({ 7,1 }))
+			if (board_->isUnoccupied({ 6,1 }) &&
+				board_->isUnoccupied({ 7,1 })&&			
+				!(board_->isCheckable({ 6,1 }, color_)) &&
+				!(board_->isCheckable({ 7,1 }, color_)))
 				positions.emplace_back(7,1);
 		}
 		else
 		{
-			if (!board_->isCheckable({ 6,8 }, color_) &&
-				!board_->isCheckable({ 7,8 }, color_) &&
-				board_->isUnoccupied({ 6,8 }) &&
-				board_->isUnoccupied({ 7,8 }))
+			if (board_->isUnoccupied({ 6,8 }) &&
+				board_->isUnoccupied({ 7,8 })&&
+				!board_->isCheckable({ 6,8 }, color_) &&
+				!board_->isCheckable({ 7,8 }, color_))
 				positions.emplace_back(7, 8);
 		}
 	}
@@ -66,22 +66,22 @@ std::vector<Position> King::getMoves() const
 	{
 		if (color_ == COLORPLAYER1)
 		{
-			if (!board_->isCheckable({ 2,1 }, color_) &&
-				!board_->isCheckable({ 3,1 }, color_) &&
-				!board_->isCheckable({ 4,1 }, color_) &&
-				board_->isUnoccupied({ 2,1 }) &&
+			if (board_->isUnoccupied({ 2,1 }) &&
 				board_->isUnoccupied({ 3,1 }) &&
-				board_->isUnoccupied({ 4,1 }))
+				board_->isUnoccupied({ 4,1 })&&
+				!board_->isCheckable({ 2,1 }, color_) &&
+				!board_->isCheckable({ 3,1 }, color_) &&
+				!board_->isCheckable({ 4,1 }, color_))
 				positions.emplace_back(3, 1);
 		}
 		else
 		{
-			if (!board_->isCheckable({ 2,8 }, color_) &&
-				!board_->isCheckable({ 3,8 }, color_) &&
-				!board_->isCheckable({ 4,8 }, color_) &&
-				board_->isUnoccupied({ 2,8 }) &&
+			if (board_->isUnoccupied({ 2,8 }) &&
 				board_->isUnoccupied({ 3,8 }) &&
-				board_->isUnoccupied({ 4,8 }))
+				board_->isUnoccupied({ 4,8 })&&
+				!board_->isCheckable({ 2,8 }, color_) &&
+				!board_->isCheckable({ 3,8 }, color_) &&
+				!board_->isCheckable({ 4,8 }, color_))
 				positions.emplace_back(3, 8);
 		}
 
