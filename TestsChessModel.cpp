@@ -653,7 +653,7 @@ TEST(Board, castleling)
 	PiecePtr pawn2 = board1.getPiece({6,7});
 	board1.move(pawn2, {6,5});
 	PiecePtr pawn3 = board1.getPiece({ 5,7 });
-	board1.move(pawn2, { 5,5 });
+	board1.move(pawn3, { 5,5 });
 	PiecePtr bishop2 = board1.getPiece({6,8});
 	board1.move(bishop2, {1,3});
 	PiecePtr kinght2 = board1.getPiece({7,8});
@@ -708,7 +708,7 @@ TEST(Board, castleling)
 
 	//scenario king as move
 	auto kingPtr = dynamic_cast<King*>(king11.get());
-	EXPECT_FALSE(kingPtr->canCastle());
+	EXPECT_FALSE(kingPtr->canSmallCastle() || kingPtr->canBigCastle() );
 
 
 	//scenario rook as move
@@ -720,7 +720,7 @@ TEST(Board, castleling)
 	PiecePtr king22 = board2.getPiece({5,8});
 
 	auto kingPtr2 = dynamic_cast<King*>(king22.get());
-	EXPECT_FALSE(kingPtr2->canCastle());
+	EXPECT_FALSE(kingPtr2->canSmallCastle());
 
 }
 

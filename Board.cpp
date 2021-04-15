@@ -135,30 +135,34 @@ PiecePtr Board::move(PiecePtr& piece, Position& position)
 	try
 	{
 		verifieCheck(piece->getColor());
-		piece->setPosition(position);
+
 		auto pawn = dynamic_cast<Pawn*>(piece.get());
-		if (pawn && (pawn->getPosition().second == 0 || pawn->getPosition().second == NROWS))
+		if (pawn && (position.second == 0 || position.second == NROWS))
 			throw Promotion(piece);
-
+		
 		auto king = dynamic_cast<King*>(piece.get());
+		auto castlingPosition =  std::find(castlingPositions_.begin(),castlingPositions_.end(),position);
+		//castleling
+		if (king && castlingPosition != castlingPositions_.end())
+			castling(position, king);
+
+		//condition for castling
 		auto rook = dynamic_cast<Rook*>(piece.get());
-
-		auto castlingPos = std::find(castlingPositions_.begin(),castlingPositions_.end(),position);
-		if (king && king->canSmallCastle() && castlingPos != castlingPositions_.end())
+		if (king)
+			king->moved();
+		if (rook)
 		{
-
+			if (rook->getPosition() == Position{ 1,1 })
+				kingColor1_->bigCastlingRookMoved();
+			if (rook->getPosition() == Position{ 8,1 })
+				kingColor1_->smallCastlingRookMoved();
+			if (rook->getPosition() == Position{ 8,8 })
+				kingColor2_->smallCastlingRookMoved();
+			if (rook->getPosition() == Position{ 1,8 })
+				kingColor2_->bigCastlingRookMoved();
 		}
-		if (king && king->canRightCastle() && castlingPos != castlingPositions_.end())
-		{
-
-		}
-
-
-
-		if (king || rook)
-			rook->getColor() == kingColor1_->getColor() ?kingColor1_->rookOrKingMoved() : kingColor2_->rookOrKingMoved();
-
-
+		
+		piece->setPosition(position);
 	}
 	catch (const Check&)
 	{
@@ -228,6 +232,12 @@ bool Board::isUnoccupied(Position& position)
 	return getPiece(position)== pieceNotFound;
 }
 
+bool Board::isUnoccupied(Position&& position)
+{
+	return isUnoccupied(position);
+}
+
+
 bool Board::isOccupiedByOtherColor(Position& position, const std::string& color)
 {
 	if (!isUnoccupied(position))
@@ -273,15 +283,12 @@ void Board::verifieCheck(const std::string& color)
 		throw NotTwoKings("Required two kings to move");
 
 	auto kingPosition = king->first;
-	for (auto&& [position,piece] : pieces_)
-	{
-		auto moves = piece->getMoves();
-		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(), 
-			[&kingPosition](Position position)->bool {return kingPosition == position; });
 				
-		if (positionOfPieceCheck != moves.end())
-			throw Check(piece, color);
+	if (isCheckable(kingPosition, color))
+	{
+		throw Check(color);
 	}
+			
 
 }
 
@@ -292,20 +299,54 @@ std::string Board::getOpponentColor(const std::string& color)
 	return color == COLORPLAYER1 ? COLORPLAYER2 : COLORPLAYER1;
 }
 
-bool Board::isCheckable(Position& position , std::string& color)
+bool Board::isCheckable(Position& position ,const std::string& color)
 {
 
 	for (auto&& [positionKey, piece] : pieces_)
 	{
-		if (piece->getColor() == color)
+		auto king = dynamic_cast<King*>(piece.get());
+		if (king || piece->getColor()==color)
 			continue;
 
 		auto moves = piece->getMoves();
 		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(),
-			[&position](Position position)->bool {return position == position; });
+			[&position](Position positionParam)->bool {return position == positionParam; });
 
 		if (positionOfPieceCheck != moves.end())
 			return true;
 	}
 	return false;
 }
+
+bool Board::isCheckable(Position&& position,const std::string& color)
+{
+	return isCheckable(position, color);
+}
+
+void Board::castling(Position& position, King* king)
+{
+	if (position == Position{ 7,1 })
+	{  
+		PiecePtr rook = getPiece({ 8,1 });
+		move(rook, {6,1});
+	}
+	if (position == Position{ 3,1 })
+	{
+		PiecePtr rook = getPiece({ 1,1 });
+		move(rook, { 4,1 });
+	}
+	if (position == Position{ 7,8 })
+	{
+		PiecePtr rook = getPiece({ 8,8 });
+		move(rook, { 6,8 });
+	}
+	if (position == Position{ 3,8 })
+	{
+		PiecePtr rook = getPiece({ 1,8 });
+		move(rook, { 4,8 });
+	}
+}
+
+
+
+

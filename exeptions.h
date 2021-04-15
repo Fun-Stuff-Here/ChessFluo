@@ -31,7 +31,7 @@ namespace ChessModel
     class Check : public std::domain_error
     {
     public:
-        Check(std::shared_ptr<Piece>& piece, const std::string& color) : std::domain_error{ "Check on " + color + " King by" + piece->getColor() } {}
+        Check(const std::string& color) : std::domain_error{ "Check on " + color} {}
     };
 
     class NotTwoKings : public std::domain_error

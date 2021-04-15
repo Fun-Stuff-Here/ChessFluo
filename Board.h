@@ -45,8 +45,10 @@ namespace ChessModel
 		PiecePtr getPiece(Position& position);
 		PiecePtr getPiece(Position&& position);
 		bool isUnoccupied(Position& position);
+		bool isUnoccupied(Position&& position);
 		bool isOccupiedByOtherColor(Position& position, const std::string& color);
-		bool isCheckable(Position& position, std::string& color);
+		bool isCheckable(Position&& position, const std::string& color);
+		bool isCheckable(Position& position, const std::string& color);
 		void addPiece(PiecePtr& pieceToAdd);
 		void addPieces(std::vector<PiecePtr>&& piecesToAdd);
 		void verifieCheck(const std::string& color);
@@ -59,14 +61,18 @@ namespace ChessModel
 		mapPieces pieces_;
 		int nKing_ = 0;
 		std::string kingColorInserted;
-		King* kingColor1_;
-		King* kingColor2_;
+		class King* kingColor1_;
+		class King* kingColor2_;
 		const std::vector<Position> castlingPositions_ = {
 			{7,1},
 			{3,1},
 			{7,8},
 			{3,8}
 		};
+
+		void castling(Position&position, class King* king);
+
+
 
 
 	};
