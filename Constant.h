@@ -25,7 +25,8 @@ namespace ChessModel {
 
 namespace ChessView
 {
-	const QSize CHESSBOXSIZE{ 150, 150 };
+	const QSize CHESSBOXSIZE{ 50, 50 };
 	const unsigned int NROWS{ 8 };
 	const unsigned int  NCOLUMNS{ 8 };
+	const double SELECTIONOPACITY{ 0.5 };
 }

@@ -9,13 +9,15 @@
 
 #pragma warning(push, 0) // Sinon Qt fait des avertissements à /W4.
 #include <QMainWindow>
-#include <QPushButton>
+#include <QAbstractButton>
+#include < QPushButton>
 #include <QString>
 #include <QLabel>
 #include <qgroupbox.h>
 #pragma pop()
 
 #include <memory>
+#include <vector>
 
 #include "Board.h"
 
@@ -25,15 +27,21 @@ namespace ChessView
 	using BoardPtr = std::shared_ptr<ChessModel::Board>;
 	class ChessBox : public QPushButton
 	{
-		
+		Q_OBJECT
+
+	public slots:
+		void selected();
+		//void click();
+
 	public:
-		ChessBox(BoardPtr& board, ChessModel::Position position, QWidget* parent = nullptr);
+		ChessBox(BoardPtr& board, ChessModel::Position& position,class ChessFluoWindow* boardView, QWidget* parent = nullptr);
 		~ChessBox() = default;
 
 	private:
 		ChessModel::PiecePtr piece_;
 		ChessModel::Position position_;
 		BoardPtr board_;
+		class ChessFluoWindow* boardView_;
 
 
 	};

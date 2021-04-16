@@ -15,11 +15,15 @@
 #pragma pop()
 
 #include "Board.h"
+#include "ChessBox.h"
+
 
 namespace ChessView
 {
 	
+	
 	using BoardPtr = std::shared_ptr<ChessModel::Board>;
+	using ChessBoxPtr = std::shared_ptr<ChessBox>;
 	class ChessFluoWindow : public QMainWindow
 	{
 		Q_OBJECT
@@ -27,9 +31,10 @@ namespace ChessView
 	public:
 		ChessFluoWindow(QWidget* parent = nullptr);
 		~ChessFluoWindow() override = default;
+		
+		void selections(ChessModel::PiecePtr& piece);
 
 	public slots:
-
 
 
 	private:
@@ -37,6 +42,9 @@ namespace ChessView
 		//QPushButton* nouveauBouton(const QString & text, const T & slot = nullptr);
 
 		BoardPtr board_;  // Le Modèle (pourrait être un pointeur mais pas nécessaire dans ce cas).
+		std::unordered_map<ChessModel::Position, ChessBoxPtr, ChessModel::pair_hash> chessBoxes_;
+		ChessModel::PiecePtr selectedPiece_;
+
 
 	};
 }

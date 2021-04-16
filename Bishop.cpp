@@ -36,6 +36,8 @@ std::vector<Position> Bishop::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//top left diagonal
@@ -53,6 +55,8 @@ std::vector<Position> Bishop::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//buttom right diagonal
@@ -70,6 +74,8 @@ std::vector<Position> Bishop::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//buttom left diagonal
@@ -87,6 +93,8 @@ std::vector<Position> Bishop::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	return positions;

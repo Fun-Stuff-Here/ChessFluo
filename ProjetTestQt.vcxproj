@@ -32,12 +32,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtInstall>6.1.0_msvc2019_64</QtInstall>
     <QtModules>core;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>5.15.2_msvc2019_64</QtInstall>
+    <QtInstall>6.1.0_msvc2019_64</QtInstall>
     <QtModules>core;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -118,7 +118,7 @@
     <ClCompile Include="Bishop.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ChessBox.cpp" />
-    <ClCompile Include="ChessFluoWindow.cpp" />
+    <ClCompile Include="ChessFluoWindoww.cpp" />
     <ClCompile Include="googletest\src\gtest-all.cc" />
     <ClCompile Include="King.cpp" />
     <ClCompile Include="Knight.cpp" />
@@ -136,7 +136,7 @@
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Rook.h" />
     <QtMoc Include="ChessFluoWindow.h" />
-    <ClInclude Include="ChessBox.h" />
+    <QtMoc Include="ChessBox.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="exeptions.h" />
     <ClInclude Include="King.h" />

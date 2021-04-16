@@ -36,6 +36,8 @@ std::vector<Position> Rook::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//left
@@ -53,6 +55,8 @@ std::vector<Position> Rook::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//up
@@ -70,6 +74,8 @@ std::vector<Position> Rook::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//down
@@ -87,6 +93,8 @@ std::vector<Position> Rook::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	return positions;

@@ -12,15 +12,19 @@
 #include <string>
 #include <algorithm>
 #include <typeinfo>
+#include <iostream>
+#include <QMessageBox>
+#include <QGraphicsOpacityEffect>
 
 using namespace ChessView;
 
-ChessBox::ChessBox(BoardPtr& board, ChessModel::Position position, QWidget* parent)
-	:QPushButton(parent), board_(board), position_(position)
+ChessBox::ChessBox(BoardPtr& board, ChessModel::Position& position,ChessFluoWindow* boardView, QWidget* parent)
+	:QPushButton(parent), position_(position),boardView_(boardView)
 {
+	board_ = board;
 	piece_ = board_->getPiece(position_);
 	setMinimumSize(CHESSBOXSIZE);
-	QString style = (position.first + position.second) % 2 == 0 ? "background-color: Chartreuse;" : "background-color: Coral;";
+	QString style = (position.first + position.second) % 2 == 0 ? "background-color: DarkMagenta;" : "background-color: Coral;";
 	QString image = QString::fromStdString((piece_ != ChessModel::Board::pieceNotFound)
 		? "border-image: url( './Images/Pieces/" +
 		static_cast<std::string>(typeid(*piece_).name()).substr(static_cast<std::string>(typeid(*piece_).name()).find_last_of(':') + 1) +
@@ -28,4 +32,21 @@ ChessBox::ChessBox(BoardPtr& board, ChessModel::Position position, QWidget* pare
 		:"");
 
 	setStyleSheet(style+image);
+
+	auto opacitySelected = new QGraphicsOpacityEffect();
+	opacitySelected->setOpacity(1);
+	setGraphicsEffect(opacitySelected);
+
+	connect(this,SIGNAL(clicked()),
+	this, SLOT(selected(void)));
+}
+
+
+void ChessBox::selected()
+{
+	std::cout << "chessbox selected " << position_.first << "," << position_.second << std::endl;
+	if (piece_)
+	{
+		boardView_->selections(piece_);
+	}
 }

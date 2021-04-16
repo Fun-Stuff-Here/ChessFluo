@@ -37,6 +37,8 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//left
@@ -54,6 +56,8 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//up
@@ -71,6 +75,8 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//down
@@ -88,6 +94,8 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 
@@ -107,6 +115,9 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
+
 	}
 
 	//top left diagonal
@@ -124,6 +135,8 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//buttom right diagonal
@@ -141,6 +154,8 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 	//buttom left diagonal
@@ -158,6 +173,8 @@ std::vector<Position> Queen::getMoves() const
 			positions.push_back(possiblePosition);
 			break;
 		}
+		if (!board_->isUnoccupied(possiblePosition))
+			break;
 	}
 
 
