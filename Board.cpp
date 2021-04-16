@@ -85,14 +85,14 @@ Board::Board()
 		//pawn player1
 		for(size_t i : iter::range(NROWS))
 		{
-			Position position{i,2};
+			Position position{i+1,2};
 			PiecePtr pawn(new Pawn{ position , colorPlayer1,this });
 			addPiece(pawn);
 		}
 		//pawn player2
 		for (size_t i: iter::range(NCOLUMNS))
 		{
-			Position position{ i,7 };
+			Position position{ i+1,7 };
 			PiecePtr pawn(new Pawn{ position , colorPlayer2,this });
 			addPiece(pawn);
 		}
