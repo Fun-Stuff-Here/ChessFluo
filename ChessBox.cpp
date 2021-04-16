@@ -16,7 +16,7 @@
 using namespace ChessView;
 
 ChessBox::ChessBox(BoardPtr& board, ChessModel::Position position, QWidget* parent)
-	:QWidget(parent), board_(board), position_(position)
+	:QPushButton(parent), board_(board), position_(position)
 {
 	piece_ = board_->getPiece(position_);
 	setMinimumSize(CHESSBOXSIZE);
