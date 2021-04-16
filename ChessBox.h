@@ -23,7 +23,7 @@
 namespace ChessView
 {
 	using BoardPtr = std::shared_ptr<ChessModel::Board>;
-	class ChessBox : public QWidget
+	class ChessBox : public QPushButton
 	{
 		
 	public:
