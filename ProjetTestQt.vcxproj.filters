@@ -129,4 +129,78 @@
       <Filter>Header Files\View</Filter>
     </QtMoc>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Pieces\Bishop_bluelaite.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Bishop_bluelaite.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Bishop_vertmoisi.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Bishop_vertmoisi.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\BlackPound.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\BlackQueen.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\BlackRock.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\King_bluelaite.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\King_bluelaite.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\King_vertmoisi.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\King_vertmoisi.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Knight_bluelaite.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Knight_bluelaite.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Knight_vertmoisi.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Knight_vertmoisi.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Pawn_bluelaite.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Pawn_vertmoisi.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Queen_bluelaite.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Queen_vertmoisi.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Rook_bluelaite.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\Rook_vertmoisi.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\WhitePound.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\WhiteQueen.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\Pieces\WhiteRock.jpg">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

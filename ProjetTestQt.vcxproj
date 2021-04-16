@@ -143,6 +143,32 @@
     <ClInclude Include="Knight.h" />
     <ClInclude Include="Piece.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Pieces\Bishop_bluelaite.jpg" />
+    <Image Include="Images\Pieces\Bishop_bluelaite.png" />
+    <Image Include="Images\Pieces\Bishop_vertmoisi.jpg" />
+    <Image Include="Images\Pieces\Bishop_vertmoisi.png" />
+    <Image Include="Images\Pieces\BlackPound.jpg" />
+    <Image Include="Images\Pieces\BlackQueen.jpg" />
+    <Image Include="Images\Pieces\BlackRock.jpg" />
+    <Image Include="Images\Pieces\King_bluelaite.jpg" />
+    <Image Include="Images\Pieces\King_bluelaite.png" />
+    <Image Include="Images\Pieces\King_vertmoisi.jpg" />
+    <Image Include="Images\Pieces\King_vertmoisi.png" />
+    <Image Include="Images\Pieces\Knight_bluelaite.jpg" />
+    <Image Include="Images\Pieces\Knight_bluelaite.png" />
+    <Image Include="Images\Pieces\Knight_vertmoisi.jpg" />
+    <Image Include="Images\Pieces\Knight_vertmoisi.png" />
+    <Image Include="Images\Pieces\Pawn_bluelaite.png" />
+    <Image Include="Images\Pieces\Pawn_vertmoisi.png" />
+    <Image Include="Images\Pieces\Queen_bluelaite.png" />
+    <Image Include="Images\Pieces\Queen_vertmoisi.png" />
+    <Image Include="Images\Pieces\Rook_bluelaite.png" />
+    <Image Include="Images\Pieces\Rook_vertmoisi.png" />
+    <Image Include="Images\Pieces\WhitePound.jpg" />
+    <Image Include="Images\Pieces\WhiteQueen.jpg" />
+    <Image Include="Images\Pieces\WhiteRock.jpg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

@@ -32,9 +32,9 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	auto mainWidget = new QWidget(this);
 	QGridLayout *mainGridLayout = new QGridLayout(mainWidget);
 	
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < NROWS; ++i)
 	{
-		for (size_t j = 0; j < 8; j++)
+		for (size_t j = 0; j < NCOLUMNS; j++)
 		{
 			ChessModel::Position position{j+1,i+1};
 			auto chessBox = new ChessBox{board_,position,mainWidget};
