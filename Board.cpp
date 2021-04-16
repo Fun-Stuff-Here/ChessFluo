@@ -16,6 +16,7 @@
 #include "Rook.h"
 #include "Queen.h"
 #include "Pawn.h"
+#include <cppitertools/range.hpp>
 
 using namespace ChessModel;
 
@@ -82,14 +83,14 @@ Board::Board()
 		);
 
 		//pawn player1
-		for(size_t i = 1; i <= NCOLUMNS; i++)
+		for(size_t i : iter::range(NROWS))
 		{
 			Position position{i,2};
 			PiecePtr pawn(new Pawn{ position , colorPlayer1,this });
 			addPiece(pawn);
 		}
 		//pawn player2
-		for (size_t i = 1; i <= NCOLUMNS; i++)
+		for (size_t i: iter::range(NCOLUMNS))
 		{
 			Position position{ i,7 };
 			PiecePtr pawn(new Pawn{ position , colorPlayer2,this });
