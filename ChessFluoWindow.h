@@ -32,20 +32,21 @@ namespace ChessView
 		ChessFluoWindow(QWidget* parent = nullptr);
 		~ChessFluoWindow() override = default;
 		
-		void selections(ChessModel::PiecePtr& piece);
+		void selections(ChessModel::PiecePtr& piece, ChessBox* chessbox);
+		void update();
+		void update(std::vector<ChessModel::Position>& positions, const double opacity);
+		ChessModel::PiecePtr move(ChessModel::Position& position);
 
 	public slots:
 
 
 	private:
-		//template <typename T = decltype(nullptr)>
-		//QPushButton* nouveauBouton(const QString & text, const T & slot = nullptr);
-
 		BoardPtr board_;  // Le Modèle (pourrait être un pointeur mais pas nécessaire dans ce cas).
 		std::unordered_map<ChessModel::Position, ChessBoxPtr, ChessModel::pair_hash> chessBoxes_;
 		ChessModel::PiecePtr selectedPiece_;
 
-
+		bool isMoving(ChessModel::PiecePtr& piece);
+		bool isSamePiece(ChessModel::PiecePtr& piece);
 	};
 }
 

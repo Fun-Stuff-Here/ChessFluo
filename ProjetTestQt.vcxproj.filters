@@ -86,7 +86,7 @@
       <Filter>Source Files\Model\Pieces</Filter>
     </ClCompile>
     <ClCompile Include="ChessFluoWindoww.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\View</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -29,4 +29,7 @@ namespace ChessView
 	const unsigned int NROWS{ 8 };
 	const unsigned int  NCOLUMNS{ 8 };
 	const double SELECTIONOPACITY{ 0.5 };
+	const double FULLOPACITY{ 1.0 };
+	const QString TILECOLOR1 = "background-color: DarkMagenta;";
+	const QString TILECOLOR2 = "background-color: Coral;";
 }

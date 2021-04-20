@@ -22,20 +22,12 @@ ChessBox::ChessBox(BoardPtr& board, ChessModel::Position& position,ChessFluoWind
 	:QPushButton(parent), position_(position),boardView_(boardView)
 {
 	board_ = board;
-	piece_ = board_->getPiece(position_);
 	setMinimumSize(CHESSBOXSIZE);
-	QString style = (position.first + position.second) % 2 == 0 ? "background-color: DarkMagenta;" : "background-color: Coral;";
-	QString image = QString::fromStdString((piece_ != ChessModel::Board::pieceNotFound)
-		? "border-image: url( './Images/Pieces/" +
-		static_cast<std::string>(typeid(*piece_).name()).substr(static_cast<std::string>(typeid(*piece_).name()).find_last_of(':') + 1) +
-		"_" + piece_->getColor() + ".png') 0 0 0 0 stretch stretch;"
-		:"");
 
-	setStyleSheet(style+image);
 
 	auto opacitySelected = new QGraphicsOpacityEffect();
-	opacitySelected->setOpacity(1);
 	setGraphicsEffect(opacitySelected);
+	update();
 
 	connect(this,SIGNAL(clicked()),
 	this, SLOT(selected(void)));
@@ -45,8 +37,27 @@ ChessBox::ChessBox(BoardPtr& board, ChessModel::Position& position,ChessFluoWind
 void ChessBox::selected()
 {
 	std::cout << "chessbox selected " << position_.first << "," << position_.second << std::endl;
-	if (piece_)
-	{
-		boardView_->selections(piece_);
-	}
+		boardView_->selections(piece_,this);
+}
+
+
+void ChessBox::update()
+{
+	piece_ = board_->getPiece(position_);
+	QString style = (position_.first + position_.second) % 2 == 0 ? TILECOLOR1 : TILECOLOR2;
+	QString image = QString::fromStdString((piece_ != ChessModel::Board::pieceNotFound)
+		? "border-image: url( './Images/Pieces/" +
+		static_cast<std::string>(typeid(*piece_).name()).substr(static_cast<std::string>(typeid(*piece_).name()).find_last_of(':') + 1) +
+		"_" + piece_->getColor() + ".png') 0 0 0 0 stretch stretch;"
+		: "");
+
+	auto effect = dynamic_cast<QGraphicsOpacityEffect*>(graphicsEffect());
+	effect->setOpacity(FULLOPACITY);
+	setStyleSheet(style + image);
+}
+
+
+ChessModel::Position ChessBox::getPosition()
+{
+	return position_;
 }

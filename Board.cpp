@@ -326,26 +326,35 @@ bool Board::isCheckable(Position&& position,const std::string& color)
 
 void Board::castling(Position& position, King* king)
 {
+	Position rookPositionTo{0,0};
+	PiecePtr rook = pieceNotFound;
 	if (position == Position{ 7,1 })
 	{  
-		PiecePtr rook = getPiece({ 8,1 });
-		move(rook, {6,1});
+		rook = getPiece({ 8,1 });
+		rookPositionTo = { 6,1 };
 	}
 	if (position == Position{ 3,1 })
 	{
-		PiecePtr rook = getPiece({ 1,1 });
-		move(rook, { 4,1 });
+		rook = getPiece({ 1,1 });
+		rookPositionTo =  { 4,1 };
 	}
 	if (position == Position{ 7,8 })
 	{
-		PiecePtr rook = getPiece({ 8,8 });
-		move(rook, { 6,8 });
+		rook = getPiece({ 8,8 });
+		rookPositionTo= { 6,8 };
 	}
 	if (position == Position{ 3,8 })
 	{
-		PiecePtr rook = getPiece({ 1,8 });
-		move(rook, { 4,8 });
+		rook = getPiece({ 1,8 });
+		rookPositionTo = { 4,8 };
 	}
+	if (rookPositionTo != Position{ 0,0 } && rook != pieceNotFound)
+	{
+		pieces_.erase(rook->getPosition());
+		pieces_.insert({ rookPositionTo, rook });
+		rook->setPosition(rookPositionTo);
+	}
+
 }
 
 

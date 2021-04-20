@@ -18,6 +18,7 @@
 #include <QVariant>
 #include <qgridlayout.h>
 #include <QGraphicsOpacityEffect>
+#include <qmessagebox.h>
 #pragma pop()
 
 #include <iostream>
@@ -25,6 +26,7 @@
 #include "ChessBox.h"
 #include "Constant.h"
 #include "ChessFluoWindow.h"
+#include "exeptions.h"
 
 using namespace ChessView;
 
@@ -56,34 +58,98 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	mainWidget->setMinimumSize(NROWS * CHESSBOXSIZE);
 }
 
-void ChessFluoWindow::selections(ChessModel::PiecePtr& piece)
+void ChessFluoWindow::selections(ChessModel::PiecePtr& piece, ChessBox* chessbox)
 {
-	if(selectedPiece_)
-	{
-		auto effect = dynamic_cast<QGraphicsOpacityEffect*>(chessBoxes_[selectedPiece_->getPosition()]->graphicsEffect());
-		effect->setOpacity(1);
 
-		for(auto&& position: selectedPiece_->getMoves())
-		{
-			effect = dynamic_cast<QGraphicsOpacityEffect*>(chessBoxes_[position]->graphicsEffect());
-			effect->setOpacity(1);
-		}
-	}
-	if(selectedPiece_ != piece)
+	if (isMoving(piece))
 	{
-		https://forum.qt.io/topic/74101/two-graphicseffects-for-one-qwidget
-		auto effect = dynamic_cast<QGraphicsOpacityEffect*>(chessBoxes_[piece->getPosition()]->graphicsEffect());
-		effect->setOpacity(SELECTIONOPACITY);
-	
-		for(auto&& position: piece->getMoves())
-		{
-			std::cout << position.first << ", " << position.second << std::endl;
-			auto effect = dynamic_cast<QGraphicsOpacityEffect*>(chessBoxes_[position]->graphicsEffect());
-			effect->setOpacity(SELECTIONOPACITY);
-		}
+		ChessModel::Position positionTo = chessbox->getPosition();
+		move(positionTo);
+		update();
+		selectedPiece_ = ChessModel::Board::pieceNotFound;
 	}
-	selectedPiece_ =  (selectedPiece_ == piece) ? ChessModel::Board::pieceNotFound : piece;
+	else if (isSamePiece(piece))
+	{
+		auto positions = piece->getMoves();
+		positions.push_back(piece->getPosition());
+		update(positions, FULLOPACITY);
+		selectedPiece_ = ChessModel::Board::pieceNotFound;
+
+	}
+	else
+	{
+		if (selectedPiece_)
+		{
+			auto previousPositions = selectedPiece_->getMoves();
+			previousPositions.push_back(selectedPiece_->getPosition());
+			update(previousPositions, FULLOPACITY);
+		}
+
+		if (piece)
+		{
+			auto positions = piece->getMoves();
+			positions.push_back(piece->getPosition());
+			update(positions, SELECTIONOPACITY);
+
+		}
+		selectedPiece_ = piece;
+	}
 
 }
 
+void ChessFluoWindow::update()
+{
+	for (auto&& it : chessBoxes_)
+	{
+		it.second->update();
+	}
+}
 
+void ChessFluoWindow::update(std::vector<ChessModel::Position>& positions, const double opacity)
+{
+	for (auto&& position : positions)
+	{
+		auto effect = dynamic_cast<QGraphicsOpacityEffect*>(chessBoxes_[position]->graphicsEffect());
+		effect->setOpacity(opacity);
+	}
+}
+
+ChessModel::PiecePtr ChessFluoWindow::move(ChessModel::Position& position)
+{
+	try
+	{
+		auto pieceEaten = board_->move(selectedPiece_, position);
+		return pieceEaten;
+	}
+	catch (const ChessModel::ImpossibleMove&)
+	{
+		QMessageBox::information(nullptr,"Impossible Move", "Ce mouvement est impossible.");
+	}
+	catch (const ChessModel::Check&)
+	{
+		QMessageBox::information(nullptr, "Check", "Check");
+	}
+	catch (const ChessModel::Promotion&)
+	{
+		QMessageBox::information(nullptr, "Promotion", "Pawn reached end");
+	}
+
+	return ChessModel::Board::pieceNotFound;
+}
+
+
+bool ChessFluoWindow::isMoving(ChessModel::PiecePtr& piece)
+{
+	if (piece && selectedPiece_)
+		return selectedPiece_->getColor() != piece->getColor();
+	else
+		return static_cast<bool>(selectedPiece_) && !static_cast<bool>(piece);
+}
+
+bool ChessFluoWindow::isSamePiece(ChessModel::PiecePtr& piece)
+{
+	if (selectedPiece_)
+		return selectedPiece_ == piece;
+	else
+		return false;
+}

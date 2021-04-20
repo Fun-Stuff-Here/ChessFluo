@@ -31,11 +31,13 @@ namespace ChessView
 
 	public slots:
 		void selected();
-		//void click();
 
 	public:
 		ChessBox(BoardPtr& board, ChessModel::Position& position,class ChessFluoWindow* boardView, QWidget* parent = nullptr);
 		~ChessBox() = default;
+
+		void update();
+		ChessModel::Position getPosition();
 
 	private:
 		ChessModel::PiecePtr piece_;
