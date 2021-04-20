@@ -34,6 +34,7 @@ namespace ChessModel
 		std::string color_;
 		class Board* board_;
 		bool isOutofBound(Position& position) const;
+		void checkFilter(std::vector<Position>& positions);
 	};
 
 }

@@ -180,17 +180,19 @@ TEST(Piece, move_out_of_bound) {
 
 TEST(Bishop, moves) {
 
-	Board board;
-	Position position = { 5,1 };
+	Board board{ KingOnly{} };
+	Position position = { 6,1 };
 	std::string couleur = COLORPLAYER1;
 	Bishop bishop{ position,couleur,&board };
 	std::vector<Position> expected =
 	{
-		{3,3},
-		{2,4},
-		{1,5},
-		{7,3},
-		{8,4}
+		{7, 2},
+		{8, 3},
+		{5, 2},
+		{4, 3},
+		{3, 4},
+		{2, 5},
+		{1, 6}
 	};
 	std::sort(expected.begin(), expected.end());
 	std::vector<Position> gotten = bishop.getMoves();
@@ -278,20 +280,12 @@ TEST(Queen, moves)
 
 TEST(Bishop , block_move) {
 
-	Board board;
-	Position position = { 5,1 };
+	Board board{};
+	Position position = { 6,1 };
 	std::string couleur = COLORPLAYER1;
 	Bishop bishop{ position,couleur,&board };
 	std::vector<Position> expected =
-	{
-		//{4,2},
-		{3,3},
-		{2,4},
-		{1,5},
-		//{6,2},
-		{7,3},
-		{8,4}
-	};
+	{};
 	std::sort(expected.begin(), expected.end());
 	std::vector<Position> gotten = bishop.getMoves();
 	std::sort(gotten.begin(), gotten.end());
@@ -302,72 +296,56 @@ TEST(Bishop , block_move) {
 
 TEST(Bishop, eat) {
 	Board board;
-	PiecePtr piece = board.getPiece({ 3,8 });
-	EXPECT_THROW(board.move(piece, { 5,2 }), ImpossibleMove);
-	board.move(piece, { 6,5 });
+	PiecePtr bishop = board.getPiece({ 3,8 });
+	EXPECT_THROW(board.move(bishop, { 5,2 }), ImpossibleMove);
 
-	Position posBishop1 = { 7 ,4 };
-	std::string color1 = COLORPLAYER1;
-	Bishop bishop1 = { posBishop1, color1, &board };
+	PiecePtr pawn = board.getPiece({ 4,7 });
+	board.move(pawn, { 4,5 });
+	board.move(bishop, { 6,5 });
 
 	std::vector<Position> expected =
 	{
-		{6, 5},
-		{8, 5},
-		{6, 3},
-		{8, 3}
+		{3, 2},
+		{4, 3},
+		{5, 4},
+		{7, 6},
+		{7, 4},
+		{8, 3},
+		{5, 6},
+		{4, 7},
+		{3, 8}
 	};
 	std::sort(expected.begin(), expected.end());
-	std::vector<Position> gotten = bishop1.getMoves();
+	std::vector<Position> gotten = bishop->getMoves();
 	std::sort(gotten.begin(), gotten.end());
 	EXPECT_EQ(expected , gotten);
 
 }
 
 
-TEST(Knight, eat) {
-	Board board;
-	PiecePtr piece = board.getPiece({ 3,8 });
-	EXPECT_THROW(board.move(piece, { 5,2 }), ImpossibleMove);
-	board.move(piece, { 6,5 });
-
-	Position posKnight1 = { 7 ,3 };
-	std::string color1 = COLORPLAYER1;
-	Knight bishop1 = { posKnight1, color1, &board };
-
-	std::vector<Position> expected =
-	{
-		{6, 5},
-		{8, 5},
-		//{5, 2},
-		{5, 4}
-	};
-	std::sort(expected.begin(), expected.end());
-	std::vector<Position> gotten = bishop1.getMoves();
-	std::sort(gotten.begin(), gotten.end());
-	EXPECT_EQ(expected , gotten);
-
-}
 
 TEST(Bishop, eaten) {
 	Board board;
 	PiecePtr bishopRight2 = board.getPiece({ 6,8 });
-
+	PiecePtr pawn1 = board.getPiece({5,7});
+	board.move(pawn1, { 5,5 });
 	board.move(bishopRight2, { 1,3 });
 
-	PiecePtr bishopLeft1 = board.getPiece({ 3,1 });
-	PiecePtr eatenPiece = board.move(bishopLeft1, { 1,3 });
-	EXPECT_EQ(bishopRight2.get() , eatenPiece.get());
+	PiecePtr pawn = board.getPiece({ 2,2 });
+	PiecePtr eatenPiece = board.move(bishopRight2, { 2,2});
+	EXPECT_EQ(pawn.get() , eatenPiece.get());
 }
 
-TEST(Bishop, piece_remove) {
+TEST(Board, piece_remove) {
 	Board board;
 	PiecePtr bishopRight2 = board.getPiece({ 6,8 });
-
+	PiecePtr pawn1 = board.getPiece({5,7});
+	board.move(pawn1, { 5,5 });
 	board.move(bishopRight2, { 1,3 });
 
-	PiecePtr bishopLeft1 = board.getPiece({ 3,1 });
-	PiecePtr eatenPiece = board.move(bishopLeft1, { 1,3 });
+
+	PiecePtr pawn = board.getPiece({ 2,2 });
+	PiecePtr eatenPiece = board.move(pawn, { 1,3 });
 	// Redirect cout to our stringstream 
 	std::stringstream buffer;
 	std::streambuf* sbuf = std::cout.rdbuf();
@@ -381,8 +359,8 @@ TEST(Bishop, piece_remove) {
 	std::string expected =
 		"class ChessModel::Knight 2, 8 vertmoisi\n"
 		"class ChessModel::Pawn 8, 2 bluelaite\n"
-		"class ChessModel::Pawn 5, 7 vertmoisi\n"
-		"class ChessModel::Bishop 1, 3 bluelaite\n"
+		"class ChessModel::Bishop 3, 1 bluelaite\n"
+		"class ChessModel::Pawn 1, 3 bluelaite\n"
 		"class ChessModel::Knight 7, 8 vertmoisi\n"
 		"class ChessModel::Pawn 8, 7 vertmoisi\n"
 		"class ChessModel::Bishop 6, 1 bluelaite\n"
@@ -400,8 +378,8 @@ TEST(Bishop, piece_remove) {
 		"class ChessModel::King 5, 8 vertmoisi\n"
 		"class ChessModel::Rook 1, 1 bluelaite\n"
 		"class ChessModel::Rook 8, 8 vertmoisi\n"
-		"class ChessModel::Pawn 2, 2 bluelaite\n"
 		"class ChessModel::Pawn 7, 7 vertmoisi\n"
+		"class ChessModel::Pawn 5, 5 vertmoisi\n"
 		"class ChessModel::Rook 8, 1 bluelaite\n"
 		"class ChessModel::Rook 1, 8 vertmoisi\n"
 		"class ChessModel::Queen 4, 1 bluelaite\n"

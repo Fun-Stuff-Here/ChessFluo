@@ -7,6 +7,7 @@
 */
 #include "Piece.h"
 #include "Board.h"
+#include "exeptions.h"
 
 using namespace ChessModel;
 
@@ -39,4 +40,10 @@ bool Piece::isOutofBound(Position& position) const
 	isOutOfBound |= position.second < bottomLimit;
 	//isOutOfBound |= !board_->isUnoccupied(position);
 	return isOutOfBound;
+}
+
+
+void Piece::checkFilter(std::vector<Position>& positions)
+{
+	throw NotImplemented();
 }
