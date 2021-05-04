@@ -10,6 +10,7 @@
 #include "Piece.h"
 #include <unordered_map>
 #include <memory>
+#include "Move.h"
 
 namespace ChessModel
 {
@@ -23,7 +24,6 @@ namespace ChessModel
 		}
 	};
 
-	using PiecePtr = std::shared_ptr<Piece>;
 	using mapPieces = std::unordered_map<Position, PiecePtr, pair_hash>;
 
 
@@ -39,25 +39,37 @@ namespace ChessModel
 		Board(Empty);
 		Board(KingOnly);
 		~Board()=default;
-		PiecePtr move(PiecePtr& piece, Position& position);// return eaten piece or nullptr if nothing
-		PiecePtr move(PiecePtr& piece, Position&& position);// return eaten piece or nullptr if nothing
+
+
+		MovePtr move(PiecePtr& piece, Position& position);// return eaten piece or nullptr if nothing
+		MovePtr move(PiecePtr& piece, Position&& position);// return eaten piece or nullptr if nothing
+
+
+
 		mapPieces getPieces();
 		PiecePtr getPiece(Position& position);
 		PiecePtr getPiece(Position&& position);
+		void addPiece(PiecePtr& pieceToAdd);
+		void addPieces(std::vector<PiecePtr>&& piecesToAdd);
+
+
 		bool isUnoccupied(Position& position);
 		bool isUnoccupied(Position&& position);
 		bool isOccupiedByOtherColor(Position& position, const std::string& color);
-		bool isCheckable(Position&& position, const std::string& color);
-		bool isCheckable(Position& position, const std::string& color);
-		void addPiece(PiecePtr& pieceToAdd);
-		void addPieces(std::vector<PiecePtr>&& piecesToAdd);
-		void verifieCheck(const std::string& color);
+
 		std::string getOpponentColor(const std::string& color);
+
+
 		inline static const PiecePtr pieceNotFound = nullptr;
+
+		void restore(MovePtr& move);
 
 
 	private:
-		PiecePtr moveTry(PiecePtr& piece, Position& position);
+
+
+
+
 		mapPieces pieces_;
 		int nKing_ = 0;
 		std::string kingColorInserted;
@@ -71,9 +83,6 @@ namespace ChessModel
 		};
 
 		void castling(Position&position, class King* king);
-
-
-
 
 	};
 }

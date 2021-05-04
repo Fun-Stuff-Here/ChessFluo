@@ -88,10 +88,13 @@
     <ClCompile Include="ChessFluoWindoww.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
-    <ClCompile Include="MovesHistory.cpp">
+    <ClCompile Include="Game.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Memento.cpp">
+    <ClCompile Include="Move.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Players.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -126,10 +129,13 @@
     <ClInclude Include="Pawn.h">
       <Filter>Header Files\Model\Pieces</Filter>
     </ClInclude>
-    <ClInclude Include="MovesHistory.h">
+    <ClInclude Include="Game.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Memento.h">
+    <ClInclude Include="Move.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Players.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>

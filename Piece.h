@@ -15,6 +15,8 @@
 
 namespace ChessModel
 {
+	
+
 	using Position = std::pair<int,int>;
 	class Piece
 	{
@@ -37,4 +39,5 @@ namespace ChessModel
 		void checkFilter(std::vector<Position>& positions);
 	};
 
+	using PiecePtr = std::shared_ptr<Piece>;
 }

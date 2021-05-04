@@ -129,7 +129,7 @@ Board::Board(KingOnly)
 
 
 
-PiecePtr Board::move(PiecePtr& piece, Position& position)
+MovePtr Board::move(PiecePtr& piece, Position& position)
 {
 	
 	auto pieceEaten = moveTry(piece,position);
@@ -198,7 +198,7 @@ PiecePtr Board::moveTry(PiecePtr& piece, Position& position)
 }
 
 
-PiecePtr Board::move(PiecePtr& piece, Position&& position)
+MovePtr Board::move(PiecePtr& piece, Position&& position)
 {
 	return move(piece,position);
 }
@@ -275,23 +275,7 @@ void Board::addPieces(std::vector<PiecePtr>&& piecesToAdd)
 }
 
 
-void Board::verifieCheck(const std::string& color)
-{
 
-	auto king = std::find_if(pieces_.begin(), pieces_.end(),
-		[&color](auto it)->bool {return color == it.second->getColor()&&dynamic_cast<King*>(it.second.get()); });
-	if (king == pieces_.end())
-		throw NotTwoKings("Required two kings to move");
-
-	auto kingPosition = king->first;
-				
-	if (isCheckable(kingPosition, color))
-	{
-		throw Check(color);
-	}
-			
-
-}
 
 
 
@@ -300,29 +284,7 @@ std::string Board::getOpponentColor(const std::string& color)
 	return color == COLORPLAYER1 ? COLORPLAYER2 : COLORPLAYER1;
 }
 
-bool Board::isCheckable(Position& position ,const std::string& color)
-{
 
-	for (auto&& [positionKey, piece] : pieces_)
-	{
-		auto king = dynamic_cast<King*>(piece.get());
-		if (king || piece->getColor()==color)
-			continue;
-
-		auto moves = piece->getMoves();
-		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(),
-			[&position](Position positionParam)->bool {return position == positionParam; });
-
-		if (positionOfPieceCheck != moves.end())
-			return true;
-	}
-	return false;
-}
-
-bool Board::isCheckable(Position&& position,const std::string& color)
-{
-	return isCheckable(position, color);
-}
 
 void Board::castling(Position& position, King* king)
 {
@@ -358,5 +320,17 @@ void Board::castling(Position& position, King* king)
 }
 
 
+void Board::restore(MovePtr& move)
+{
+	pieces_ = move->getPieces();
+	Position from = move->getFrom();
+	Position to = move->getTo();
+	PiecePtr pieceMoved = pieces_.at(to);
+	PiecePtr pieceEated = move->getPieceEated();
 
+	pieces_[from] = pieceMoved;
+	pieces_.erase(to);
+	if (pieceEated)
+		pieces_[to] = pieceEated;
 
+}

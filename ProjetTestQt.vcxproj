@@ -32,7 +32,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.1.0_msvc2019_64</QtInstall>
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
     <QtModules>core;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
@@ -119,14 +119,15 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="ChessBox.cpp" />
     <ClCompile Include="ChessFluoWindoww.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="googletest\src\gtest-all.cc" />
     <ClCompile Include="King.cpp" />
     <ClCompile Include="Knight.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Memento.cpp" />
-    <ClCompile Include="MovesHistory.cpp" />
+    <ClCompile Include="Move.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Players.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Rook.cpp" />
     <ClCompile Include="TestsChessModel.cpp" />
@@ -134,9 +135,10 @@
   <ItemGroup>
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
-    <ClInclude Include="Memento.h" />
-    <ClInclude Include="MovesHistory.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Move.h" />
     <ClInclude Include="Pawn.h" />
+    <ClInclude Include="Players.h" />
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Rook.h" />
     <QtMoc Include="ChessFluoWindow.h" />
