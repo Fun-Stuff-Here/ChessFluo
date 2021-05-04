@@ -97,6 +97,9 @@
     <ClCompile Include="Players.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
+    <ClCompile Include="BoardView.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h">
@@ -144,6 +147,9 @@
       <Filter>Header Files\View</Filter>
     </QtMoc>
     <QtMoc Include="ChessBox.h">
+      <Filter>Header Files\View</Filter>
+    </QtMoc>
+    <QtMoc Include="BoardView.h">
       <Filter>Header Files\View</Filter>
     </QtMoc>
   </ItemGroup>

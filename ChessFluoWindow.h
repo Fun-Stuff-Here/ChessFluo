@@ -16,14 +16,14 @@
 
 #include "Board.h"
 #include "ChessBox.h"
+#include"BoardView.h"
 
 
 namespace ChessView
 {
 	
 	
-	using BoardPtr = std::shared_ptr<ChessModel::Board>;
-	using ChessBoxPtr = std::shared_ptr<ChessBox>;
+
 	class ChessFluoWindow : public QMainWindow
 	{
 		Q_OBJECT
@@ -32,21 +32,14 @@ namespace ChessView
 		ChessFluoWindow(QWidget* parent = nullptr);
 		~ChessFluoWindow() override = default;
 		
-		void selections(ChessModel::PiecePtr& piece, ChessBox* chessbox);
-		void update();
-		void update(std::vector<ChessModel::Position>& positions, const double opacity);
-		ChessModel::PiecePtr move(ChessModel::Position& position);
+
 
 	public slots:
 
 
 	private:
-		BoardPtr board_;  // Le Modèle (pourrait être un pointeur mais pas nécessaire dans ce cas).
-		std::unordered_map<ChessModel::Position, ChessBoxPtr, ChessModel::pair_hash> chessBoxes_;
-		ChessModel::PiecePtr selectedPiece_;
+		BoardView boardview_;
 
-		bool isMoving(ChessModel::PiecePtr& piece);
-		bool isSamePiece(ChessModel::PiecePtr& piece);
 	};
 }
 

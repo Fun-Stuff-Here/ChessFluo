@@ -16,10 +16,12 @@
 #include <QMessageBox>
 #include <QGraphicsOpacityEffect>
 
+#include "BoardView.h"
+
 using namespace ChessView;
 
-ChessBox::ChessBox(BoardPtr& board, ChessModel::Position& position,ChessFluoWindow* boardView, QWidget* parent)
-	:QPushButton(parent), position_(position),boardView_(boardView)
+ChessBox::ChessBox(BoardPtr& board, ChessModel::Position& position, class BoardView* boardView):
+	QPushButton(boardView),position_(position),boardView_(boardView)
 {
 	board_ = board;
 	setMinimumSize(CHESSBOXSIZE);

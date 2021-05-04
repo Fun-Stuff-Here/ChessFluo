@@ -33,7 +33,7 @@ namespace ChessView
 		void selected();
 
 	public:
-		ChessBox(BoardPtr& board, ChessModel::Position& position,class ChessFluoWindow* boardView, QWidget* parent = nullptr);
+		ChessBox(BoardPtr& board, ChessModel::Position& position,class BoardView* boardView);
 		~ChessBox() = default;
 
 		void update();
@@ -43,7 +43,7 @@ namespace ChessView
 		ChessModel::PiecePtr piece_;
 		ChessModel::Position position_;
 		BoardPtr board_;
-		class ChessFluoWindow* boardView_;
+		class BoardView* boardView_;
 
 
 	};

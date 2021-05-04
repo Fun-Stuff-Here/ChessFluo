@@ -19,7 +19,7 @@ namespace ChessModel {
 	class Game
 	{
 	public:
-		Game()=default;
+		Game();
 		~Game() =default;
 		bool isEnded();
 		bool isCheckMate();
@@ -37,7 +37,7 @@ namespace ChessModel {
 		MovePtr moveTry(PiecePtr& piece, Position& position);
 
 
-		bool isValidMove(MovePtr& move) const;
+		bool isValidMove(Position& position);
 		std::vector<Position> getMovesPositions(Position& position);
 
 	private:

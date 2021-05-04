@@ -16,6 +16,11 @@
 
 using namespace ChessModel;
 
+Game::Game():
+	board_(),moveHistory_()
+{
+	turn_ = COLORPLAYER1;
+}
 
 
 
@@ -59,6 +64,7 @@ void Game::move(PiecePtr& piece, Position&& position)
 
 void Game::move(PiecePtr& piece, Position& position)
 {
+	if (!isValidMove(position)) throw ImpossibleMove();
 	moveHistory_.push_back(moveTry(piece, position));
 	piece->setPosition(position);
 	verifieCheck(piece->getColor());
@@ -102,7 +108,7 @@ MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 
 
 
-	if (turn_ != piece->getColor() || !isValidMove(move)) throw ImpossibleMove();
+	if (turn_ != piece->getColor()) throw ImpossibleMove();
 	
 	move->execute(this);
 
@@ -111,9 +117,11 @@ MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 	return move;
 }
 
-bool Game::isValidMove(MovePtr& move) const
+bool Game::isValidMove(Position& position)
 {
-	throw NotImplemented();
+	auto validPositions = getMovesPositions(position);
+	auto it = std::find(validPositions.begin(), validPositions.end(), position);
+	return it != validPositions.end();
 }
 
 std::vector<Position> Game::getMovesPositions(Position& position) 
