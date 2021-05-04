@@ -12,6 +12,7 @@
 #include "Piece.h"
 
 namespace ChessModel {
+
 	class Player
 	{
 	public:
@@ -25,9 +26,6 @@ namespace ChessModel {
 	private:
 		std::string color_;
 	};
-
-
-
 
 	class HumainPlayer: public Player
 	{

@@ -15,6 +15,7 @@
 #include "Players.h"
 
 namespace ChessModel {
+
 	class Game
 	{
 	public:
@@ -23,20 +24,27 @@ namespace ChessModel {
 		bool isEnded();
 		bool isCheckMate();
 
-		bool isCheckable(Position&& position, const std::string& color);
-		bool isCheckable(Position& position, const std::string& color);
+
 
 		void verifieCheck(const std::string& color);
 
+		Board* getBoard();
 
 
+		void move(PiecePtr& piece, Position& position);
+		void move(PiecePtr& piece, Position&& position);
 
+		MovePtr moveTry(PiecePtr& piece, Position& position);
+
+
+		bool isValidMove(MovePtr& move) const;
+		std::vector<Position> getMovesPositions(Position& position);
 
 	private:
-		std::string turn_;	//player class should be here instead
+		std::string turn_;
 		Board board_;
 		std::vector<MovePtr> moveHistory_;
-		std::vector<Player> players;
+		//std::vector<Player> players;
 
 	};
 

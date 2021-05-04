@@ -9,6 +9,7 @@
 #include "Move.h"
 #include "exeptions.h"
 #include "Board.h"
+#include "Game.h"
 
 using namespace ChessModel;
 
@@ -16,6 +17,18 @@ using namespace ChessModel;
 
 Move::Move(mapPieces& pieces, Position& from, Position& to):
 	pieces_(pieces), from_(from), to_(to) {}
+
+RegularMove::RegularMove(mapPieces& pieces, Position& from, Position& to) :
+	Move(pieces, from, to) {}
+
+CastlingMove::CastlingMove(mapPieces& pieces, Position& from, Position& to) :
+	Move(pieces, from, to) {}
+
+PromotionMove::PromotionMove(mapPieces& pieces, Position& from, Position& to) :
+	Move(pieces, from, to) {}
+
+
+
 
 Position Move::getFrom() const
 {
@@ -27,9 +40,9 @@ Position Move::getTo() const
 	return to_;
 }
 
-PiecePtr Move::getPieceEated() const
+PiecePtr Move::getPieceEat() const
 {
-	return eated_;
+	return eat_;
 }
 
 mapPieces Move::getPieces() const
@@ -38,16 +51,27 @@ mapPieces Move::getPieces() const
 }
 
 
-bool Move::isValid() const
+
+void RegularMove::execute(Game* game)
 {
-	return isValid_;
+	auto piece = pieces_.at(from_);
+	eat_ = game->getBoard()->move(piece, to_);
+	
 }
 
-RegularMove::RegularMove(mapPieces& pieces, Position& from, Position& to):
-	Move(pieces,from,to){}
-
-
-void RegularMove::execute()
+void CastlingMove::execute(Game* game)
 {
 	throw NotImplemented();
 }
+
+
+void PromotionMove::execute(Game* game)
+{
+	throw NotImplemented();
+}
+
+
+
+
+
+

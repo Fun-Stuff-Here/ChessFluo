@@ -22,6 +22,14 @@ namespace ChessModel {
 
 	const unsigned int NROWS{ 8 };
 	const unsigned int  NCOLUMNS{ 8 };
+
+	using Position = std::pair<int, int>;
+	const std::vector<Position> CASTLINGPOSITIONS = {
+	{7,1},
+	{3,1},
+	{7,8},
+	{3,8}
+	};
 }
 
 

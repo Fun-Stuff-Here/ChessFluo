@@ -9,31 +9,14 @@
 #include "Game.h"
 #include "King.h"
 #include "exeptions.h"
+#include "Board.h"
+#include "Pawn.h"
+#include "Rook.h"
+
 
 using namespace ChessModel;
 
-bool Game::isCheckable(Position&& position, const std::string& color)
-{
-	for (auto&& [positionKey, piece] : board_.getPieces())
-	{
-		auto king = dynamic_cast<King*>(piece.get());
-		if (king || piece->getColor() == color)
-			continue;
 
-		auto moves = piece->getMoves();
-		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(),
-			[&position](Position positionParam)->bool {return position == positionParam; });
-
-		if (positionOfPieceCheck != moves.end())
-			return true;
-	}
-	return false;
-}
-
-bool Game::isCheckable(Position& position, const std::string& color)
-{
-	return isCheckable(position, color);
-}
 
 
 void Game::verifieCheck(const std::string& color)
@@ -46,7 +29,7 @@ void Game::verifieCheck(const std::string& color)
 
 	auto kingPosition = king->first;
 
-	if (isCheckable(kingPosition, color))
+	if (board_.isCheckable(kingPosition, color))
 	{
 		throw Check(color);
 	}
@@ -63,4 +46,113 @@ bool Game::isEnded()
 bool Game::isCheckMate()
 {
 	throw NotImplemented();
+}
+
+
+
+
+
+void Game::move(PiecePtr& piece, Position&& position)
+{
+	return move(piece, position);
+}
+
+void Game::move(PiecePtr& piece, Position& position)
+{
+	moveHistory_.push_back(moveTry(piece, position));
+	piece->setPosition(position);
+	verifieCheck(piece->getColor());
+}
+
+
+MovePtr Game::moveTry(PiecePtr& piece, Position& position)
+{
+	MovePtr move = nullptr;
+
+	auto from = piece->getPosition();
+	auto pieces = board_.getPieces();
+
+	auto pawn = dynamic_cast<Pawn*>(piece.get());
+	if (pawn && (position.second == 0 || position.second == NROWS)) 
+		move = static_cast<MovePtr>(new PromotionMove{pieces,from ,position });
+	
+
+	auto king = dynamic_cast<King*>(piece.get());
+	auto castlingPosition =  std::find(CASTLINGPOSITIONS.begin(), CASTLINGPOSITIONS.end(),position);
+	if (king && castlingPosition != CASTLINGPOSITIONS.end())
+		move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+
+	if (!move) move = static_cast<MovePtr>(new RegularMove{pieces,from,position});
+
+	//castling conditions updating
+	auto rook = dynamic_cast<Rook*>(piece.get());
+	if (king)
+		king->moved();
+	if (rook)
+	{
+		if (rook->getPosition() == Position{ 1,1 })
+			board_.getKing(COLORPLAYER1)->bigCastlingRookMoved();
+		if (rook->getPosition() == Position{ 8,1 })
+			board_.getKing(COLORPLAYER1)->smallCastlingRookMoved();
+		if (rook->getPosition() == Position{ 8,8 })
+			board_.getKing(COLORPLAYER2)->smallCastlingRookMoved();
+		if (rook->getPosition() == Position{ 1,8 })
+			board_.getKing(COLORPLAYER2)->bigCastlingRookMoved();
+	}
+
+
+
+	if (turn_ != piece->getColor() || !isValidMove(move)) throw ImpossibleMove();
+	
+	move->execute(this);
+
+	turn_ = board_.getOpponentColor(turn_);
+
+	return move;
+}
+
+bool Game::isValidMove(MovePtr& move) const
+{
+	throw NotImplemented();
+}
+
+std::vector<Position> Game::getMovesPositions(Position& position) 
+{
+	std::vector<Position> positions{};
+	auto piece = board_.getPiece(position);
+
+	if (piece == Board::pieceNotFound) return positions;
+	if (piece->getColor() != turn_) return positions;
+
+	positions = piece->getMoves();
+
+	//filter thoses who puts king in check
+	std::vector<std::vector<Position>::iterator> toRemoves;
+	for (auto it = positions.begin(); it != positions.end(); it++)
+	{
+		auto save = board_.save();
+		try
+		{
+			 moveTry(piece, *it);
+		}
+		catch (const ImpossibleMove&)
+		{
+			toRemoves.push_back(it);
+		}
+		catch(const Check&) {}
+		catch(const Promotion&){}
+
+		board_.restore(save);
+	}
+
+	for (auto&& toRemove : toRemoves)
+		positions.erase(toRemove);
+
+
+	return positions;
+}
+
+Board* Game::getBoard()
+{
+	return &board_;
 }

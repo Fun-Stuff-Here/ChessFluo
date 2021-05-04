@@ -14,18 +14,6 @@
 
 namespace ChessModel
 {
-	//https://www.techiedelight.com/use-std-pair-key-std-unordered_map-cpp/
-	struct pair_hash
-	{
-		template <class T1, class T2>
-		std::size_t operator() (const std::pair<T1, T2>& pair) const
-		{
-			return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
-		}
-	};
-
-	using mapPieces = std::unordered_map<Position, PiecePtr, pair_hash>;
-
 
 	struct Empty
 	{};
@@ -41,14 +29,17 @@ namespace ChessModel
 		~Board()=default;
 
 
-		MovePtr move(PiecePtr& piece, Position& position);// return eaten piece or nullptr if nothing
-		MovePtr move(PiecePtr& piece, Position&& position);// return eaten piece or nullptr if nothing
+		PiecePtr move(PiecePtr& piece, Position& position);
+		PiecePtr move(PiecePtr& piece, Position&& position);
+		void castling(Position& position, class King* king);
 
 
+		mapPieces getPieces() const;
+		PiecePtr getPiece(Position& position) const;
+		PiecePtr getPiece(Position&& position) const;
+		class King* getKing(const std::string& color) const;
 
-		mapPieces getPieces();
-		PiecePtr getPiece(Position& position);
-		PiecePtr getPiece(Position&& position);
+
 		void addPiece(PiecePtr& pieceToAdd);
 		void addPieces(std::vector<PiecePtr>&& piecesToAdd);
 
@@ -64,25 +55,21 @@ namespace ChessModel
 
 		void restore(MovePtr& move);
 
+		mapPieces save() const;
+		void restore(mapPieces& save);
+
+		bool isCheckable(Position&& position, const std::string& color);
+		bool isCheckable(Position& position, const std::string& color);
 
 	private:
 
-
-
-
 		mapPieces pieces_;
+
 		int nKing_ = 0;
 		std::string kingColorInserted;
+
 		class King* kingColor1_;
 		class King* kingColor2_;
-		const std::vector<Position> castlingPositions_ = {
-			{7,1},
-			{3,1},
-			{7,8},
-			{3,8}
-		};
-
-		void castling(Position&position, class King* king);
 
 	};
 }

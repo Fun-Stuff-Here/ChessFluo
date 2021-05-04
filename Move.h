@@ -10,9 +10,21 @@
 
 #include<memory>
 
-#include "Board.h"
+#include "Piece.h"
 
 namespace ChessModel {
+
+	//https://www.techiedelight.com/use-std-pair-key-std-unordered_map-cpp/
+	struct pair_hash
+	{
+		template <class T1, class T2>
+		std::size_t operator() (const std::pair<T1, T2>& pair) const
+		{
+			return std::hash<T1>()(pair.first) ^ std::hash<T2>()(pair.second);
+		}
+	};
+	using mapPieces = std::unordered_map<Position, PiecePtr, pair_hash>;
+
 
 
 
@@ -20,14 +32,14 @@ namespace ChessModel {
 	{
 	public:
 		Move(mapPieces& pieces, Position& from, Position& to);
+		Move() = default;
 
 		Position getFrom() const ;
 		Position getTo() const ;
-		PiecePtr getPieceEated() const ;
+		PiecePtr getPieceEat() const ;
 		mapPieces getPieces() const ;
-		bool isValid() const;
 
-		virtual void execute()=0;
+		virtual void execute(class Game* board) = 0;
 
 		virtual ~Move()=default;
 
@@ -35,8 +47,7 @@ namespace ChessModel {
 		mapPieces pieces_;
 		Position from_;
 		Position to_;
-		PiecePtr eated_;
-		bool isValid_;
+		PiecePtr eat_;
 	};
 
 	class RegularMove: public Move
@@ -45,7 +56,7 @@ namespace ChessModel {
 		RegularMove(mapPieces & pieces, Position & from, Position & to);
 		~RegularMove() = default;
 
-		void execute() override;
+		void execute(class Game* game) override;
 
 	private:
 
@@ -57,7 +68,7 @@ namespace ChessModel {
 		CastlingMove(mapPieces& pieces, Position& from, Position& to);
 		~CastlingMove() = default;
 
-		void execute() override;
+		void execute(class Game* game) override;
 
 	};
 
@@ -67,23 +78,13 @@ namespace ChessModel {
 		PromotionMove(mapPieces& pieces, Position& from, Position& to);
 		~PromotionMove() = default;
 
-		void execute() override;
+		void execute(class Game* game) override;
 
 	private:
 
 	};
 
-	class SpecialPawnMove : public Move
-	{
-	public:
-		SpecialPawnMove(mapPieces& pieces, Position& from, Position& to);
-		~SpecialPawnMove() = default;
-
-		void execute() override;
-
-	private:
-
-	};
+	
 
 
 	using MovePtr = std::shared_ptr<Move>;

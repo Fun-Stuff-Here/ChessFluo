@@ -128,63 +128,8 @@ Board::Board(KingOnly)
 }
 
 
-
-MovePtr Board::move(PiecePtr& piece, Position& position)
+PiecePtr Board::move(PiecePtr& piece, Position& position)
 {
-	
-	auto pieceEaten = moveTry(piece,position);
-	try
-	{
-		verifieCheck(piece->getColor());
-
-		auto pawn = dynamic_cast<Pawn*>(piece.get());
-		if (pawn && (position.second == 0 || position.second == NROWS))
-			throw Promotion(piece);
-		
-		auto king = dynamic_cast<King*>(piece.get());
-		auto castlingPosition =  std::find(castlingPositions_.begin(),castlingPositions_.end(),position);
-		//castleling
-		if (king && castlingPosition != castlingPositions_.end())
-			castling(position, king);
-
-		//condition for castling
-		auto rook = dynamic_cast<Rook*>(piece.get());
-		if (king)
-			king->moved();
-		if (rook)
-		{
-			if (rook->getPosition() == Position{ 1,1 })
-				kingColor1_->bigCastlingRookMoved();
-			if (rook->getPosition() == Position{ 8,1 })
-				kingColor1_->smallCastlingRookMoved();
-			if (rook->getPosition() == Position{ 8,8 })
-				kingColor2_->smallCastlingRookMoved();
-			if (rook->getPosition() == Position{ 1,8 })
-				kingColor2_->bigCastlingRookMoved();
-		}
-		
-		piece->setPosition(position);
-	}
-	catch (const Check&)
-	{
-		pieces_.insert({ piece->getPosition(), piece });
-		pieces_.erase(position);
-		if (pieceEaten != pieceNotFound)
-			pieces_.insert({ pieceEaten->getPosition(), pieceEaten });
-		throw ImpossibleMove();
-	}
-	verifieCheck(getOpponentColor(piece->getColor()));
-	return pieceEaten;
-}
-
-
-PiecePtr Board::moveTry(PiecePtr& piece, Position& position)
-{
-	auto moves = piece->getMoves();
-	auto it = std::find_if(moves.begin(), moves.end(), [&position](Position possiblePosition)->bool {return possiblePosition == position; });
-
-	if (it == moves.end())
-		throw ImpossibleMove();
 
 	PiecePtr pieceEaten = getPiece(position);
 
@@ -198,17 +143,47 @@ PiecePtr Board::moveTry(PiecePtr& piece, Position& position)
 }
 
 
-MovePtr Board::move(PiecePtr& piece, Position&& position)
+
+
+
+//	auto pieceEaten = moveTry(piece,position);
+//	try
+//	{
+//		verifieCheck(piece->getColor());
+
+//
+//		//condition for castling
+
+//		
+
+
+//		piece->setPosition(position);
+//	}
+//	catch (const Check&)
+//	{
+//		pieces_.insert({ piece->getPosition(), piece });
+//		pieces_.erase(position);
+//		if (pieceEaten != pieceNotFound)
+//			pieces_.insert({ pieceEaten->getPosition(), pieceEaten });
+//		throw ImpossibleMove();
+//	}
+//	verifieCheck(getOpponentColor(piece->getColor()));
+//	return pieceEaten;
+//}
+
+
+
+PiecePtr Board::move(PiecePtr& piece, Position&& position)
 {
 	return move(piece,position);
 }
 
-mapPieces Board::getPieces()
+mapPieces Board::getPieces() const
 {
 	return pieces_;
 }
 
-PiecePtr Board::getPiece(Position& position)
+PiecePtr Board::getPiece(Position& position) const
 {
 	PiecePtr piece = pieceNotFound;
 	try
@@ -223,7 +198,7 @@ PiecePtr Board::getPiece(Position& position)
 	return piece;
 }
 
-PiecePtr Board::getPiece(Position&& position)
+PiecePtr Board::getPiece(Position&& position) const
 {
 	return getPiece(position);
 }
@@ -326,11 +301,53 @@ void Board::restore(MovePtr& move)
 	Position from = move->getFrom();
 	Position to = move->getTo();
 	PiecePtr pieceMoved = pieces_.at(to);
-	PiecePtr pieceEated = move->getPieceEated();
+	PiecePtr pieceEated = move->getPieceEat();
 
 	pieces_[from] = pieceMoved;
 	pieces_.erase(to);
 	if (pieceEated)
 		pieces_[to] = pieceEated;
 
+}
+
+
+King* Board::getKing(const std::string& color) const
+{
+	return color == COLORPLAYER1 ? kingColor1_ : kingColor2_;
+}
+
+
+mapPieces Board::save() const
+{
+	return pieces_;
+}
+
+void Board::restore(mapPieces& save)
+{
+	pieces_ = save;
+}
+
+
+
+bool Board::isCheckable(Position&& position, const std::string& color)
+{
+	for (auto&& [positionKey, piece] :pieces_)
+	{
+		auto king = dynamic_cast<King*>(piece.get());
+		if (king || piece->getColor() == color)
+			continue;
+
+		auto moves = piece->getMoves();
+		auto positionOfPieceCheck = std::find_if(moves.begin(), moves.end(),
+			[&position](Position positionParam)->bool {return position == positionParam; });
+
+		if (positionOfPieceCheck != moves.end())
+			return true;
+	}
+	return false;
+}
+
+bool Board::isCheckable(Position& position, const std::string& color)
+{
+	return isCheckable(position, color);
 }

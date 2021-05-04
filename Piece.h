@@ -17,7 +17,7 @@ namespace ChessModel
 {
 	
 
-	using Position = std::pair<int,int>;
+
 	class Piece
 	{
 	public:
