@@ -34,17 +34,17 @@ namespace ChessModel
         Check(const std::string& color) : std::domain_error{ "Check on " + color} {}
     };
 
+    class CheckMate : public std::domain_error
+    {
+    public:
+        using std::domain_error::domain_error;
+    };
+
     class NotTwoKings : public std::domain_error
     {
     public:
         using std::domain_error::domain_error;
     };
 
-
-    class Promotion : public std::domain_error
-    {
-    public:
-        Promotion(ChessModel::PiecePtr piece): std::domain_error{ "Promotion of a pawn"} {}
-    };
 
 }

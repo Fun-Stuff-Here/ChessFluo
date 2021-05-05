@@ -119,9 +119,9 @@ ChessModel::PiecePtr BoardView::move(ChessModel::Position& position)
 	{
 		QMessageBox::information(nullptr, "Check", "Check");
 	}
-	catch (const ChessModel::Promotion&)
+	catch (const ChessModel::CheckMate)
 	{
-		QMessageBox::information(nullptr, "Promotion", "Pawn reached end");
+		QMessageBox::information(nullptr, "CheckMate", "CheckMate");
 	}
 
 	return ChessModel::Board::pieceNotFound;

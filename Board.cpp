@@ -269,17 +269,8 @@ void Board::castling(Position& position, King* king)
 
 void Board::restore(MovePtr& move)
 {
-	pieces_ = move->getPieces();
-	Position from = move->getFrom();
-	Position to = move->getTo();
-	PiecePtr pieceMoved = pieces_.at(to);
-	PiecePtr pieceEated = move->getPieceEat();
-
-	pieces_[from] = pieceMoved;
-	pieces_.erase(to);
-	if (pieceEated)
-		pieces_[to] = pieceEated;
-
+	auto pieces = move->getPieces();
+	restore(pieces);
 }
 
 
@@ -330,4 +321,9 @@ bool Board::isCheckable(Position&& position, const std::string& color)
 void Board::removePiece(Position& position)
 {
 	pieces_.erase(position);
+}
+
+void Board::clearPieces()
+{
+	pieces_.clear();
 }

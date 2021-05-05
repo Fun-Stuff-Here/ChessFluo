@@ -17,7 +17,7 @@
 using namespace ChessModel;
 
 Game::Game():
-	board_(),moveHistory_()
+	board_(), moveHistory_()
 {
 	turn_ = COLORPLAYER1;
 }
@@ -45,12 +45,17 @@ void Game::verifieCheck(const std::string& color)
 
 bool Game::isEnded()
 {
-	throw NotImplemented();
+	return isFinished_;
 }
 
-bool Game::isCheckMate()
+bool Game::isCheckMate(const std::string& color)
 {
-	throw NotImplemented();
+	if (getAllMovesPositions(color).size() == 0)
+	{
+		isFinished_ = true;
+		return true;
+	}
+	return false;
 }
 
 
@@ -86,7 +91,17 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 		if (rook->getPosition() == Position{ 1,8 })
 			board_.getKing(COLORPLAYER2)->bigCastlingRookMoved();
 	}
-	verifieCheck(board_.getOpponentColor(piece->getColor()));
+
+	try
+	{
+		verifieCheck(board_.getOpponentColor(piece->getColor()));
+	}
+	catch (const Check&)
+	{
+		if (isCheckMate(turn_))
+			throw CheckMate("CheckMate on "+ turn_);
+		throw;
+	}
 	return move->getPieceEat();
 }
 
@@ -162,8 +177,6 @@ std::vector<Position> Game::getMovesPositions(Position& position)
 			{
 				toRemove = true;
 			}
-			catch (const Promotion&) {}
-
 			board_.restore(save);
 			return !toRemove;
 		}
@@ -182,3 +195,64 @@ std::string Game::getTurn() const
 {
 	return turn_;
 }
+
+
+std::vector<MovePtr> Game::getAllMovesPositions(const std::string& color)
+{
+	std::vector<MovePtr> moves{};
+	auto pieces = board_.getPieces();
+	for (auto&& it:pieces)
+	{
+		if (!it.second) continue;
+		if (it.second->getColor() != color) continue;
+		auto piecePosition = it.second->getPosition();
+		for (auto&& position : getMovesPositions(const_cast<Position&>(it.first)))
+		{
+			MovePtr move(new RegularMove{ pieces,piecePosition,position });
+			moves.emplace_back(move);
+		}
+		
+	}
+
+	return moves;
+
+}
+
+
+
+
+
+
+void Game::start()
+{
+	isFinished_ = false;
+	turn_ = COLORPLAYER1;
+	board_.clearPieces();
+}
+
+
+void Game::start(Regular2PlayerGame)
+{
+	start();
+
+}
+
+
+
+void Game::start(REgular1PlayerGame)
+{
+	start();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
