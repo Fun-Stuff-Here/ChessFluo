@@ -114,7 +114,7 @@ MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 	auto pieces = board_.getPieces();
 
 	auto pawn = dynamic_cast<Pawn*>(piece.get());
-	if (pawn && (position.second == 0 || position.second == NROWS)) 
+	if (pawn && (position.second == 1 || position.second == NROWS)) 
 		move = static_cast<MovePtr>(new PromotionMove{pieces,from ,position });
 	
 
