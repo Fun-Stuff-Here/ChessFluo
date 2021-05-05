@@ -14,13 +14,13 @@
 #include <QLabel>
 #pragma pop()
 
-#include "Board.h"
+#include "Game.h"
 #include "ChessBox.h"
 
 
 namespace ChessView {
 
-	using BoardPtr = std::shared_ptr<ChessModel::Board>;
+	using GamePtr = std::shared_ptr<ChessModel::Game>;
 	using ChessBoxPtr = std::shared_ptr<ChessBox>;
 
 
@@ -42,7 +42,7 @@ namespace ChessView {
 
 
 	private:
-		BoardPtr board_;
+		GamePtr game_;
 		std::unordered_map<ChessModel::Position, ChessBoxPtr, ChessModel::pair_hash> chessBoxes_;
 		ChessModel::PiecePtr selectedPiece_;
 

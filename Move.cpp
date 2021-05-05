@@ -10,6 +10,7 @@
 #include "exeptions.h"
 #include "Board.h"
 #include "Game.h"
+#include "King.h"
 
 using namespace ChessModel;
 
@@ -61,7 +62,10 @@ void RegularMove::execute(Game* game)
 
 void CastlingMove::execute(Game* game)
 {
-	throw NotImplemented();
+	auto piece = pieces_.at(from_);
+	auto king = dynamic_cast<King*>(piece.get());
+	eat_ = game->getBoard()->move(piece, to_);
+	game->getBoard()->castling(to_, king);
 }
 
 

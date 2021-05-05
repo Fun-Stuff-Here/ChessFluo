@@ -39,7 +39,7 @@ namespace ChessModel {
 		PiecePtr getPieceEat() const ;
 		mapPieces getPieces() const ;
 
-		virtual void execute(class Game* board) = 0;
+		virtual void execute(class Game* game) = 0;
 
 		virtual ~Move()=default;
 

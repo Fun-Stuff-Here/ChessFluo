@@ -20,10 +20,10 @@
 
 using namespace ChessView;
 
-ChessBox::ChessBox(BoardPtr& board, ChessModel::Position& position, class BoardView* boardView):
+ChessBox::ChessBox(GamePtr& board, ChessModel::Position& position, class BoardView* boardView):
 	QPushButton(boardView),position_(position),boardView_(boardView)
 {
-	board_ = board;
+	game_ = board;
 	setMinimumSize(CHESSBOXSIZE);
 
 
@@ -45,7 +45,7 @@ void ChessBox::selected()
 
 void ChessBox::update()
 {
-	piece_ = board_->getPiece(position_);
+	piece_ = game_->getBoard()->getPiece(position_);
 	QString style = (position_.first + position_.second) % 2 == 0 ? TILECOLOR1 : TILECOLOR2;
 	QString image = QString::fromStdString((piece_ != ChessModel::Board::pieceNotFound)
 		? "border-image: url( './Images/Pieces/" +

@@ -145,34 +145,6 @@ PiecePtr Board::move(PiecePtr& piece, Position& position)
 
 
 
-
-//	auto pieceEaten = moveTry(piece,position);
-//	try
-//	{
-//		verifieCheck(piece->getColor());
-
-//
-//		//condition for castling
-
-//		
-
-
-//		piece->setPosition(position);
-//	}
-//	catch (const Check&)
-//	{
-//		pieces_.insert({ piece->getPosition(), piece });
-//		pieces_.erase(position);
-//		if (pieceEaten != pieceNotFound)
-//			pieces_.insert({ pieceEaten->getPosition(), pieceEaten });
-//		throw ImpossibleMove();
-//	}
-//	verifieCheck(getOpponentColor(piece->getColor()));
-//	return pieceEaten;
-//}
-
-
-
 PiecePtr Board::move(PiecePtr& piece, Position&& position)
 {
 	return move(piece,position);
@@ -325,11 +297,13 @@ mapPieces Board::save() const
 void Board::restore(mapPieces& save)
 {
 	pieces_ = save;
+	for (auto&& it : pieces_)
+		it.second->setPosition(it.first);
 }
 
 
 
-bool Board::isCheckable(Position&& position, const std::string& color)
+bool Board::isCheckable(Position& position, const std::string& color)
 {
 	for (auto&& [positionKey, piece] :pieces_)
 	{
@@ -347,7 +321,7 @@ bool Board::isCheckable(Position&& position, const std::string& color)
 	return false;
 }
 
-bool Board::isCheckable(Position& position, const std::string& color)
+bool Board::isCheckable(Position&& position, const std::string& color)
 {
 	return isCheckable(position, color);
 }

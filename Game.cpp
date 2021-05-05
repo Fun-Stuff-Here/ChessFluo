@@ -57,17 +57,37 @@ bool Game::isCheckMate()
 
 
 
-void Game::move(PiecePtr& piece, Position&& position)
+PiecePtr Game::move(PiecePtr& piece, Position&& position)
 {
 	return move(piece, position);
 }
 
-void Game::move(PiecePtr& piece, Position& position)
+PiecePtr Game::move(PiecePtr& piece, Position& position)
 {
-	if (!isValidMove(position)) throw ImpossibleMove();
-	moveHistory_.push_back(moveTry(piece, position));
+	auto positionPiece = piece->getPosition();
+	if (!isValidMove(positionPiece,position)) throw ImpossibleMove();
+	auto move = moveTry(piece, position);
+	moveHistory_.push_back(move);
 	piece->setPosition(position);
-	verifieCheck(piece->getColor());
+	turn_ = board_.getOpponentColor(turn_);
+	//castling conditions updating
+	auto rook = dynamic_cast<Rook*>(piece.get());
+	auto king = dynamic_cast<King*>(piece.get());
+	if (king)
+		king->moved();
+	if (rook)
+	{
+		if (rook->getPosition() == Position{ 1,1 })
+			board_.getKing(COLORPLAYER1)->bigCastlingRookMoved();
+		if (rook->getPosition() == Position{ 8,1 })
+			board_.getKing(COLORPLAYER1)->smallCastlingRookMoved();
+		if (rook->getPosition() == Position{ 8,8 })
+			board_.getKing(COLORPLAYER2)->smallCastlingRookMoved();
+		if (rook->getPosition() == Position{ 1,8 })
+			board_.getKing(COLORPLAYER2)->bigCastlingRookMoved();
+	}
+	verifieCheck(board_.getOpponentColor(piece->getColor()));
+	return move->getPieceEat();
 }
 
 
@@ -90,38 +110,27 @@ MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 
 	if (!move) move = static_cast<MovePtr>(new RegularMove{pieces,from,position});
 
-	//castling conditions updating
-	auto rook = dynamic_cast<Rook*>(piece.get());
-	if (king)
-		king->moved();
-	if (rook)
-	{
-		if (rook->getPosition() == Position{ 1,1 })
-			board_.getKing(COLORPLAYER1)->bigCastlingRookMoved();
-		if (rook->getPosition() == Position{ 8,1 })
-			board_.getKing(COLORPLAYER1)->smallCastlingRookMoved();
-		if (rook->getPosition() == Position{ 8,8 })
-			board_.getKing(COLORPLAYER2)->smallCastlingRookMoved();
-		if (rook->getPosition() == Position{ 1,8 })
-			board_.getKing(COLORPLAYER2)->bigCastlingRookMoved();
-	}
-
-
 
 	if (turn_ != piece->getColor()) throw ImpossibleMove();
 	
 	move->execute(this);
 
-	turn_ = board_.getOpponentColor(turn_);
+	verifieCheck(piece->getColor());
 
 	return move;
 }
 
-bool Game::isValidMove(Position& position)
+bool Game::isValidMove(Position& from, Position& to)
 {
-	auto validPositions = getMovesPositions(position);
-	auto it = std::find(validPositions.begin(), validPositions.end(), position);
+	auto validPositions = getMovesPositions(from);
+	auto it = std::find(validPositions.begin(), validPositions.end(), to);
 	return it != validPositions.end();
+}
+
+
+std::vector<Position> Game::getMovesPositions(Position&& position)
+{
+	return getMovesPositions(position);
 }
 
 std::vector<Position> Game::getMovesPositions(Position& position) 
@@ -134,30 +143,33 @@ std::vector<Position> Game::getMovesPositions(Position& position)
 
 	positions = piece->getMoves();
 
+
 	//filter thoses who puts king in check
-	std::vector<std::vector<Position>::iterator> toRemoves;
-	for (auto it = positions.begin(); it != positions.end(); it++)
-	{
-		auto save = board_.save();
-		try
-		{
-			 moveTry(piece, *it);
+	std::vector<Position> filteredPositions{};
+	std::copy_if(positions.begin(),positions.end(),std::back_inserter(filteredPositions), 
+		[&piece, this](Position position) -> bool {
+			bool toRemove = false;
+			auto save = board_.save();
+			try
+			{
+				this->moveTry(piece, position);
+			}
+			catch (const ImpossibleMove&)
+			{
+				toRemove = true;
+			}
+			catch (const Check&)
+			{
+				toRemove = true;
+			}
+			catch (const Promotion&) {}
+
+			board_.restore(save);
+			return !toRemove;
 		}
-		catch (const ImpossibleMove&)
-		{
-			toRemoves.push_back(it);
-		}
-		catch(const Check&) {}
-		catch(const Promotion&){}
+		);
 
-		board_.restore(save);
-	}
-
-	for (auto&& toRemove : toRemoves)
-		positions.erase(toRemove);
-
-
-	return positions;
+	return filteredPositions;
 }
 
 Board* Game::getBoard()

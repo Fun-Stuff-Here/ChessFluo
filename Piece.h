@@ -30,6 +30,7 @@ namespace ChessModel
 		Position getPosition() const;
 		std::string getColor() const;
 		void setPosition(Position& position);
+		void setPosition(const Position& position);
 
 	protected:
 		Position position_;

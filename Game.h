@@ -31,14 +31,15 @@ namespace ChessModel {
 		Board* getBoard();
 
 
-		void move(PiecePtr& piece, Position& position);
-		void move(PiecePtr& piece, Position&& position);
+		PiecePtr move(PiecePtr& piece, Position& position);
+		PiecePtr move(PiecePtr& piece, Position&& position);
 
 		MovePtr moveTry(PiecePtr& piece, Position& position);
 
 
-		bool isValidMove(Position& position);
+		bool isValidMove(Position& from, Position& to);
 		std::vector<Position> getMovesPositions(Position& position);
+		std::vector<Position> getMovesPositions(Position&& position);
 
 	private:
 		std::string turn_;

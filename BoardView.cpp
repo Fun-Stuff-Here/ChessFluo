@@ -27,7 +27,7 @@ using namespace ChessView;
 BoardView::BoardView(QWidget* parent):
 	QWidget(parent)
 {
-	board_ = std::make_shared<ChessModel::Board>();
+	game_  = std::make_shared<ChessModel::Game>();
 	selectedPiece_ = ChessModel::Board::pieceNotFound;
 
 	QGridLayout* boardLayout = new QGridLayout(this);
@@ -37,7 +37,7 @@ BoardView::BoardView(QWidget* parent):
 		for (size_t j = 0; j < NCOLUMNS; j++)
 		{
 			ChessModel::Position position{ j + 1,i + 1 };
-			ChessBoxPtr chessBox = std::make_shared<ChessBox>(board_, position, this);
+			ChessBoxPtr chessBox = std::make_shared<ChessBox>(game_, position, this);
 			chessBoxes_[position] = chessBox;
 			boardLayout->addWidget(chessBox.get(), NROWS - i, j);
 			boardLayout->setSpacing(0);
@@ -60,7 +60,7 @@ void BoardView::selections(ChessModel::PiecePtr& piece, ChessBox* chessbox)
 	}
 	else if (isSamePiece(piece))
 	{
-		auto positions = piece->getMoves();
+		auto positions = game_->getMovesPositions(piece->getPosition());
 		positions.push_back(piece->getPosition());
 		update(positions, FULLOPACITY);
 		selectedPiece_ = ChessModel::Board::pieceNotFound;
@@ -70,14 +70,14 @@ void BoardView::selections(ChessModel::PiecePtr& piece, ChessBox* chessbox)
 	{
 		if (selectedPiece_)
 		{
-			auto previousPositions = selectedPiece_->getMoves();
+			auto previousPositions = game_->getMovesPositions(selectedPiece_->getPosition());
 			previousPositions.push_back(selectedPiece_->getPosition());
 			update(previousPositions, FULLOPACITY);
 		}
 
 		if (piece)
 		{
-			auto positions = piece->getMoves();
+			auto positions = game_->getMovesPositions(piece->getPosition());
 			positions.push_back(piece->getPosition());
 			update(positions, SELECTIONOPACITY);
 
@@ -108,7 +108,7 @@ ChessModel::PiecePtr BoardView::move(ChessModel::Position& position)
 {
 	try
 	{
-		auto pieceEaten = board_->move(selectedPiece_, position);
+		auto pieceEaten = game_->move(selectedPiece_, position);
 		return pieceEaten;
 	}
 	catch (const ChessModel::ImpossibleMove&)

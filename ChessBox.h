@@ -24,7 +24,7 @@
 
 namespace ChessView
 {
-	using BoardPtr = std::shared_ptr<ChessModel::Board>;
+	using GamePtr = std::shared_ptr<ChessModel::Game>;
 	class ChessBox : public QPushButton
 	{
 		Q_OBJECT
@@ -33,7 +33,7 @@ namespace ChessView
 		void selected();
 
 	public:
-		ChessBox(BoardPtr& board, ChessModel::Position& position,class BoardView* boardView);
+		ChessBox(GamePtr& board, ChessModel::Position& position,class BoardView* boardView);
 		~ChessBox() = default;
 
 		void update();
@@ -42,7 +42,7 @@ namespace ChessView
 	private:
 		ChessModel::PiecePtr piece_;
 		ChessModel::Position position_;
-		BoardPtr board_;
+		GamePtr game_;
 		class BoardView* boardView_;
 
 

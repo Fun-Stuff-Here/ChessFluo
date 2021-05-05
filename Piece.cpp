@@ -26,6 +26,11 @@ void Piece::setPosition(Position& position)
 	position_ = position;
 }
 
+void Piece::setPosition(const Position& position)
+{
+	position_ = position;
+}
+
 std::string Piece::getColor() const
 {
 	return color_;
