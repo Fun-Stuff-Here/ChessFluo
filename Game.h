@@ -40,6 +40,12 @@ namespace ChessModel {
 		void start();
 
 
+		bool canUndo() const;
+		bool canRedo() const;
+
+		void undo();
+		void redo();
+
 
 		bool isCheckMate(const std::string& color);
 
@@ -66,8 +72,11 @@ namespace ChessModel {
 		std::string turn_;
 		Board board_;
 		std::vector<MovePtr> moveHistory_;
+		std::vector<MovePtr> redoHistory_;
 		bool isFinished_;
 		//std::vector<Player> players;
+
+		void redoClear();
 
 	};
 

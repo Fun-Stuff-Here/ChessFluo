@@ -94,7 +94,7 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 		if (rook->getPosition() == Position{ 1,8 })
 			board_.getKing(COLORPLAYER2)->bigCastlingRookMoved();
 	}
-
+	redoClear();
 	try
 	{
 		verifieCheck(board_.getOpponentColor(piece->getColor()));
@@ -311,9 +311,36 @@ void Game::start(WhiteToWin2)
 }
 
 
+bool Game::canUndo() const
+{
+	return moveHistory_.size() != 0;
+}
 
+bool Game::canRedo() const
+{
+	return redoHistory_.size() != 0;
+}
 
+void Game::undo()
+{
+	auto move = moveHistory_.back();
+	moveHistory_.pop_back();
+	board_.restore(move);
+	redoHistory_.push_back(move);
+}
 
+void Game::redo()
+{
+	auto move = redoHistory_.back();
+	redoHistory_.pop_back();
+	board_.restore(move);
+	moveHistory_.push_back(move);
+}
+
+void Game::redoClear()
+{
+	redoHistory_.clear();
+}
 
 
 
