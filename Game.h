@@ -17,9 +17,6 @@
 namespace ChessModel {
 
 
-	struct Regular2PlayerGame {};
-	struct REgular1PlayerGame {};
-
 
 
 	class Game
@@ -36,6 +33,10 @@ namespace ChessModel {
 
 		void start(Regular2PlayerGame);
 		void start(REgular1PlayerGame);
+		void start(WhiteToCheckMate1);
+		void start(WhiteToCheckMate2);
+		void start(WhiteToWin1);
+		void start(WhiteToWin2);
 		void start();
 
 

@@ -12,12 +12,15 @@
 #include "Board.h"
 #include "Pawn.h"
 #include "Rook.h"
+#include "Queen.h"
+#include "Knight.h"
+#include "Bishop.h"
 
 
 using namespace ChessModel;
 
 Game::Game():
-	board_(), moveHistory_()
+	board_(Empty{}), moveHistory_()
 {
 	turn_ = COLORPLAYER1;
 }
@@ -260,18 +263,52 @@ void Game::start()
 void Game::start(Regular2PlayerGame)
 {
 	start();
+	board_.fill();
 
 }
-
-
 
 void Game::start(REgular1PlayerGame)
 {
 	start();
+	board_.fill();
+}
 
+void Game::start(WhiteToCheckMate1)
+{
+	//Magnus - Harestad 25th Politiken Cup
+	start();
+	board_.fill(WhiteToCheckMate1{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
 }
 
 
+void Game::start(WhiteToCheckMate2)
+{
+	//Kasparov - Ivanchuk 55th URS-ch
+	start();
+	board_.fill(WhiteToCheckMate2{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
+
+}
+void Game::start(WhiteToWin1)
+{
+	//Pollack - Mulay London classic open 2016
+	start();
+	board_.fill(WhiteToWin1{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
+}
+
+void Game::start(WhiteToWin2)
+{
+	//Reshevsky - Fischer Palma de Mallorca Interzonal 1970
+	start();
+	board_.fill(WhiteToWin2{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
+}
 
 
 
