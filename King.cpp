@@ -16,10 +16,9 @@ King::King(Position& position, std::string& color, Board* board)
 	canSmallCastle_ = true;
 }
 
-std::vector<Position> King::getMoves() const
+std::vector<Position> King::getMovesFromOffsets() const
 {
 	std::vector<Position> positions;
-	
 	//https://codereview.stackexchange.com/questions/53875/generating-possible-chess-moves
 	Position offsets[] = {
 		{1, 0},
@@ -40,7 +39,12 @@ std::vector<Position> King::getMoves() const
 		if (!isOutofBound(possiblePosition) && (board_->isUnoccupied(possiblePosition) || board_->isOccupiedByOtherColor(possiblePosition, color_)))
 			positions.push_back(possiblePosition);
 	}
+	return positions;
+}
 
+std::vector<Position> King::getMoves() const
+{
+	std::vector<Position> positions = getMovesFromOffsets();
 	
 	//castling
 	if (canSmallCastle_)
@@ -90,6 +94,9 @@ std::vector<Position> King::getMoves() const
 
 	return positions;
 }
+
+
+
 
 bool King::canSmallCastle()
 {

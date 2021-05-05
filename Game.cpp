@@ -121,7 +121,13 @@ MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 	auto king = dynamic_cast<King*>(piece.get());
 	auto castlingPosition =  std::find(CASTLINGPOSITIONS.begin(), CASTLINGPOSITIONS.end(),position);
 	if (king && castlingPosition != CASTLINGPOSITIONS.end())
-		move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+	{
+		if(king->canBigCastle() && std::find(BIGCASTLINGPOSITION.begin(), BIGCASTLINGPOSITION.end(), position) != BIGCASTLINGPOSITION.end())
+			move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+		if (king->canSmallCastle() && std::find(SMALLCASTLINGPOSITIONS.begin(), SMALLCASTLINGPOSITIONS.end(), position) != SMALLCASTLINGPOSITIONS.end())
+			move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+	}
+		
 
 	if (!move) move = static_cast<MovePtr>(new RegularMove{pieces,from,position});
 
@@ -181,6 +187,26 @@ std::vector<Position> Game::getMovesPositions(Position& position)
 			return !toRemove;
 		}
 		);
+		
+	if (dynamic_cast<King*>(piece.get()))
+	{
+		std::vector<Position> kingFilterPosition{};
+		std::copy_if(filteredPositions.begin(), filteredPositions.end(), std::back_inserter(kingFilterPosition),
+			[&piece, this](Position position) -> bool {
+				bool toRemove = false;
+				auto oppositeKing = board_.getKing(board_.getOpponentColor(piece->getColor()));
+
+				auto oppositeKingMoves = oppositeKing->getMovesFromOffsets();
+				if (std::find(oppositeKingMoves.begin(), oppositeKingMoves.end(), position) != oppositeKingMoves.end())
+					toRemove = true;
+				return !toRemove;
+			}
+		);
+		return kingFilterPosition;
+	}
+
+
+
 
 	return filteredPositions;
 }

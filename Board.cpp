@@ -257,7 +257,7 @@ void Board::castling(Position& position, King* king)
 		rook = getPiece({ 1,8 });
 		rookPositionTo = { 4,8 };
 	}
-	if (rookPositionTo != Position{ 0,0 } && rook != pieceNotFound)
+	if (rookPositionTo != Position{ 0,0 } && dynamic_cast<Rook*>(rook.get()))
 	{
 		pieces_.erase(rook->getPosition());
 		pieces_.insert({ rookPositionTo, rook });

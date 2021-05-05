@@ -30,6 +30,16 @@ namespace ChessModel {
 	{7,8},
 	{3,8}
 	};
+	const std::vector<Position> SMALLCASTLINGPOSITIONS = {
+	{7,1},
+	{7,8},
+	};
+	const std::vector<Position> BIGCASTLINGPOSITION = {
+	{3,1},
+	{3,8}
+	};
+
+
 }
 
 
