@@ -20,9 +20,9 @@
 
 namespace ChessView {
 
-	using GamePtr = std::shared_ptr<ChessModel::Game>;
-	using ChessBoxPtr = std::shared_ptr<ChessBox>;
-
+	
+	
+	
 
 	class BoardView: public QWidget
 	{
@@ -30,19 +30,21 @@ namespace ChessView {
 
 
 	public:
-		BoardView(QWidget* parent = nullptr);
+		BoardView(ChessModel::GamePtr& game, QWidget* parent = nullptr);
 		~BoardView() override = default;
 
 		void selections(ChessModel::PiecePtr& piece, ChessBox* chessbox);
-		void update();
 		void update(std::vector<ChessModel::Position>& positions, const double opacity);
 		ChessModel::PiecePtr move(ChessModel::Position& position);
 
 	public slots:
+		void update();
 
+	signals:
+		void gameChanged();
 
 	private:
-		GamePtr game_;
+		ChessModel::GamePtr game_;
 		std::unordered_map<ChessModel::Position, ChessBoxPtr, ChessModel::pair_hash> chessBoxes_;
 		ChessModel::PiecePtr selectedPiece_;
 

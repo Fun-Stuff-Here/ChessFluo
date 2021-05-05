@@ -23,8 +23,8 @@
 
 using namespace ChessView;
 
-PositionView::PositionView(QWidget* parent) :
-	QWidget(parent)
+PositionView::PositionView(ChessModel::GamePtr& game, QWidget* parent) :
+	QWidget(parent),game_(game)
 {
 	QVBoxLayout* positionLayout = new QVBoxLayout(this);
 
@@ -36,6 +36,7 @@ PositionView::PositionView(QWidget* parent) :
 	QPushButton* regularPositionsBtn = new QPushButton(this);
 	regularPositionsBtn->setText("Positions régulières");
 	positionLayout->addWidget(regularPositionsBtn);
+	connect(regularPositionsBtn,SIGNAL(clicked()),this, SLOT(regularStart(void)));
 
 	QPushButton* puzzle1PositionsBtn = new QPushButton(this);
 	puzzle1PositionsBtn->setText("Puzzle 1");
@@ -54,4 +55,11 @@ PositionView::PositionView(QWidget* parent) :
 	positionLayout->addWidget(puzzle4PositionsBtn);
 
 	setLayout(positionLayout);
+}
+
+
+void PositionView::regularStart()
+{
+	game_->start(ChessModel::Regular2PlayerGame{});
+	//emit();
 }

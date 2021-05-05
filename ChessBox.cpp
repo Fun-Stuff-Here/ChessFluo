@@ -20,7 +20,7 @@
 
 using namespace ChessView;
 
-ChessBox::ChessBox(GamePtr& board, ChessModel::Position& position, class BoardView* boardView):
+ChessBox::ChessBox(ChessModel::GamePtr& board, ChessModel::Position& position, class BoardView* boardView):
 	QPushButton(boardView),position_(position),boardView_(boardView)
 {
 	game_ = board;

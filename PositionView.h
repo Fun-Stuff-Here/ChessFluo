@@ -20,12 +20,14 @@ namespace ChessView {
 		Q_OBJECT
 
 	public:
-		PositionView(QWidget* parent = nullptr);
+		PositionView(ChessModel::GamePtr& game, QWidget* parent = nullptr);
 		~PositionView() override = default;
 
 	public slots:
+		void regularStart();
 
 	private:
+			ChessModel::GamePtr game_;
 
 	};
 }

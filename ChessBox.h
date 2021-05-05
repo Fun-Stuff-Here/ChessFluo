@@ -19,12 +19,11 @@
 #include <memory>
 #include <vector>
 
-#include "Board.h"
+#include "Game.h"
 
 
 namespace ChessView
 {
-	using GamePtr = std::shared_ptr<ChessModel::Game>;
 	class ChessBox : public QPushButton
 	{
 		Q_OBJECT
@@ -33,20 +32,22 @@ namespace ChessView
 		void selected();
 
 	public:
-		ChessBox(GamePtr& board, ChessModel::Position& position,class BoardView* boardView);
+		ChessBox(ChessModel::GamePtr& board, ChessModel::Position& position,class BoardView* boardView);
 		~ChessBox() = default;
-
+		
 		void update();
 		ChessModel::Position getPosition();
 
 	private:
 		ChessModel::PiecePtr piece_;
 		ChessModel::Position position_;
-		GamePtr game_;
+		ChessModel::GamePtr game_;
 		class BoardView* boardView_;
 
 
 	};
+
+	using ChessBoxPtr = std::shared_ptr<ChessBox>;
 }
 
 

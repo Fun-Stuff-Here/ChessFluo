@@ -24,10 +24,9 @@
 using namespace ChessView;
 
 
-BoardView::BoardView(QWidget* parent):
-	QWidget(parent)
+BoardView::BoardView(ChessModel::GamePtr& game, QWidget* parent):
+	QWidget(parent),game_(game)
 {
-	game_  = std::make_shared<ChessModel::Game>();
 	selectedPiece_ = ChessModel::Board::pieceNotFound;
 
 	QGridLayout* boardLayout = new QGridLayout(this);

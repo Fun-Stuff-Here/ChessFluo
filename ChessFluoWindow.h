@@ -32,13 +32,14 @@ namespace ChessView
 	public:
 		ChessFluoWindow(QWidget* parent = nullptr);
 		~ChessFluoWindow() override = default;
-		
+		BoardView* getBoardView();
 
 
 	public slots:
 
 
 	private:
+		ChessModel::GamePtr game_;
 		BoardView boardview_;
 		PositionView positionView_;
 

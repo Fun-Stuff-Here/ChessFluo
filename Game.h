@@ -80,6 +80,8 @@ namespace ChessModel {
 
 	};
 
+	using GamePtr = std::shared_ptr<Game>;
+
 }
 
 

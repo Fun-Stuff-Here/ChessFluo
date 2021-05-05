@@ -31,7 +31,8 @@
 using namespace ChessView;
 
 ChessFluoWindow::ChessFluoWindow(QWidget* parent):
-	QMainWindow(parent)
+	QMainWindow(parent),game_(std::make_shared<ChessModel::Game>()),
+	boardview_(game_), positionView_(game_)
 {
 
 	QWidget* mainWidget = new QWidget(this);
@@ -107,4 +108,10 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	mainWidget->setMinimumSize((NROWS+6) * CHESSBOXSIZE);
 	mainWidget->setLayout(mainGridLayout);
 	
+}
+
+
+BoardView* ChessFluoWindow::getBoardView()
+{
+	return &boardview_;
 }

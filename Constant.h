@@ -52,4 +52,6 @@ namespace ChessView
 	const double FULLOPACITY{ 1.0 };
 	const QString TILECOLOR1 = "background-color: DarkMagenta;";
 	const QString TILECOLOR2 = "background-color: Coral;";
+
+
 }
