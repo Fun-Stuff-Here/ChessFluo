@@ -42,6 +42,8 @@ namespace ChessModel
 
 		void addPiece(PiecePtr& pieceToAdd);
 		void addPieces(std::vector<PiecePtr>&& piecesToAdd);
+		void removePiece(Position& position);
+
 
 
 		bool isUnoccupied(Position& position);

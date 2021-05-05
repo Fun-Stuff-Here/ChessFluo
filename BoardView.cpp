@@ -66,7 +66,7 @@ void BoardView::selections(ChessModel::PiecePtr& piece, ChessBox* chessbox)
 		selectedPiece_ = ChessModel::Board::pieceNotFound;
 
 	}
-	else
+	else if (piece->getColor() == game_->getTurn())
 	{
 		if (selectedPiece_)
 		{

@@ -176,3 +176,9 @@ Board* Game::getBoard()
 {
 	return &board_;
 }
+
+
+std::string Game::getTurn() const
+{
+	return turn_;
+}

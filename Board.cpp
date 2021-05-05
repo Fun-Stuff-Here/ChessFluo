@@ -325,3 +325,9 @@ bool Board::isCheckable(Position&& position, const std::string& color)
 {
 	return isCheckable(position, color);
 }
+
+
+void Board::removePiece(Position& position)
+{
+	pieces_.erase(position);
+}

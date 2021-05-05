@@ -11,6 +11,7 @@
 #include "Board.h"
 #include "Game.h"
 #include "King.h"
+#include "Queen.h"
 
 using namespace ChessModel;
 
@@ -71,7 +72,14 @@ void CastlingMove::execute(Game* game)
 
 void PromotionMove::execute(Game* game)
 {
-	throw NotImplemented();
+	auto piece = pieces_.at(from_);
+	auto board = game->getBoard();
+	eat_ = board->move(piece, to_);
+	board->removePiece(to_);
+	auto color = piece->getColor();
+	PiecePtr queen(new Queen{to_,color,board });
+	board->addPiece(queen);
+
 }
 
 

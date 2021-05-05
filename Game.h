@@ -29,6 +29,7 @@ namespace ChessModel {
 		void verifieCheck(const std::string& color);
 
 		Board* getBoard();
+		std::string getTurn() const;
 
 
 		PiecePtr move(PiecePtr& piece, Position& position);
