@@ -41,9 +41,11 @@ BoardView::BoardView(QWidget* parent):
 			chessBoxes_[position] = chessBox;
 			boardLayout->addWidget(chessBox.get(), NROWS - i, j);
 			boardLayout->setSpacing(0);
+			boardLayout->setVerticalSpacing(0);
 		}
 	}
-
+	setLayout(boardLayout);
+	setFixedSize(NROWS * CHESSBOXSIZE);
 }
 
 

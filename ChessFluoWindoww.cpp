@@ -31,19 +31,44 @@
 using namespace ChessView;
 
 ChessFluoWindow::ChessFluoWindow(QWidget* parent):
-	QMainWindow(parent),boardview_(this)
+	QMainWindow(parent)
 {
+
 	
 
 	QWidget* mainWidget = new QWidget(this);
-	QGridLayout*mainGridLayout = new QGridLayout(mainWidget);
-	
-	mainGridLayout->addWidget(&boardview_);
+	QGridLayout*mainGridLayout = new QGridLayout(this);
+
+	boardview_.setParent(mainWidget);
+	mainGridLayout->addWidget(&boardview_,0,0);
+
 	//Qobject::connect(&c1, SIGNAL(valueChanged(int)),
 	//	&c2, SLOT(setValue(int)));
 
 	
-	mainWidget->setLayout(mainGridLayout);
-	mainWidget->setMinimumSize((NROWS+1) * CHESSBOXSIZE);
-}
 
+	QLabel* label = new QLabel(mainWidget);
+	label->setText("Tour : ");
+	mainGridLayout->addWidget(label,0,1);
+
+
+
+	mainWidget->setMinimumSize((NROWS+5) * CHESSBOXSIZE);
+	mainWidget->setLayout(mainGridLayout);
+	
+	//QWidget* mainWidget = new QWidget(this);
+	//QHBoxLayout* mainHLayout = new QHBoxLayout(mainWidget);
+	//mainWidget->setLayout(mainHLayout);
+
+
+
+	//QLabel* label = new QLabel(this);
+	//label->setText("Tour : ");
+	//mainHLayout->addWidget(label);
+
+	//QLabel* label2 = new QLabel(this);
+	//label2->setText("TOUR : ");
+	//mainHLayout->addWidget(label);
+
+
+}
