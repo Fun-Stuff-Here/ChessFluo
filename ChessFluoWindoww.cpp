@@ -34,41 +34,77 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	QMainWindow(parent)
 {
 
-	
-
 	QWidget* mainWidget = new QWidget(this);
 	QGridLayout*mainGridLayout = new QGridLayout(this);
 
+	//TOP PART
+	QWidget* topWidget = new QWidget(mainWidget);
+	QHBoxLayout* topLayout = new QHBoxLayout(mainWidget);
+
+	QLabel* tourLabel = new QLabel(topWidget);
+	tourLabel->setText("Tour : ");
+	topLayout->addWidget(tourLabel);
+
+	QLabel* timeLabel = new QLabel(topWidget);
+	timeLabel->setText("Temps : ");
+	topLayout->addWidget(timeLabel);
+
+	topWidget->setLayout(topLayout);
+	mainGridLayout->addWidget(topWidget, 0, 0);
+
+	//GAME MODE PART
+	QWidget* gamemodeWidget = new QWidget(mainWidget);
+	QVBoxLayout* gamemodeLayout = new QVBoxLayout(mainWidget);
+
+	QLabel* gamemodeLabel = new QLabel(gamemodeWidget);
+	gamemodeLabel->setText("Mode de jeu :");
+	gamemodeLayout->addWidget(gamemodeLabel);
+
+	gamemodeWidget->setLayout(gamemodeLayout);
+	mainGridLayout->addWidget(gamemodeWidget, 0, 1);
+
+	//BOARD PART
 	boardview_.setParent(mainWidget);
-	mainGridLayout->addWidget(&boardview_,0,0);
+	mainGridLayout->addWidget(&boardview_,1,0);
 
-	//Qobject::connect(&c1, SIGNAL(valueChanged(int)),
-	//	&c2, SLOT(setValue(int)));
-
-	
-
-	QLabel* label = new QLabel(mainWidget);
-	label->setText("Tour : ");
-	mainGridLayout->addWidget(label,0,1);
+	//POSITIONS PART
+	positionView_.setParent(mainWidget);
+ 	mainGridLayout->addWidget(&positionView_, 1, 2);
 
 
+	//EATEN PIECES PART
+	QWidget* middleWidget = new QWidget(mainWidget);
+	QVBoxLayout* middleLayout = new QVBoxLayout(mainWidget);
 
-	mainWidget->setMinimumSize((NROWS+5) * CHESSBOXSIZE);
+	QLabel* eatenPiecesLabel = new QLabel(middleWidget);
+	eatenPiecesLabel->setText("Pièces mangées : ");
+	eatenPiecesLabel->setAlignment(Qt::AlignTop);
+	eatenPiecesLabel->setAlignment(Qt::AlignLeft);
+	middleLayout->addWidget(eatenPiecesLabel);
+
+	middleWidget->setLayout(middleLayout);
+	mainGridLayout->addWidget(middleWidget, 1, 1);
+
+	//BOTTOM PART
+	QWidget* bottomWidget = new QWidget(mainWidget);
+	QHBoxLayout* bottomLayout = new QHBoxLayout(mainWidget);
+
+	QPushButton* startBtn = new QPushButton(mainWidget);
+	startBtn->setText("Start");
+	bottomLayout->addWidget(startBtn);
+
+	QPushButton* undoBtn = new QPushButton(mainWidget);
+	undoBtn->setText("Undo");
+	bottomLayout->addWidget(undoBtn);
+
+	QPushButton* redoBtn = new QPushButton(mainWidget);
+	redoBtn->setText("Redo");
+	bottomLayout->addWidget(redoBtn);
+
+	bottomWidget->setLayout(bottomLayout);
+	mainGridLayout->addWidget(bottomWidget, 2, 0);
+
+	mainWidget->setMinimumSize((NROWS+6) * CHESSBOXSIZE);
 	mainWidget->setLayout(mainGridLayout);
 	
-	//QWidget* mainWidget = new QWidget(this);
-	//QHBoxLayout* mainHLayout = new QHBoxLayout(mainWidget);
-	//mainWidget->setLayout(mainHLayout);
-
-
-
-	//QLabel* label = new QLabel(this);
-	//label->setText("Tour : ");
-	//mainHLayout->addWidget(label);
-
-	//QLabel* label2 = new QLabel(this);
-	//label2->setText("TOUR : ");
-	//mainHLayout->addWidget(label);
-
-
 }

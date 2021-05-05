@@ -17,6 +17,7 @@
 #include "Board.h"
 #include "ChessBox.h"
 #include"BoardView.h"
+#include"PositionView.h"
 
 
 namespace ChessView
@@ -39,6 +40,7 @@ namespace ChessView
 
 	private:
 		BoardView boardview_;
+		PositionView positionView_;
 
 	};
 }
