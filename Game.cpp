@@ -292,6 +292,8 @@ void Game::start(WhiteToCheckMate2)
 	board_.getKing(COLORPLAYER2)->moved();
 
 }
+
+
 void Game::start(WhiteToWin1)
 {
 	//Pollack - Mulay London classic open 2016
