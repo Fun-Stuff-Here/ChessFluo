@@ -47,6 +47,7 @@ namespace ChessModel {
 		std::vector<MovePtr> getAllMovesPositions(const std::string& color);
 
 		Board* getBoard();
+
 		std::string getTurn() const;
 
 
