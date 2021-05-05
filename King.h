@@ -22,7 +22,7 @@ namespace ChessModel
 		void moved();
 		void smallCastlingRookMoved();
 		void bigCastlingRookMoved();
-
+		std::vector<Position> getMovesFromOffsets() const;
 	private:
 		bool canSmallCastle_;
 		bool canBigCastle_;

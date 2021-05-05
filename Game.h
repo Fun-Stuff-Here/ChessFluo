@@ -17,9 +17,6 @@
 namespace ChessModel {
 
 
-	struct Regular2PlayerGame {};
-	struct REgular1PlayerGame {};
-
 
 
 	class Game
@@ -36,8 +33,18 @@ namespace ChessModel {
 
 		void start(Regular2PlayerGame);
 		void start(REgular1PlayerGame);
+		void start(WhiteToCheckMate1);
+		void start(WhiteToCheckMate2);
+		void start(WhiteToWin1);
+		void start(WhiteToWin2);
 		void start();
 
+
+		bool canUndo() const;
+		bool canRedo() const;
+
+		void undo();
+		void redo();
 
 
 		bool isCheckMate(const std::string& color);
@@ -47,6 +54,7 @@ namespace ChessModel {
 		std::vector<MovePtr> getAllMovesPositions(const std::string& color);
 
 		Board* getBoard();
+
 		std::string getTurn() const;
 
 
@@ -64,8 +72,11 @@ namespace ChessModel {
 		std::string turn_;
 		Board board_;
 		std::vector<MovePtr> moveHistory_;
+		std::vector<MovePtr> redoHistory_;
 		bool isFinished_;
 		//std::vector<Player> players;
+
+		void redoClear();
 
 	};
 

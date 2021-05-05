@@ -12,12 +12,15 @@
 #include "Board.h"
 #include "Pawn.h"
 #include "Rook.h"
+#include "Queen.h"
+#include "Knight.h"
+#include "Bishop.h"
 
 
 using namespace ChessModel;
 
 Game::Game():
-	board_(), moveHistory_()
+	board_(Empty{}), moveHistory_()
 {
 	turn_ = COLORPLAYER1;
 }
@@ -91,7 +94,7 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 		if (rook->getPosition() == Position{ 1,8 })
 			board_.getKing(COLORPLAYER2)->bigCastlingRookMoved();
 	}
-
+	redoClear();
 	try
 	{
 		verifieCheck(board_.getOpponentColor(piece->getColor()));
@@ -114,14 +117,20 @@ MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 	auto pieces = board_.getPieces();
 
 	auto pawn = dynamic_cast<Pawn*>(piece.get());
-	if (pawn && (position.second == 0 || position.second == NROWS)) 
+	if (pawn && (position.second == 1 || position.second == NROWS)) 
 		move = static_cast<MovePtr>(new PromotionMove{pieces,from ,position });
 	
 
 	auto king = dynamic_cast<King*>(piece.get());
 	auto castlingPosition =  std::find(CASTLINGPOSITIONS.begin(), CASTLINGPOSITIONS.end(),position);
 	if (king && castlingPosition != CASTLINGPOSITIONS.end())
-		move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+	{
+		if(king->canBigCastle() && std::find(BIGCASTLINGPOSITION.begin(), BIGCASTLINGPOSITION.end(), position) != BIGCASTLINGPOSITION.end())
+			move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+		if (king->canSmallCastle() && std::find(SMALLCASTLINGPOSITIONS.begin(), SMALLCASTLINGPOSITIONS.end(), position) != SMALLCASTLINGPOSITIONS.end())
+			move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+	}
+		
 
 	if (!move) move = static_cast<MovePtr>(new RegularMove{pieces,from,position});
 
@@ -181,6 +190,26 @@ std::vector<Position> Game::getMovesPositions(Position& position)
 			return !toRemove;
 		}
 		);
+		
+	if (dynamic_cast<King*>(piece.get()))
+	{
+		std::vector<Position> kingFilterPosition{};
+		std::copy_if(filteredPositions.begin(), filteredPositions.end(), std::back_inserter(kingFilterPosition),
+			[&piece, this](Position position) -> bool {
+				bool toRemove = false;
+				auto oppositeKing = board_.getKing(board_.getOpponentColor(piece->getColor()));
+
+				auto oppositeKingMoves = oppositeKing->getMovesFromOffsets();
+				if (std::find(oppositeKingMoves.begin(), oppositeKingMoves.end(), position) != oppositeKingMoves.end())
+					toRemove = true;
+				return !toRemove;
+			}
+		);
+		return kingFilterPosition;
+	}
+
+
+
 
 	return filteredPositions;
 }
@@ -234,23 +263,86 @@ void Game::start()
 void Game::start(Regular2PlayerGame)
 {
 	start();
+	board_.fill();
 
 }
-
-
 
 void Game::start(REgular1PlayerGame)
 {
 	start();
+	board_.fill();
+}
+
+void Game::start(WhiteToCheckMate1)
+{
+	//Magnus - Harestad 25th Politiken Cup
+	start();
+	board_.fill(WhiteToCheckMate1{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
+}
+
+
+void Game::start(WhiteToCheckMate2)
+{
+	//Kasparov - Ivanchuk 55th URS-ch
+	start();
+	board_.fill(WhiteToCheckMate2{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
 
 }
 
 
+void Game::start(WhiteToWin1)
+{
+	//Pollack - Mulay London classic open 2016
+	start();
+	board_.fill(WhiteToWin1{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
+}
+
+void Game::start(WhiteToWin2)
+{
+	//Reshevsky - Fischer Palma de Mallorca Interzonal 1970
+	start();
+	board_.fill(WhiteToWin2{});
+	board_.getKing(COLORPLAYER1)->moved();
+	board_.getKing(COLORPLAYER2)->moved();
+}
 
 
+bool Game::canUndo() const
+{
+	return moveHistory_.size() != 0;
+}
 
+bool Game::canRedo() const
+{
+	return redoHistory_.size() != 0;
+}
 
+void Game::undo()
+{
+	auto move = moveHistory_.back();
+	moveHistory_.pop_back();
+	board_.restore(move);
+	redoHistory_.push_back(move);
+}
 
+void Game::redo()
+{
+	auto move = redoHistory_.back();
+	redoHistory_.pop_back();
+	board_.restore(move);
+	moveHistory_.push_back(move);
+}
+
+void Game::redoClear()
+{
+	redoHistory_.clear();
+}
 
 
 

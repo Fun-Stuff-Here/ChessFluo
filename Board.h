@@ -15,10 +15,15 @@
 namespace ChessModel
 {
 
-	struct Empty
-	{};
-	struct KingOnly
-	{};
+	struct Empty{};
+	struct KingOnly{};
+	struct Regular2PlayerGame {};
+	struct REgular1PlayerGame {};
+	struct WhiteToCheckMate1 {};
+	struct WhiteToCheckMate2 {};
+	struct WhiteToWin1 {};
+	struct WhiteToWin2 {};
+
 
 	class Board
 	{
@@ -39,6 +44,13 @@ namespace ChessModel
 		PiecePtr getPiece(Position&& position) const;
 		class King* getKing(const std::string& color) const;
 
+
+		void fill(KingOnly);
+		void fill();
+		void fill(WhiteToCheckMate1);
+		void fill(WhiteToCheckMate2);
+		void fill(WhiteToWin1);
+		void fill(WhiteToWin2);
 
 		void addPiece(PiecePtr& pieceToAdd);
 		void addPieces(std::vector<PiecePtr>&& piecesToAdd);

@@ -68,7 +68,7 @@ void BoardView::selections(ChessModel::PiecePtr& piece, ChessBox* chessbox)
 		selectedPiece_ = ChessModel::Board::pieceNotFound;
 
 	}
-	else if (piece->getColor() == game_->getTurn())
+	else
 	{
 		if (selectedPiece_)
 		{
@@ -77,7 +77,7 @@ void BoardView::selections(ChessModel::PiecePtr& piece, ChessBox* chessbox)
 			update(previousPositions, FULLOPACITY);
 		}
 
-		if (piece)
+		if (piece&& piece->getColor() == game_->getTurn())
 		{
 			auto positions = game_->getMovesPositions(piece->getPosition());
 			positions.push_back(piece->getPosition());
