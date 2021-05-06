@@ -10,7 +10,7 @@
 #pragma warning(push, 0) // Sinon Qt fait des avertissements à /W4.
 #include <QMainWindow>
 #include <QAbstractButton>
-#include < QPushButton>
+#include <QPushButton>
 #include <QString>
 #include <QLabel>
 #include <qgroupbox.h>

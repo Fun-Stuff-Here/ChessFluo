@@ -1,3 +1,4 @@
+#pragma once
 //* \file		BoardView.hpp
 //* \author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544, Afaf Djellabi 2089967
 //* \date		5 mai 2021
@@ -12,28 +13,25 @@
 #pragma pop()
 
 #include "Game.h"
-#include "BoardView.h"
-
 
 namespace ChessView {
 
-	class PositionView : public QWidget {
+	class FeaturesView : public QWidget {
 		Q_OBJECT
 
 	public:
-		PositionView(ChessModel::GamePtr& game, QWidget* parent = nullptr);
-		~PositionView() override = default;
+		FeaturesView(ChessModel::GamePtr& game, QWidget* parent = nullptr);
+		~FeaturesView() override = default;
 
 	public slots:
-		void regularStart();
-		void puzzle1();
-		void puzzle2();
-		void puzzle3();
-		void puzzle4();
+		void start();
+		void undo();
+		void redo();
+		void reset();
+
 
 	private:
-			ChessModel::GamePtr game_;
-			//BoardView boardView_;
+		ChessModel::GamePtr game_;
 
 	};
 }

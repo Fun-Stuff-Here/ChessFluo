@@ -18,6 +18,7 @@
 #include "ChessBox.h"
 #include"BoardView.h"
 #include"PositionView.h"
+#include "FeaturesView.h"
 
 
 namespace ChessView
@@ -42,6 +43,7 @@ namespace ChessView
 		ChessModel::GamePtr game_;
 		BoardView boardview_;
 		PositionView positionView_;
+		FeaturesView featuresView_;
 
 	};
 }

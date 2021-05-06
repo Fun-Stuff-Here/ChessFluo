@@ -103,6 +103,9 @@
     <ClCompile Include="PositionView.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
+    <ClCompile Include="FeaturesView.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h">
@@ -156,6 +159,9 @@
       <Filter>Header Files\View</Filter>
     </QtMoc>
     <QtMoc Include="PositionView.h">
+      <Filter>Header Files\View</Filter>
+    </QtMoc>
+    <QtMoc Include="FeaturesView.h">
       <Filter>Header Files\View</Filter>
     </QtMoc>
   </ItemGroup>

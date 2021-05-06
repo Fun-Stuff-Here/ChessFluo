@@ -17,8 +17,6 @@
 namespace ChessModel {
 
 
-
-
 	class Game
 	{
 	public:

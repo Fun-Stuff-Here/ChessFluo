@@ -32,7 +32,7 @@ using namespace ChessView;
 
 ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	QMainWindow(parent),game_(std::make_shared<ChessModel::Game>()),
-	boardview_(game_), positionView_(game_)
+	boardview_(game_), positionView_(game_), featuresView_(game_)
 {
 
 	QWidget* mainWidget = new QWidget(this);
@@ -87,24 +87,8 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	mainGridLayout->addWidget(middleWidget, 1, 1);
 
 	//BOTTOM PART
-	QWidget* bottomWidget = new QWidget(mainWidget);
-	QHBoxLayout* bottomLayout = new QHBoxLayout(mainWidget);
-
-	QPushButton* startBtn = new QPushButton(mainWidget);
-	startBtn->setText("Start");
-	bottomLayout->addWidget(startBtn);
-
-	QPushButton* undoBtn = new QPushButton(mainWidget);
-	undoBtn->setText("Undo");
-	bottomLayout->addWidget(undoBtn);
-
-	QPushButton* redoBtn = new QPushButton(mainWidget);
-	redoBtn->setText("Redo");
-	bottomLayout->addWidget(redoBtn);
-
-	bottomWidget->setLayout(bottomLayout);
-	mainGridLayout->addWidget(bottomWidget, 2, 0);
-
+	featuresView_.setParent(mainWidget);
+	mainGridLayout->addWidget(&featuresView_, 2, 0);
 	mainWidget->setMinimumSize((NROWS+6) * CHESSBOXSIZE);
 	mainWidget->setLayout(mainGridLayout);
 	

@@ -39,7 +39,7 @@ ChessBox::ChessBox(ChessModel::GamePtr& board, ChessModel::Position& position, c
 void ChessBox::selected()
 {
 	std::cout << "chessbox selected " << position_.first << "," << position_.second << std::endl;
-		boardView_->selections(piece_,this);
+	boardView_->selections(piece_,this);
 }
 
 

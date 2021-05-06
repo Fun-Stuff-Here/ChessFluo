@@ -41,18 +41,22 @@ PositionView::PositionView(ChessModel::GamePtr& game, QWidget* parent) :
 	QPushButton* puzzle1PositionsBtn = new QPushButton(this);
 	puzzle1PositionsBtn->setText("Puzzle 1");
 	positionLayout->addWidget(puzzle1PositionsBtn);
+	connect(puzzle1PositionsBtn,SIGNAL(clicked()),this, SLOT(puzzle1(void)));
 
 	QPushButton* puzzle2PositionsBtn = new QPushButton(this);
 	puzzle2PositionsBtn->setText("Puzzle 2");
 	positionLayout->addWidget(puzzle2PositionsBtn);
+	connect(puzzle2PositionsBtn, SIGNAL(clicked()), this, SLOT(puzzle2(void)));
 
 	QPushButton* puzzle3PositionsBtn = new QPushButton(this);
 	puzzle3PositionsBtn->setText("Puzzle 3");
 	positionLayout->addWidget(puzzle3PositionsBtn);
+	connect(puzzle3PositionsBtn,SIGNAL(clicked()),this, SLOT(puzzle3(void)));
 
 	QPushButton* puzzle4PositionsBtn = new QPushButton(this);
 	puzzle4PositionsBtn->setText("Puzzle 4");
 	positionLayout->addWidget(puzzle4PositionsBtn);
+	connect(puzzle4PositionsBtn,SIGNAL(clicked()),this, SLOT(puzzle4(void)));
 
 	setLayout(positionLayout);
 }
@@ -61,5 +65,26 @@ PositionView::PositionView(ChessModel::GamePtr& game, QWidget* parent) :
 void PositionView::regularStart()
 {
 	game_->start(ChessModel::Regular2PlayerGame{});
+	//boardView_.update();
+	//emit();
+}
+void PositionView::puzzle1()
+{
+	game_->start(ChessModel::WhiteToCheckMate1{});
+	//emit();
+}
+void PositionView::puzzle2()
+{
+	game_->start(ChessModel::WhiteToCheckMate2{});
+	//emit();
+}
+void PositionView::puzzle3()
+{
+	game_->start(ChessModel::WhiteToWin1{});
+	//emit();
+}
+void PositionView::puzzle4()
+{
+	game_->start(ChessModel::WhiteToWin2{});
 	//emit();
 }
