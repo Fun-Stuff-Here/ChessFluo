@@ -67,6 +67,7 @@ EatView::EatView(ChessModel::GamePtr& game, QWidget* parent ):
 	
 	setLayout(middleLayout);
 	setFixedSize(middleLayout->totalMinimumSize());
+	
 }
 
 void EatView::update()

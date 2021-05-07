@@ -19,6 +19,8 @@
 #include <qgridlayout.h>
 #include <QGraphicsOpacityEffect>
 #include <qmessagebox.h>
+#include <QLayout>
+#include<QSizePolicy>
 #pragma pop()
 
 #include <iostream>
@@ -62,7 +64,9 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	mainGridLayout->addWidget(&featuresView_, 2, 0);
 
 
-	
+
+	mainGridLayout->setSizeConstraint(QLayout::SetMinimumSize);
+	mainWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 	mainWidget->setMinimumSize(mainGridLayout->totalMinimumSize());
 	mainWidget->setLayout(mainGridLayout);
 
