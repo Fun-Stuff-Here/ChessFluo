@@ -53,6 +53,7 @@ namespace ChessView
 	const QString TILECOLOR1 = "background-color: DarkMagenta;";
 	const QString TILECOLOR2 = "background-color: Coral;";
 	const std::string WHITEBACKGROUND = "border-image: url( './Images/White.png') 0 0 0 0 stretch stretch;";
+	const QString QWHITEBACKGROUNDTurn = "border-image: url( './Images/White.png') 0 0 0 0 stretch stretch;";
 	const std::string BLACKBACKGROUND = "border-image: url( './Images/black.png') 0 0 0 0 stretch stretch;";
 	const QString QBLACKBACKGROUND = "border-image: url( './Images/BlackTurn.png') 0 0 0 0 stretch stretch;";
 	const QString QWHITEBACKGROUND = "border-image: url( './Images/WhiteTurn.png') 0 0 0 0 stretch stretch;";

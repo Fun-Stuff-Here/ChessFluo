@@ -31,6 +31,7 @@ namespace ChessView {
 	private:
 		ChessModel::GamePtr game_;
 		std::map<std::string, std::vector<PieceIconPtr>> eatenPiecesIcons_;
+		int nPiece_;
 
 	};
 }

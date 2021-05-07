@@ -27,10 +27,10 @@ namespace ChessView {
 	public slots:
 		void update(ChessModel::PiecePtr piece);
 
-
 	private:
 		ChessModel::PiecePtr piece_;
 		std::string color_;
+
 
 	};
 

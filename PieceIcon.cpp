@@ -34,7 +34,6 @@ PieceIcon::PieceIcon(const std::string color, QWidget* parent) :
 void PieceIcon::update(ChessModel::PiecePtr piece)
 {
 	piece_ = piece;
-
 	QString image = QString::fromStdString((piece_ != ChessModel::Board::pieceNotFound)
 		? "border-image: url( './Images/Pieces/" +
 		static_cast<std::string>(typeid(*piece_).name()).substr(static_cast<std::string>(typeid(*piece_).name()).find_last_of(':') + 1) +
@@ -48,3 +47,5 @@ ChessModel::PiecePtr PieceIcon::getPiece() const
 {
 	return piece_;
 }
+
+

@@ -72,13 +72,20 @@ EatView::EatView(ChessModel::GamePtr& game, QWidget* parent ):
 
 void EatView::update()
 {
-	for (auto&& [color, icons] : eatenPiecesIcons_)
+
+	
+	auto piecesEat = game_->getPieceEat();
+	if (nPiece_ > piecesEat.size())
 	{
-		for (auto&& icon : icons)
-			icon->update(ChessModel::Board::pieceNotFound);
+		for (auto&& [color,icons]: eatenPiecesIcons_)
+		{
+			for (auto&& icon : icons)
+				icon->update(ChessModel::Board::pieceNotFound);
+		}
 	}
 
-	auto piecesEat = game_->getPieceEat();
+
+	nPiece_ = piecesEat.size();
 
 	std::vector<ChessModel::PiecePtr> whitePieces;
 	std::copy_if(piecesEat.begin(), piecesEat.end(), std::back_inserter(whitePieces),

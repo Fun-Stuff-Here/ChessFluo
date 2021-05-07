@@ -63,7 +63,15 @@ void FeaturesView::undo()
 }
 void FeaturesView::redo()
 {
-	game_->redo();
+	try
+	{
+		game_->redo();
+	}
+	catch (const ChessModel::Check&)
+	{}
+	catch (const ChessModel::CheckMate&)
+	{}
+
 	Q_EMIT updateBoard();
 }
 
