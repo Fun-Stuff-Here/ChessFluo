@@ -29,6 +29,8 @@ namespace ChessView {
 		void redo();
 		void reset();
 
+	signals:
+		void updateBoard();
 
 	private:
 		ChessModel::GamePtr game_;

@@ -45,6 +45,8 @@ namespace ChessView
 		PositionView positionView_;
 		FeaturesView featuresView_;
 
+		void connectMenu();
+
 	};
 }
 

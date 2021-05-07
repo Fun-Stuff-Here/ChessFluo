@@ -30,7 +30,7 @@ FeaturesView::FeaturesView(ChessModel::GamePtr& game, QWidget* parent) :
 	QPushButton* startBtn = new QPushButton(this);
 	startBtn->setText("Start");
 	bottomLayout->addWidget(startBtn);
-	connect(startBtn, SIGNAL(clicked()), this, SLOT(regularStart(void)));
+	connect(startBtn, SIGNAL(clicked()), this, SLOT(start(void)));
 
 	QPushButton* undoBtn = new QPushButton(this);
 	undoBtn->setText("Undo");
@@ -53,22 +53,22 @@ FeaturesView::FeaturesView(ChessModel::GamePtr& game, QWidget* parent) :
 
 void FeaturesView::start()
 {
-	//game_->start(ChessModel::Regular2PlayerGame{});
-	//boardView_.update();
-	//emit();
+	game_->start(ChessModel::Regular2PlayerGame{});
+	Q_EMIT updateBoard();
 }
 void FeaturesView::undo()
 {
-	//game_->undo();
-	//emit();
+	game_->undo();
+	Q_EMIT updateBoard();
 }
 void FeaturesView::redo()
 {
-	//game_->redo();
-	//emit();
+	game_->redo();
+	Q_EMIT updateBoard();
 }
 
 void FeaturesView::reset()
 {
-	//à faire
+	game_->start();
+	Q_EMIT updateBoard();
 }

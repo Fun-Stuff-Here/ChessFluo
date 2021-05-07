@@ -40,8 +40,6 @@ namespace ChessView {
 	public slots:
 		void update();
 
-	signals:
-		void gameChanged();
 
 	private:
 		ChessModel::GamePtr game_;

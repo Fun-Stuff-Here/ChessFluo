@@ -77,7 +77,7 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 	auto move = moveTry(piece, position);
 	moveHistory_.push_back(move);
 	piece->setPosition(position);
-	turn_ = board_.getOpponentColor(turn_);
+	changeTurn();
 	//castling conditions updating
 	auto rook = dynamic_cast<Rook*>(piece.get());
 	auto king = dynamic_cast<King*>(piece.get());
@@ -325,18 +325,29 @@ bool Game::canRedo() const
 
 void Game::undo()
 {
-	auto move = moveHistory_.back();
-	moveHistory_.pop_back();
-	board_.restore(move);
-	redoHistory_.push_back(move);
+	if (moveHistory_.size() > 0)
+	{
+		auto moveHistory = moveHistory_.back();
+		moveHistory_.pop_back();
+		board_.restore(moveHistory);
+		redoHistory_.push_back(moveHistory);
+		changeTurn();
+	}
+
 }
 
 void Game::redo()
 {
-	auto move = redoHistory_.back();
-	redoHistory_.pop_back();
-	board_.restore(move);
-	moveHistory_.push_back(move);
+	if (redoHistory_.size() > 0)
+	{
+		auto moveHistory = redoHistory_.back();
+		redoHistory_.pop_back();
+		auto piece = board_.getPiece(moveHistory->getFrom());
+		auto redos = redoHistory_;
+		move(piece,moveHistory->getTo());
+		redoHistory_ = redos;
+	}
+
 }
 
 void Game::redoClear()
@@ -345,6 +356,9 @@ void Game::redoClear()
 }
 
 
-
+void Game::changeTurn()
+{
+	turn_ = board_.getOpponentColor(turn_);
+}
 
 

@@ -91,11 +91,20 @@ ChessFluoWindow::ChessFluoWindow(QWidget* parent):
 	mainGridLayout->addWidget(&featuresView_, 2, 0);
 	mainWidget->setMinimumSize((NROWS+6) * CHESSBOXSIZE);
 	mainWidget->setLayout(mainGridLayout);
-	
+
+	connectMenu();
+
 }
 
 
 BoardView* ChessFluoWindow::getBoardView()
 {
 	return &boardview_;
+}
+
+
+void ChessFluoWindow::connectMenu()
+{
+	connect(&positionView_, SIGNAL(updateBoard(void)), &boardview_, SLOT(update(void)));
+	connect(&featuresView_, SIGNAL(updateBoard(void)), &boardview_, SLOT(update(void)));
 }

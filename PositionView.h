@@ -31,6 +31,10 @@ namespace ChessView {
 		void puzzle3();
 		void puzzle4();
 
+	signals:
+		void updateBoard();
+
+
 	private:
 			ChessModel::GamePtr game_;
 			//BoardView boardView_;

@@ -54,7 +54,7 @@ namespace ChessModel {
 		Board* getBoard();
 
 		std::string getTurn() const;
-
+		void changeTurn();
 
 		PiecePtr move(PiecePtr& piece, Position& position);
 		PiecePtr move(PiecePtr& piece, Position&& position);

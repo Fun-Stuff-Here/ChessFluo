@@ -65,26 +65,25 @@ PositionView::PositionView(ChessModel::GamePtr& game, QWidget* parent) :
 void PositionView::regularStart()
 {
 	game_->start(ChessModel::Regular2PlayerGame{});
-	//boardView_.update();
-	//emit();
+	Q_EMIT updateBoard();
 }
 void PositionView::puzzle1()
 {
 	game_->start(ChessModel::WhiteToCheckMate1{});
-	//emit();
+	Q_EMIT updateBoard();
 }
 void PositionView::puzzle2()
 {
 	game_->start(ChessModel::WhiteToCheckMate2{});
-	//emit();
+	Q_EMIT updateBoard();
 }
 void PositionView::puzzle3()
 {
 	game_->start(ChessModel::WhiteToWin1{});
-	//emit();
+	Q_EMIT updateBoard();
 }
 void PositionView::puzzle4()
 {
 	game_->start(ChessModel::WhiteToWin2{});
-	//emit();
+	Q_EMIT updateBoard();
 }
