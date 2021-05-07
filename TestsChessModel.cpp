@@ -759,6 +759,40 @@ TEST(Game, move) {}
 
 
 
+TEST(Bishop	, moves) {}
+
+
+TEST(Board, castling_deux_zero) {}
+
+
+
+TEST(Board, getter) {}
+
+TEST(Board, removePiece) {}
+TEST(Board, Restore) {}
+
+TEST(ImpossibleMove, call) {}
+
+
+TEST(King, canCastle) {}
+
+
+TEST(Move, getter) {}
+
+
+TEST(NotImplemented, call) {}
+
+
+TEST(Player, call) {}
+
+TEST(PromotionMove, call) {}
+
+TEST(Queen, moves) {}
+
+TEST(Rook, moves) {}
+
+
+
 
 
 
