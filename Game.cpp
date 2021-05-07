@@ -239,8 +239,8 @@ std::vector<MovePtr> Game::getAllMovesPositions(const std::string& color)
 		auto piecePosition = it.second->getPosition();
 		for (auto&& position : getMovesPositions(const_cast<Position&>(it.first)))
 		{
-			MovePtr move{new RegularMove{ pieces,piecePosition,position }};
-			moves.emplace_back(move);
+			MovePtr movePiece{new RegularMove{ pieces,piecePosition,position }};
+			moves.emplace_back(movePiece);
 		}
 		
 	}
