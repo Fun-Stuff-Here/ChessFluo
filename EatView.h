@@ -1,9 +1,8 @@
-//* \file		FeaturesView.hpp
+//* \file		EatViw.hpp
 //* \author	Elizabeth Michaud 2073093, Nicolas Dépelteau 2083544, Afaf Djellabi 2089967
 //* \date		5 mai 2021
 //* Créé le	5 mai 2021
 //* /
-
 #pragma once
 #pragma warning(push, 0) // Sinon Qt fait des avertissements à /W4.
 #include <qwidget.h>
@@ -12,27 +11,26 @@
 #pragma pop()
 
 #include "Game.h"
+#include "PieceIcon.h"
 
 namespace ChessView {
 
-	class FeaturesView : public QWidget {
+	class EatView : public QWidget {
 		Q_OBJECT
 
 	public:
-		FeaturesView(ChessModel::GamePtr& game, QWidget* parent = nullptr);
-		~FeaturesView() override = default;
+		EatView(ChessModel::GamePtr& game, QWidget* parent = nullptr);
+		~EatView() override = default;
 
 	public slots:
-		void start();
-		void undo();
-		void redo();
-		void reset();
-
+		void update();
+	
 	signals:
-		void updateBoard();
+		void iconUpdate(ChessModel::PiecePtr piece);
 
 	private:
 		ChessModel::GamePtr game_;
+		std::map<std::string, std::vector<PieceIconPtr>> eatenPiecesIcons_;
 
 	};
 }

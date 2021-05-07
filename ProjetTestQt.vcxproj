@@ -120,6 +120,7 @@
     <ClCompile Include="BoardView.cpp" />
     <ClCompile Include="ChessBox.cpp" />
     <ClCompile Include="ChessFluoWindoww.cpp" />
+    <ClCompile Include="EatView.cpp" />
     <ClCompile Include="FeaturesView.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="googletest\src\gtest-all.cc" />
@@ -129,20 +130,27 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="PieceIcon.cpp" />
     <ClCompile Include="Players.cpp" />
     <ClCompile Include="PositionView.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Rook.cpp" />
     <ClCompile Include="TestsChessModel.cpp" />
+    <ClCompile Include="turn.cpp" />
+    <ClCompile Include="TurnIcon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h" />
     <ClInclude Include="Board.h" />
+    <QtMoc Include="TurnIcon.h" />
+    <QtMoc Include="Turn.h" />
     <QtMoc Include="BoardView.h" />
     <QtMoc Include="FeaturesView.h" />
+    <QtMoc Include="EatView.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Pawn.h" />
+    <QtMoc Include="PieceIcon.h" />
     <ClInclude Include="Players.h" />
     <QtMoc Include="PositionView.h" />
     <ClInclude Include="Queen.h" />
@@ -156,6 +164,7 @@
     <ClInclude Include="Piece.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Images\Black.png" />
     <Image Include="Images\Pieces\Bishop_bluelaite.jpg" />
     <Image Include="Images\Pieces\Bishop_bluelaite.png" />
     <Image Include="Images\Pieces\Bishop_vertmoisi.jpg" />
@@ -180,6 +189,13 @@
     <Image Include="Images\Pieces\WhitePound.jpg" />
     <Image Include="Images\Pieces\WhiteQueen.jpg" />
     <Image Include="Images\Pieces\WhiteRock.jpg" />
+    <Image Include="Images\White.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\ImposssibleMove.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

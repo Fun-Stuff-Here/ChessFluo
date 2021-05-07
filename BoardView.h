@@ -40,6 +40,10 @@ namespace ChessView {
 	public slots:
 		void update();
 
+	signals:
+		void eatViewUpdate();
+		void turnViewUpdate();
+
 
 	private:
 		ChessModel::GamePtr game_;
@@ -48,8 +52,6 @@ namespace ChessView {
 
 		bool isMoving(ChessModel::PiecePtr& piece);
 		bool isSamePiece(ChessModel::PiecePtr& piece);
-
-
 
 	};
 

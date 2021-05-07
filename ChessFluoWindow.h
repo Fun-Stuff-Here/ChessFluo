@@ -19,6 +19,8 @@
 #include"BoardView.h"
 #include"PositionView.h"
 #include "FeaturesView.h"
+#include "EatView.h"
+#include "Turn.h"
 
 
 namespace ChessView
@@ -44,6 +46,8 @@ namespace ChessView
 		BoardView boardview_;
 		PositionView positionView_;
 		FeaturesView featuresView_;
+		EatView eatView_;
+		Turn turnView_;
 
 		void connectMenu();
 

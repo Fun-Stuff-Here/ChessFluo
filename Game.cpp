@@ -76,6 +76,9 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 	if (!isValidMove(positionPiece,position)) throw ImpossibleMove();
 	auto move = moveTry(piece, position);
 	moveHistory_.push_back(move);
+	auto pieceEat = move->getPieceEat();
+	if (pieceEat)
+		piecesEat_.insert(pieceEat);
 	piece->setPosition(position);
 	changeTurn();
 	//castling conditions updating
@@ -259,6 +262,7 @@ void Game::start()
 	board_.clearPieces();
 	moveHistory_.clear();
 	redoHistory_.clear();
+	piecesEat_.clear();
 }
 
 
@@ -331,6 +335,9 @@ void Game::undo()
 	{
 		auto moveHistory = moveHistory_.back();
 		moveHistory_.pop_back();
+		auto pieceEat = moveHistory->getPieceEat();
+		if(pieceEat)
+			piecesEat_.erase(pieceEat);
 		board_.restore(moveHistory);
 		redoHistory_.push_back(moveHistory);
 		changeTurn();
@@ -361,6 +368,12 @@ void Game::redoClear()
 void Game::changeTurn()
 {
 	turn_ = board_.getOpponentColor(turn_);
+}
+
+
+std::set<PiecePtr> Game::getPieceEat() const
+{
+	return piecesEat_;
 }
 
 

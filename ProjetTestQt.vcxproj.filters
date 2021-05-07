@@ -41,6 +41,9 @@
     <Filter Include="Resource Files\Images">
       <UniqueIdentifier>{a1c9d11c-d4f8-47b8-a3d6-6cea95607b9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Sounds">
+      <UniqueIdentifier>{93e66b63-4900-43f5-820f-064dfe4ca88a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bibliotheque_cours\bibliotheque_cours.cpp">
@@ -106,6 +109,18 @@
     <ClCompile Include="FeaturesView.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
+    <ClCompile Include="EatView.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="PieceIcon.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="turn.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="TurnIcon.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bishop.h">
@@ -162,6 +177,18 @@
       <Filter>Header Files\View</Filter>
     </QtMoc>
     <QtMoc Include="FeaturesView.h">
+      <Filter>Header Files\View</Filter>
+    </QtMoc>
+    <QtMoc Include="EatView.h">
+      <Filter>Header Files\View</Filter>
+    </QtMoc>
+    <QtMoc Include="PieceIcon.h">
+      <Filter>Header Files\View</Filter>
+    </QtMoc>
+    <QtMoc Include="Turn.h">
+      <Filter>Header Files\View</Filter>
+    </QtMoc>
+    <QtMoc Include="TurnIcon.h">
       <Filter>Header Files\View</Filter>
     </QtMoc>
   </ItemGroup>
@@ -238,5 +265,21 @@
     <Image Include="Images\Pieces\WhiteRock.jpg">
       <Filter>Resource Files\Images</Filter>
     </Image>
+    <Image Include="Images\Black.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+    <Image Include="Images\White.png">
+      <Filter>Resource Files\Images</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\ImposssibleMove.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

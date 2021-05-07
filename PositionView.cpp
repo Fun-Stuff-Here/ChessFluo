@@ -59,6 +59,7 @@ PositionView::PositionView(ChessModel::GamePtr& game, QWidget* parent) :
 	connect(puzzle4PositionsBtn,SIGNAL(clicked()),this, SLOT(puzzle4(void)));
 
 	setLayout(positionLayout);
+	setFixedSize(positionLayout->totalMinimumSize());
 }
 
 

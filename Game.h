@@ -13,6 +13,7 @@
 #include "Board.h"
 #include "Move.h"
 #include "Players.h"
+#include <set>
 
 namespace ChessModel {
 
@@ -37,6 +38,8 @@ namespace ChessModel {
 		void start(WhiteToWin2);
 		void start();
 
+
+		std::set<PiecePtr> getPieceEat() const;
 
 		bool canUndo() const;
 		bool canRedo() const;
@@ -71,6 +74,7 @@ namespace ChessModel {
 		Board board_;
 		std::vector<MovePtr> moveHistory_;
 		std::vector<MovePtr> redoHistory_;
+		std::set<PiecePtr> piecesEat_;
 		bool isFinished_;
 		//std::vector<Player> players;
 

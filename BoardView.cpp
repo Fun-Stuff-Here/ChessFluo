@@ -94,6 +94,8 @@ void BoardView::update()
 	{
 		it.second->update();
 	}
+	Q_EMIT eatViewUpdate();
+	Q_EMIT turnViewUpdate();
 }
 
 void BoardView::update(std::vector<ChessModel::Position>& positions, const double opacity)
@@ -114,7 +116,7 @@ ChessModel::PiecePtr BoardView::move(ChessModel::Position& position)
 	}
 	catch (const ChessModel::ImpossibleMove&)
 	{
-		QMessageBox::information(nullptr, "Impossible Move", "Ce mouvement est impossible.");
+		//QMessageBox::information(nullptr, "Impossible Move", "Ce mouvement est impossible.");
 	}
 	catch (const ChessModel::Check&)
 	{
@@ -124,7 +126,8 @@ ChessModel::PiecePtr BoardView::move(ChessModel::Position& position)
 	{
 		QMessageBox::information(nullptr, "CheckMate", "CheckMate");
 	}
-
+	Q_EMIT eatViewUpdate();
+	Q_EMIT turnViewUpdate();
 	return ChessModel::Board::pieceNotFound;
 }
 

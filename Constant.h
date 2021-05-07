@@ -46,12 +46,20 @@ namespace ChessModel {
 namespace ChessView
 {
 	const QSize CHESSBOXSIZE{ 50, 50 };
-	const unsigned int NROWS{ 8 };
-	const unsigned int  NCOLUMNS{ 8 };
+	const int NROWS{ 8 };
+	const int  NCOLUMNS{ 8 };
 	const double SELECTIONOPACITY{ 0.5 };
 	const double FULLOPACITY{ 1.0 };
 	const QString TILECOLOR1 = "background-color: DarkMagenta;";
 	const QString TILECOLOR2 = "background-color: Coral;";
+	const std::string WHITEBACKGROUND = "border-image: url( './Images/White.png') 0 0 0 0 stretch stretch;";
+	const std::string BLACKBACKGROUND = "border-image: url( './Images/black.png') 0 0 0 0 stretch stretch;";
+	const QString QBLACKBACKGROUND = "border-image: url( './Images/BlackTurn.png') 0 0 0 0 stretch stretch;";
+	const QString QWHITEBACKGROUND = "border-image: url( './Images/WhiteTurn.png') 0 0 0 0 stretch stretch;";
+	const QSize PIECEICONSIZE{ 25, 25 };
+	const QSize TURNTILE{ 35, 35 };
+	const int NPLAYER = 2;
+	const QString IMPOSSIBLEMOVESOUNDPATH = "/Sounds/ImposssibleMove.wav";
 
 
 }
