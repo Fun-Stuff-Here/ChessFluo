@@ -257,6 +257,8 @@ void Game::start()
 	isFinished_ = false;
 	turn_ = COLORPLAYER1;
 	board_.clearPieces();
+	moveHistory_.clear();
+	redoHistory_.clear();
 }
 
 
