@@ -732,8 +732,20 @@ TEST(Game, checkMate) {
 
 
 
-TEST(Game, check) {}//maybe checkmate va le cover
-TEST(Game, getAllPossibleMoves) {}
+TEST(Game, check) {
+//throw nottwo kings
+
+}//maybe checkmate va le cover
+
+
+
+
+TEST(Game, getAllPossibleMoves) {
+
+	//si la piece est null
+	//
+
+}
 
 TEST(Game, setter) {}
 TEST(Game, move) {}
