@@ -733,9 +733,15 @@ TEST(Game, checkMate) {
 
 
 TEST(Game, check) {
-//throw nottwo kings
+	Game game{};
+	game.start();
+	Position pos{ 3,4 };
+	std::string color = COLORPLAYER1;
+	PiecePtr king{ new King{pos,color,game.getBoard()} };
+	game.getBoard()->addPiece(king);
+	EXPECT_THROW(game.verifieCheck(COLORPLAYER1),NotTwoKings);
 
-}//maybe checkmate va le cover
+}
 
 
 
