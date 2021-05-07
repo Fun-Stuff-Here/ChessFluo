@@ -703,6 +703,20 @@ TEST(Board, castleling)
 }
 
 
+TEST(Game,getter){}
+TEST(Game, starts) {}
+TEST(Game, undo_redo) {}
+
+TEST(Game, checkMate) {}
+TEST(Game, check) {}//maybe checkmate va le cover
+TEST(Game, getAllPossibleMoves) {}
+
+TEST(Game, setter) {}
+TEST(Game, move) {}
+
+
+
+
 
 
 
