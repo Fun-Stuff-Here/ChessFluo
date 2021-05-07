@@ -36,6 +36,8 @@
 #include "Queen.h"
 #include "Pawn.h"
 
+#include "Game.h"
+
 
 using namespace ChessModel;
 
@@ -707,7 +709,29 @@ TEST(Game,getter){}
 TEST(Game, starts) {}
 TEST(Game, undo_redo) {}
 
-TEST(Game, checkMate) {}
+TEST(Game, checkMate) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	EXPECT_NO_THROW(game.isCheckMate(COLORPLAYER1));
+
+
+	auto blackPawn = game.getBoard()->getPiece({5,2});
+	auto blackQuenn = game.getBoard()->getPiece({ 4,1 });
+	auto blackBishop = game.getBoard()->getPiece({ 6,1 });
+	auto whitePawn = game.getBoard()->getPiece({ 1,7 });
+
+	game.move(blackPawn, {5,3});
+	game.move(whitePawn, { 1,6 });
+	game.move(blackQuenn, { 6,3 });
+	game.move(whitePawn, { 1,5 });
+	game.move(blackBishop, { 3,4 });
+	game.move(whitePawn, { 1,4 });
+	EXPECT_THROW(game.move(blackQuenn, { 6,7 }), CheckMate);
+
+}
+
+
+
 TEST(Game, check) {}//maybe checkmate va le cover
 TEST(Game, getAllPossibleMoves) {}
 
