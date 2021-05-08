@@ -48,7 +48,3 @@ bool Piece::isOutofBound(Position& position) const
 }
 
 
-void Piece::checkFilter(std::vector<Position>& positions)
-{
-	throw NotImplemented();
-}
