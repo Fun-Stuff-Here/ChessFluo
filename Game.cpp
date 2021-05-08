@@ -108,8 +108,7 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 	{
 		if (isCheckMate(turn_))
 			throw CheckMate("CheckMate on "+ turn_);
-		throw;
-	}
+		throw;}
 	return move->getPieceEat();
 }
 
