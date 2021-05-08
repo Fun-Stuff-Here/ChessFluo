@@ -272,7 +272,7 @@ void Game::start(Regular2PlayerGame)
 
 }
 
-void Game::start(REgular1PlayerGame)
+void Game::start(Regular1PlayerGame)
 {
 	start();
 	board_.fill();

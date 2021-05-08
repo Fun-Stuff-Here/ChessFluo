@@ -18,7 +18,7 @@ namespace ChessModel
 	struct Empty{};
 	struct KingOnly{};
 	struct Regular2PlayerGame {};
-	struct REgular1PlayerGame {};
+	struct Regular1PlayerGame {};
 	struct WhiteToCheckMate1 {};
 	struct WhiteToCheckMate2 {};
 	struct WhiteToWin1 {};

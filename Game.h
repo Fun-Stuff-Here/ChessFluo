@@ -31,7 +31,7 @@ namespace ChessModel {
 
 
 		void start(Regular2PlayerGame);
-		void start(REgular1PlayerGame);
+		void start(Regular1PlayerGame);
 		void start(WhiteToCheckMate1);
 		void start(WhiteToCheckMate2);
 		void start(WhiteToWin1);
