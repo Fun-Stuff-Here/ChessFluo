@@ -30,7 +30,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{
@@ -49,7 +48,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{
@@ -68,7 +66,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{
@@ -87,7 +84,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{
@@ -108,7 +104,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{
@@ -128,7 +123,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{
@@ -147,7 +141,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{
@@ -166,7 +159,6 @@ std::vector<Position> Queen::getMoves() const
 		if (board_->isUnoccupied(possiblePosition))
 		{
 			positions.push_back(possiblePosition);
-			continue;
 		}
 		if (!board_->isUnoccupied(possiblePosition) && board_->isOccupiedByOtherColor(possiblePosition, color_))
 		{

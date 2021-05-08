@@ -806,7 +806,7 @@ TEST(Game, getPieceEat) {
 
 }
 
-TEST(Game, regular2PlayerStart) 
+TEST(Game, starts) 
 {
 	Game game{};
 	game.start(Regular2PlayerGame{});
@@ -825,7 +825,7 @@ TEST(Game, regular2PlayerStart)
 		"class ChessModel::Knight 2, 8 vertmoisi\n"
 		"class ChessModel::Pawn 8, 2 bluelaite\n"
 		"class ChessModel::Bishop 3, 1 bluelaite\n"
-		"class ChessModel::Pawn 5, 7 vertmoisi\n"
+		"class ChessModel::Pawn 1, 3 bluelaite\n"
 		"class ChessModel::Knight 7, 8 vertmoisi\n"
 		"class ChessModel::Pawn 8, 7 vertmoisi\n"
 		"class ChessModel::Bishop 6, 1 bluelaite\n"
@@ -837,255 +837,22 @@ TEST(Game, regular2PlayerStart)
 		"class ChessModel::Knight 7, 1 bluelaite\n"
 		"class ChessModel::Pawn 4, 2 bluelaite\n"
 		"class ChessModel::Pawn 1, 7 vertmoisi\n"
-		"class ChessModel::Bishop 6, 8 vertmoisi\n"
 		"class ChessModel::King 5, 1 bluelaite\n"
 		"class ChessModel::Pawn 6, 2 bluelaite\n"
 		"class ChessModel::Pawn 3, 7 vertmoisi\n"
 		"class ChessModel::King 5, 8 vertmoisi\n"
 		"class ChessModel::Rook 1, 1 bluelaite\n"
 		"class ChessModel::Rook 8, 8 vertmoisi\n"
-		"class ChessModel::Pawn 2, 2 bluelaite\n"
 		"class ChessModel::Pawn 7, 7 vertmoisi\n"
-		"class ChessModel::Rook 8, 1 bluelaite\n"
-		"class ChessModel::Rook 1, 8 vertmoisi\n"
-		"class ChessModel::Queen 4, 1 bluelaite\n"
-		"class ChessModel::Pawn 7, 2 bluelaite\n"
-		"class ChessModel::Pawn 2, 7 vertmoisi\n"
-		"class ChessModel::Queen 4, 8 vertmoisi\n"
-		"class ChessModel::Pawn 3, 2 bluelaite\n"
-		"class ChessModel::Pawn 6, 7 vertmoisi\n";
-
-	std::string text = buffer.str();
-	// When done redirect cout to its old self
-	std::cout.rdbuf(sbuf);
-
-	EXPECT_EQ(text, expected);
-}
-
-TEST(Game, regular1PlayerStart)
-{
-	Game game{};
-	game.start(Regular1PlayerGame{});
-
-	// Redirect cout to our stringstream 
-	std::stringstream buffer;
-	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(buffer.rdbuf());
-
-	for (auto&& it : game.getBoard()->getPieces())
-	{
-		std::cout << typeid(*it.second).name() << " " << it.second->getPosition().first << ", " << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
-	}
-
-	std::string expected =
-		"class ChessModel::Knight 2, 8 vertmoisi\n"
-		"class ChessModel::Pawn 8, 2 bluelaite\n"
-		"class ChessModel::Bishop 3, 1 bluelaite\n"
-		"class ChessModel::Pawn 5, 7 vertmoisi\n"
-		"class ChessModel::Knight 7, 8 vertmoisi\n"
-		"class ChessModel::Pawn 8, 7 vertmoisi\n"
-		"class ChessModel::Bishop 6, 1 bluelaite\n"
-		"class ChessModel::Pawn 5, 2 bluelaite\n"
-		"class ChessModel::Knight 2, 1 bluelaite\n"
-		"class ChessModel::Pawn 1, 2 bluelaite\n"
-		"class ChessModel::Pawn 4, 7 vertmoisi\n"
-		"class ChessModel::Bishop 3, 8 vertmoisi\n"
-		"class ChessModel::Knight 7, 1 bluelaite\n"
-		"class ChessModel::Pawn 4, 2 bluelaite\n"
-		"class ChessModel::Pawn 1, 7 vertmoisi\n"
-		"class ChessModel::Bishop 6, 8 vertmoisi\n"
-		"class ChessModel::King 5, 1 bluelaite\n"
-		"class ChessModel::Pawn 6, 2 bluelaite\n"
-		"class ChessModel::Pawn 3, 7 vertmoisi\n"
-		"class ChessModel::King 5, 8 vertmoisi\n"
-		"class ChessModel::Rook 1, 1 bluelaite\n"
-		"class ChessModel::Rook 8, 8 vertmoisi\n"
-		"class ChessModel::Pawn 2, 2 bluelaite\n"
-		"class ChessModel::Pawn 7, 7 vertmoisi\n"
-		"class ChessModel::Rook 8, 1 bluelaite\n"
-		"class ChessModel::Rook 1, 8 vertmoisi\n"
-		"class ChessModel::Queen 4, 1 bluelaite\n"
-		"class ChessModel::Pawn 7, 2 bluelaite\n"
-		"class ChessModel::Pawn 2, 7 vertmoisi\n"
-		"class ChessModel::Queen 4, 8 vertmoisi\n"
-		"class ChessModel::Pawn 3, 2 bluelaite\n"
-		"class ChessModel::Pawn 6, 7 vertmoisi\n";
-
-	std::string text = buffer.str();
-	// When done redirect cout to its old self
-	std::cout.rdbuf(sbuf);
-
-	EXPECT_EQ(text, expected);
-}
-
-TEST(Game, whiteToCheckMate1Start)
-{
-	Game game{};
-	game.start(WhiteToCheckMate1{});
-
-	// Redirect cout to our stringstream 
-	std::stringstream buffer;
-	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(buffer.rdbuf());
-
-	for (auto&& it : game.getBoard()->getPieces())
-	{
-		std::cout << typeid(*it.second).name() << " " << it.second->getPosition().first << ", " << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
-	}
-
-	std::string expected =
-		"class ChessModel::Rook 1, 8 vertmoisi\n"
-		"class ChessModel::Pawn 3, 4 vertmoisi\n"
-		"class ChessModel::Pawn 2, 5 vertmoisi\n"
-		"class ChessModel::Queen 1, 6 vertmoisi\n"
-		"class ChessModel::Rook 6, 1 bluelaite\n"
-		"class ChessModel::Knight 3, 5 vertmoisi\n"
-		"class ChessModel::King 7, 1 bluelaite\n"
-		"class ChessModel::Bishop 4, 7 vertmoisi\n"
-		"class ChessModel::Bishop 5, 7 vertmoisi\n"
-		"class ChessModel::Knight 7, 5 vertmoisi\n"
-		"class ChessModel::Bishop 3, 1 bluelaite\n"
 		"class ChessModel::Pawn 5, 5 vertmoisi\n"
-		"class ChessModel::Pawn 6, 6 vertmoisi\n"
-		"class ChessModel::King 7, 7 vertmoisi\n"
-		"class ChessModel::Pawn 2, 2 bluelaite\n"
-		"class ChessModel::Pawn 3, 3 bluelaite\n"
-		"class ChessModel::Pawn 8, 5 vertmoisi\n"
-		"class ChessModel::Pawn 8, 7 vertmoisi\n"
-		"class ChessModel::Bishop 3, 2 bluelaite\n"
-		"class ChessModel::Pawn 4, 5 bluelaite\n"
-		"class ChessModel::Pawn 7, 2 bluelaite\n"
-		"class ChessModel::Queen 8, 4 bluelaite\n"
-		"class ChessModel::Knight 8, 6 bluelaite\n";
-
-	std::string text = buffer.str();
-	// When done redirect cout to its old self
-	std::cout.rdbuf(sbuf);
-
-	EXPECT_EQ(text, expected);
-}
-
-TEST(Game, whiteToCheckMate2Start)
-{
-	Game game{};
-	game.start(WhiteToCheckMate2{});
-
-	// Redirect cout to our stringstream 
-	std::stringstream buffer;
-	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(buffer.rdbuf());
-
-	for (auto&& it : game.getBoard()->getPieces())
-	{
-		std::cout << typeid(*it.second).name() << " " << it.second->getPosition().first << ", " << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
-	}
-
-	std::string expected =
+		"class ChessModel::Rook 8, 1 bluelaite\n"
 		"class ChessModel::Rook 1, 8 vertmoisi\n"
-		"class ChessModel::Pawn 1, 7 vertmoisi\n"
-		"class ChessModel::King 7, 1 bluelaite\n"
-		"class ChessModel::Bishop 3, 6 vertmoisi\n"
-		"class ChessModel::Pawn 2, 7 vertmoisi\n"
-		"class ChessModel::Knight 4, 8 vertmoisi\n"
-		"class ChessModel::Pawn 3, 4 vertmoisi\n"
-		"class ChessModel::Pawn 4, 6 vertmoisi\n"
-		"class ChessModel::Rook 5, 7 bluelaite\n"
-		"class ChessModel::Knight 7, 5 bluelaite\n"
-		"class ChessModel::King 8, 8 vertmoisi\n"
-		"class ChessModel::Pawn 7, 7 vertmoisi\n"
-		"class ChessModel::Pawn 3, 3 bluelaite\n"
-		"class ChessModel::Pawn 4, 4 bluelaite\n"
-		"class ChessModel::Pawn 8, 7 vertmoisi\n"
-		"class ChessModel::Pawn 1, 2 bluelaite\n"
-		"class ChessModel::Pawn 6, 5 bluelaite\n"
-		"class ChessModel::Bishop 4, 5 bluelaite\n"
-		"class ChessModel::Pawn 8, 2 bluelaite\n";
-
-	std::string text = buffer.str();
-	// When done redirect cout to its old self
-	std::cout.rdbuf(sbuf);
-
-	EXPECT_EQ(text, expected);
-}
-
-
-TEST(Game, whiteToWin1Start)
-{
-	Game game{};
-	game.start(WhiteToWin1{});
-
-	// Redirect cout to our stringstream 
-	std::stringstream buffer;
-	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(buffer.rdbuf());
-
-	for (auto&& it : game.getBoard()->getPieces())
-	{
-		std::cout << typeid(*it.second).name() << " " << it.second->getPosition().first << ", " << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
-	}
-
-	std::string expected =
-		"class ChessModel::Bishop 2, 7 vertmoisi\n"
+		"class ChessModel::Queen 4, 1 bluelaite\n"
 		"class ChessModel::Pawn 7, 2 bluelaite\n"
-		"class ChessModel::Rook 5, 8 vertmoisi\n"
-		"class ChessModel::Pawn 7, 6 vertmoisi\n"
-		"class ChessModel::Queen 6, 7 vertmoisi\n"
-		"class ChessModel::Rook 3, 2 vertmoisi\n"
-		"class ChessModel::Pawn 5, 3 vertmoisi\n"
-		"class ChessModel::Pawn 1, 7 vertmoisi\n"
-		"class ChessModel::King 7, 1 bluelaite\n"
-		"class ChessModel::Pawn 2, 6 vertmoisi\n"
-		"class ChessModel::King 7, 8 vertmoisi\n"
-		"class ChessModel::Pawn 8, 7 vertmoisi\n"
-		"class ChessModel::Pawn 1, 2 bluelaite\n"
-		"class ChessModel::Bishop 7, 7 bluelaite\n"
-		"class ChessModel::Pawn 2, 2 bluelaite\n"
-		"class ChessModel::Pawn 4, 4 bluelaite\n"
-		"class ChessModel::Rook 1, 1 bluelaite\n"
-		"class ChessModel::Pawn 6, 6 bluelaite\n"
-		"class ChessModel::Rook 6, 4 bluelaite\n"
-		"class ChessModel::Queen 8, 4 bluelaite\n"
-		"class ChessModel::Pawn 8, 2 bluelaite\n";
-
-	std::string text = buffer.str();
-	// When done redirect cout to its old self
-	std::cout.rdbuf(sbuf);
-
-	EXPECT_EQ(text, expected);
-}
-
-TEST(Game, whiteToWin2Start)
-{
-	Game game{};
-	game.start(WhiteToWin2{});
-
-	// Redirect cout to our stringstream 
-	std::stringstream buffer;
-	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(buffer.rdbuf());
-
-	for (auto&& it : game.getBoard()->getPieces())
-	{
-		std::cout << typeid(*it.second).name() << " " << it.second->getPosition().first << ", " << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
-	}
-
-	std::string expected =
-		"class ChessModel::Rook 3, 8 vertmoisi\n"
-		"class ChessModel::Pawn 8, 7 vertmoisi\n"
-		"class ChessModel::Queen 5, 2 vertmoisi\n"
-		"class ChessModel::Bishop 8, 6 vertmoisi\n"
-		"class ChessModel::Pawn 1, 7 vertmoisi\n"
-		"class ChessModel::Pawn 5, 3 bluelaite\n"
 		"class ChessModel::Pawn 2, 7 vertmoisi\n"
-		"class ChessModel::Rook 4, 1 bluelaite\n"
-		"class ChessModel::King 1, 8 vertmoisi\n"
-		"class ChessModel::Pawn 5, 4 vertmoisi\n"
+		"class ChessModel::Queen 4, 8 vertmoisi\n"
 		"class ChessModel::Pawn 3, 2 bluelaite\n"
-		"class ChessModel::Pawn 1, 2 bluelaite\n"
-		"class ChessModel::King 2, 1 bluelaite\n"
-		"class ChessModel::Bishop 3, 1 bluelaite\n"
-		"class ChessModel::Pawn 2, 2 bluelaite\n"
-		"class ChessModel::Queen 5, 5 bluelaite\n";
+		"class ChessModel::Pawn 6, 7 vertmoisi\n";
 
 	std::string text = buffer.str();
 	// When done redirect cout to its old self
@@ -1141,67 +908,312 @@ TEST(Game, checkMate) {
 
 
 
-TEST(Game, check) {
+TEST(Board, verifie_check) {
 	Game game{};
 	game.start();
 	Position pos{ 3,4 };
 	std::string color = COLORPLAYER1;
 	PiecePtr king{ new King{pos,color,game.getBoard()} };
 	game.getBoard()->addPiece(king);
-	EXPECT_THROW(game.verifieCheck(COLORPLAYER1),NotTwoKings);
+	EXPECT_THROW(game.verifieCheck(COLORPLAYER2),NotTwoKings);
 
 }
 
+TEST(Game, check)
+{
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	auto board = game.getBoard();
 
+	auto WhitePawn = board->getPiece({5,2});
+	auto whiteBishop = board->getPiece({ 6,1 });
+	
+	auto blackPawn = board->getPiece({ 4,7 });
+
+	game.move(WhitePawn, { 5,4 });
+	game.move(blackPawn, {4,5});
+	EXPECT_THROW(game.move(whiteBishop, {2,5}), Check);
+
+}
 
 
 TEST(Game, getAllPossibleMoves) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	auto moves = game.getMovesPositions({1,1});
+	EXPECT_EQ(moves.size() , 0);
 
-	//si la piece est null
-	//
+
+}
+TEST(Game, setter) {
+
+	Game game;
+	game.changeTurn();
+	std::string gotten = game.getTurn();
+	std::string expected = "vertmoisi";
+
+	EXPECT_EQ(gotten, expected);
 
 }
 
-TEST(Game, setter) {}
-TEST(Game, move) {}
+TEST(Game, move) {
+
+	Game game;
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+	auto Rook1 =   board->getPiece({ 1,1 });
+	auto Rook2 =   board->getPiece({ 1,8 });
+	auto Rook3 =   board->getPiece({ 8,1 });
+	auto Rook4 =   board->getPiece({ 8,8 }); 
+
+	auto pawn =    board->getPiece({ 1,7 });
+	auto whitePawn = board->getPiece({1,2});
+	Position to{ 1,6 };
+	EXPECT_THROW(game.moveTry(pawn,to ), ImpossibleMove);
+
+	game.move(whitePawn, { 1,4});
+	Position expected{ 1,4 };
+	auto gotten = whitePawn->getPosition();
+	EXPECT_EQ(gotten, expected );
+
+}
 
 
+TEST(Game, rook_moves)
+{
+	Game game{};
+	game.start( Regular2PlayerGame{} );
+	auto board = game.getBoard();
+
+	auto blackLeftRook = board->getPiece({1,8});
+	auto blackLeftPawn = board->getPiece({1,7});
+
+	auto blackRightRook = board->getPiece({ 8,8 });
+	auto blackRightPawn = board->getPiece({8,7});
+
+	auto whiteLeftRook = board->getPiece({1,1});
+	auto whiteLeftPawn = board->getPiece({1,2});
+
+	auto whiteRightRook = board->getPiece({8,1});
+	auto whiteRightPawn = board->getPiece({8,2});
+
+	auto whiteKing = board->getKing(COLORPLAYER1);
+	auto blackKing = board->getKing(COLORPLAYER2);
+
+	game.move(whiteLeftPawn, {1,4});
+	game.move(blackLeftPawn, { 1,5 });
+	game.move(whiteRightPawn, {8,4});
+	game.move(blackRightPawn, { 8,5 });
+
+	EXPECT_TRUE(whiteKing->canSmallCastle());
+	EXPECT_TRUE(whiteKing->canBigCastle());
+	EXPECT_TRUE(blackKing->canSmallCastle());
+	EXPECT_TRUE(blackKing->canBigCastle());
+
+	game.move(whiteLeftRook, { 1,2 });
+	EXPECT_FALSE(whiteKing->canBigCastle());
+	EXPECT_TRUE(whiteKing->canSmallCastle());
+
+	game.move(blackLeftRook, { 1,6 });
+	EXPECT_FALSE(blackKing->canBigCastle());
+	EXPECT_TRUE(blackKing->canSmallCastle());
+
+	game.move(whiteRightRook, { 8,2 });
+	EXPECT_FALSE(whiteKing->canSmallCastle());
+	EXPECT_FALSE(whiteKing->canBigCastle());
+
+	game.move(blackRightRook, { 8,6 });
+	EXPECT_FALSE(blackKing->canSmallCastle());
+	EXPECT_FALSE(blackKing->canBigCastle());
+
+	game.move(whiteLeftRook, { 1,1 });
+	game.move(blackLeftRook, { 2,6 });
+	game.move(whiteLeftRook, { 1,2 });
+	game.move(blackLeftRook, { 2,4 });
+	game.move(whiteLeftRook, { 1,1 });
+	game.move(blackLeftRook, { 1,4 });
+	
+}
 
 
-TEST(Bishop	, moves) {}
+TEST(PromotionMove, promotion) {
+
+	Game game{};
+	game.start(Regular2PlayerGame{});
+
+	auto board = game.getBoard();
+
+	auto whitePawn = board->getPiece({8,2});
+
+	auto blackPawn = board->getPiece({ 1,7 });
+
+	game.move(whitePawn, { 8,4 });
+	game.move(blackPawn, { 1,5 });
+	game.move(whitePawn, {8,5});
+	game.move(blackPawn, { 1,4 });
+	game.move(whitePawn, { 8,6 });
+	game.move(blackPawn, { 1,3 });
+	game.move(whitePawn, { 7,7 });
+	game.move(blackPawn, { 2,2 });
+	game.move(whitePawn, { 8,8 });
+	game.move(blackPawn, {1,1});
+
+	auto whiteQueen = board->getPiece({ 8,8 });
+	auto whiteColor = whiteQueen->getColor();
+	EXPECT_TRUE(dynamic_cast<Queen*>(whiteQueen.get()));
+	EXPECT_EQ(whiteColor, COLORPLAYER1);
+
+	auto blackQueen = board->getPiece({ 1,1 });
+	auto blackColor = blackQueen->getColor();
+	EXPECT_TRUE(dynamic_cast<Queen*>(blackQueen.get()));
+	EXPECT_EQ(blackColor, COLORPLAYER2);
+
+}
 
 
-TEST(Board, castling_deux_zero) {}
+TEST(Board, Black_Small_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({5,1});
+	auto blackBishop = board->getPiece({ 6,1 });
+	auto blackKnight = board->getPiece({ 7,1 });
+	auto blackPawn = board->getPiece({ 7,2 });
+
+	auto whiteKnight = board->getPiece({ 2,8 });
+
+	game.move(blackPawn, { 7,3 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackKnight, { 8,3 });
+	game.move(whiteKnight, { 2,8 });
+	game.move(blackBishop, { 7,2 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackKing, { 7,1 });
 
 
-
-TEST(Board, getter) {}
-
-TEST(Board, removePiece) {}
-TEST(Board, Restore) {}
-
-TEST(ImpossibleMove, call) {}
+	auto rook = board->getPiece({ 6,1 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{7,1};
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
 
 
-TEST(King, canCastle) {}
+TEST(Board, Black_Big_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({ 5,1 });
+	auto blackBishop = board->getPiece({ 3,1 });
+	auto blackKnight = board->getPiece({ 2,1 });
+	auto blackPawn = board->getPiece({ 4,2 });
+	auto blackQueen = board->getPiece({ 4,1 });
+
+	auto whiteKnight = board->getPiece({ 2,8 });
+
+	game.move(blackPawn, { 4,3 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackKnight, { 1,3 });
+	game.move(whiteKnight, { 2,8 });
+	game.move(blackBishop, { 8,6 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackQueen, { 4,2 });
+	game.move(whiteKnight, { 2,8 });
+	game.move(blackKing, { 3,1 });
+
+	auto rook = board->getPiece({ 4,1 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{ 3,1 };
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
+
+TEST(Board, White_Big_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({ 5,8 });
+	auto blackBishop = board->getPiece({ 3,8 });
+	auto blackKnight = board->getPiece({ 2,8 });
+	auto blackPawn = board->getPiece({ 4,7 });
+	auto blackQueen = board->getPiece({ 4,8 });
+
+	auto whiteKnight = board->getPiece({ 2,1 });
+	auto whitePawn = board->getPiece({ 1,2 });
+
+	game.move(whitePawn, { 1,4 });
+	game.move(blackPawn, { 4,5 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackKnight, { 1,6 });
+	game.move(whiteKnight, { 2,1 });
+	game.move(blackBishop, { 8,3 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackQueen, { 4,7 });
+	game.move(whiteKnight, { 2,1 });
+	game.move(blackKing, { 3,8 });
+
+	auto rook = board->getPiece({ 4,8 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{ 3,8 };
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
+
+TEST(Board, White_Small_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({ 5,8 });
+	auto blackBishop = board->getPiece({ 6,8 });
+	auto blackKnight = board->getPiece({ 7,8 });
+	auto blackPawn = board->getPiece({ 7,7 });
+
+	auto whiteKnight = board->getPiece({ 2,1 });
+	auto whitePawn = board->getPiece({ 1,2 });
+
+	game.move(whitePawn, { 1,4 });
+	game.move(blackPawn, { 7,5 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackKnight, { 8,6 });
+	game.move(whiteKnight, { 2,1 });
+	game.move(blackBishop, { 7,7 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackKing, { 7,8 });
 
 
-TEST(Move, getter) {}
+	auto rook = board->getPiece({ 6,8 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{ 7,8 };
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
 
 
-TEST(NotImplemented, call) {}
-
-
-TEST(Player, call) {}
-
-TEST(PromotionMove, call) {}
-
-TEST(Queen, moves)
-{}
-
-TEST(Rook, moves)
-{}
-
+//TEST(Board, Restore) {}
+//
+//TEST(ImpossibleMove, call) {}
+//
+//
+//TEST(King, canCastle) {}
+//
+//
+//TEST(Move, getter) {}
+//
+//
+//TEST(NotImplemented, call) {}
+//
+//
+//TEST(Player, call) {}
+//
+//
+//
+//TEST(Queen, moves)
+//{}
+//
+//TEST(Rook, moves)
+//{}
+//
+//
 
 
 

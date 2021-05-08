@@ -88,13 +88,13 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 		king->moved();
 	if (rook)
 	{
-		if (rook->getPosition() == Position{ 1,1 })
+		if (positionPiece.first==1 && positionPiece.second==1)
 			board_.getKing(COLORPLAYER1)->bigCastlingRookMoved();
-		if (rook->getPosition() == Position{ 8,1 })
+		if (positionPiece.first == 8 && positionPiece.second == 1)
 			board_.getKing(COLORPLAYER1)->smallCastlingRookMoved();
-		if (rook->getPosition() == Position{ 8,8 })
+		if (positionPiece.first == 8 && positionPiece.second == 8)
 			board_.getKing(COLORPLAYER2)->smallCastlingRookMoved();
-		if (rook->getPosition() == Position{ 1,8 })
+		if (positionPiece.first == 1 && positionPiece.second == 8)
 			board_.getKing(COLORPLAYER2)->bigCastlingRookMoved();
 	}
 	redoClear();
@@ -114,14 +114,14 @@ PiecePtr Game::move(PiecePtr& piece, Position& position)
 
 MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 {
-	MovePtr move = nullptr;
+	MovePtr moveObj = nullptr;
 
 	auto from = piece->getPosition();
 	auto pieces = board_.getPieces();
 
 	auto pawn = dynamic_cast<Pawn*>(piece.get());
 	if (pawn && (position.second == 1 || position.second == NROWS)) 
-		move = static_cast<MovePtr>(new PromotionMove{pieces,from ,position });
+		moveObj = static_cast<MovePtr>(new PromotionMove{pieces,from ,position });
 	
 
 	auto king = dynamic_cast<King*>(piece.get());
@@ -129,22 +129,22 @@ MovePtr Game::moveTry(PiecePtr& piece, Position& position)
 	if (king && castlingPosition != CASTLINGPOSITIONS.end())
 	{
 		if(king->canBigCastle() && std::find(BIGCASTLINGPOSITION.begin(), BIGCASTLINGPOSITION.end(), position) != BIGCASTLINGPOSITION.end())
-			move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+			moveObj = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
 		if (king->canSmallCastle() && std::find(SMALLCASTLINGPOSITIONS.begin(), SMALLCASTLINGPOSITIONS.end(), position) != SMALLCASTLINGPOSITIONS.end())
-			move = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
+			moveObj = static_cast<MovePtr>(new CastlingMove{ pieces,from,position });
 	}
 		
 
-	if (!move) move = static_cast<MovePtr>(new RegularMove{pieces,from,position});
+	if (!moveObj) moveObj = static_cast<MovePtr>(new RegularMove{pieces,from,position});
 
 
 	if (turn_ != piece->getColor()) throw ImpossibleMove();
 	
-	move->execute(this);
+	moveObj->execute(this);
 
 	verifieCheck(piece->getColor());
 
-	return move;
+	return moveObj;
 }
 
 bool Game::isValidMove(Position& from, Position& to)
