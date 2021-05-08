@@ -41,7 +41,7 @@ EatView::EatView(ChessModel::GamePtr& game, QWidget* parent ):
 	QGridLayout* piecesIconsGridLayout = new QGridLayout(piecesIconsGrid);
 	middleLayout->addWidget(piecesIconsGrid, 1, 0);
 
-	for (size_t i = 0; i < NROWS; i++)
+	for (size_t i = 0; i < 2*NROWS; i++)
 	{
 		PieceIconPtr icon = std::make_shared<PieceIcon>(ChessModel::COLORPLAYER1,this);
 		eatenPiecesIcons_[ChessModel::COLORPLAYER1].push_back(icon);
@@ -50,7 +50,7 @@ EatView::EatView(ChessModel::GamePtr& game, QWidget* parent ):
 		piecesIconsGridLayout->setVerticalSpacing(0);
 	}
 
-	for (size_t i = 0; i < NROWS; i++)
+	for (size_t i = 0; i < 2*NROWS; i++)
 	{
 		PieceIconPtr icon = std::make_shared<PieceIcon>(ChessModel::COLORPLAYER2, this);
 		eatenPiecesIcons_[ChessModel::COLORPLAYER2].push_back(icon);
