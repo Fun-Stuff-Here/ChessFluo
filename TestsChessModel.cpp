@@ -35,6 +35,7 @@
 #include "Rook.h"
 #include "Queen.h"
 #include "Pawn.h"
+#include "Game.h"
 
 
 using namespace ChessModel;
@@ -703,7 +704,104 @@ TEST(Board, castleling)
 }
 
 
-TEST(Game,getter){}
+TEST(Game, getter)
+{
+	Game game{};
+
+	//test getBoard()
+	EXPECT_TRUE(game.getBoard() != nullptr);
+
+	//test1 getTurn()
+	std::string expectedTurn1 = COLORPLAYER1;
+	EXPECT_TRUE(game.getTurn() == expectedTurn1);
+
+	//test2 getTurn()
+	game.changeTurn();
+	std::string expectedTurn2 = COLORPLAYER2;
+	EXPECT_TRUE(game.getTurn() == expectedTurn2);
+
+	//test1 isValidMove(from, to)
+	std::string color = COLORPLAYER1;
+	Position  kingPosition1{ 1,4 };
+	PiecePtr  king1(new King{ kingPosition1,color,game.getBoard() });
+
+	Position  rookPosition1{ 7,1 };
+	PiecePtr  rook1(new Rook{ rookPosition1,color,game.getBoard() });
+
+	color = COLORPLAYER2;
+	Position  kingPosition2{ 8,7 };
+	PiecePtr  king2(new King{ kingPosition2,color,game.getBoard() });
+
+	Position  pawnPosition1{ 7,6 };
+	PiecePtr  pawn1(new Pawn{ pawnPosition1,color,game.getBoard() });
+
+	Position  pawnPosition2{ 7,7 };
+	PiecePtr  pawn2(new Pawn{ pawnPosition2,color,game.getBoard() });
+
+	Position  pawnPosition3{ 7,8 };
+	PiecePtr  pawn3(new Pawn{ pawnPosition3,color,game.getBoard() });
+
+	game.getBoard()->addPiece(king1);
+	game.getBoard()->addPiece(rook1);
+	game.getBoard()->addPiece(king2);
+	game.getBoard()->addPiece(pawn1);
+	game.getBoard()->addPiece(pawn2);
+	game.getBoard()->addPiece(pawn3);
+
+	Position to{ 8, 1 };
+	EXPECT_TRUE(game.isValidMove(rookPosition1, to));
+
+	//test1 isEnded()
+	EXPECT_FALSE(game.isEnded());
+
+	//test2 isEnded()
+	game.getBoard()->move(rook1, to);
+	EXPECT_TRUE(game.isEnded());
+}
+
+TEST(Game, getPieceEat) {
+	Game game{};
+	std::string color = COLORPLAYER1;
+	Position  kingPosition1{ 1,4 };
+	PiecePtr  king1(new King{ kingPosition1,color,game.getBoard() });
+
+	Position knightPosition1{ 4, 4 };
+	PiecePtr knight1(new Knight{ knightPosition1, color, game.getBoard() });
+
+	Position pawnPosition1{ 4, 1 };
+	PiecePtr pawn1(new Pawn{ pawnPosition1, color, game.getBoard() });
+
+	color = COLORPLAYER2;
+	Position kingPosition2{ 8, 4 };
+	PiecePtr king2(new King{ kingPosition2, color, game.getBoard() });
+
+	Position bishopPosition2{ 5, 2 };
+	PiecePtr bishop2(new Bishop{ bishopPosition2, color, game.getBoard() });
+
+	Position pawnPosition2{ 6, 1 };
+	PiecePtr pawn2(new Pawn{ pawnPosition2, color, game.getBoard() });
+
+	game.getBoard()->addPiece(king1);
+	game.getBoard()->addPiece(knight1);
+	game.getBoard()->addPiece(pawn1);
+	game.getBoard()->addPiece(king2);
+	game.getBoard()->addPiece(bishop2);
+	game.getBoard()->addPiece(pawn2);
+
+	std::set<PiecePtr> eatenPiecesExpected = {};
+	EXPECT_TRUE(game.getPieceEat() == eatenPiecesExpected);
+
+	game.getBoard()->move(knight1, bishopPosition2);
+	game.getBoard()->move(pawn2, bishopPosition2);
+	game.getBoard()->move(pawn1, bishopPosition2);
+
+	eatenPiecesExpected.insert(bishop2);
+	eatenPiecesExpected.insert(knight1);
+	eatenPiecesExpected.insert(pawn2);
+	EXPECT_TRUE(game.getPieceEat() == eatenPiecesExpected);
+
+}
+
 TEST(Game, starts) {}
 TEST(Game, undo_redo) {}
 
