@@ -908,43 +908,287 @@ TEST(Game, checkMate) {
 
 
 
-TEST(Game, check) {
+TEST(Board, verifie_check) {
 	Game game{};
 	game.start();
 	Position pos{ 3,4 };
 	std::string color = COLORPLAYER1;
 	PiecePtr king{ new King{pos,color,game.getBoard()} };
 	game.getBoard()->addPiece(king);
-	EXPECT_THROW(game.verifieCheck(COLORPLAYER1),NotTwoKings);
+	EXPECT_THROW(game.verifieCheck(COLORPLAYER2),NotTwoKings);
+
+}
+
+TEST(Game, check)
+{
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	auto board = game.getBoard();
+
+	auto WhitePawn = board->getPiece({5,2});
+	auto whiteBishop = board->getPiece({ 6,1 });
+	
+	auto blackPawn = board->getPiece({ 4,7 });
+
+	game.move(WhitePawn, { 5,4 });
+	game.move(blackPawn, {4,5});
+	EXPECT_THROW(game.move(whiteBishop, {2,5}), Check);
 
 }
 
 
-//
-//
-//TEST(Game, getAllPossibleMoves) {
-//
-//	//si la piece est null
-//	//
-//
-//}
-//
-//TEST(Game, setter) {}
-//TEST(Game, move) {}
-//
-//
-//
-//
-//TEST(Bishop	, moves) {}
-//
-//
-//TEST(Board, castling_deux_zero) {}
-//
-//
-//
-//TEST(Board, getter) {}
-//
-//TEST(Board, removePiece) {}
+TEST(Game, getAllPossibleMoves) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	auto moves = game.getMovesPositions({1,1});
+	EXPECT_EQ(moves.size() , 0);
+
+
+}
+TEST(Game, setter) {
+
+	Game game;
+	game.changeTurn();
+	std::string gotten = game.getTurn();
+	std::string expected = "vertmoisi";
+
+	EXPECT_EQ(gotten, expected);
+
+}
+
+TEST(Game, move) {
+
+	Game game;
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+	auto Rook1 =   board->getPiece({ 1,1 });
+	auto Rook2 =   board->getPiece({ 1,8 });
+	auto Rook3 =   board->getPiece({ 8,1 });
+	auto Rook4 =   board->getPiece({ 8,8 }); 
+
+	auto pawn =    board->getPiece({ 1,7 });
+	auto whitePawn = board->getPiece({1,2});
+	Position to{ 1,6 };
+	EXPECT_THROW(game.moveTry(pawn,to ), ImpossibleMove);
+
+	game.move(whitePawn, { 1,4});
+	Position expected{ 1,4 };
+	auto gotten = whitePawn->getPosition();
+	EXPECT_EQ(gotten, expected );
+
+}
+
+
+TEST(Game, rook_moves)
+{
+	Game game{};
+	game.start( Regular2PlayerGame{} );
+	auto board = game.getBoard();
+
+	auto blackLeftRook = board->getPiece({1,8});
+	auto blackLeftPawn = board->getPiece({1,7});
+
+	auto blackRightRook = board->getPiece({ 8,8 });
+	auto blackRightPawn = board->getPiece({8,7});
+
+	auto whiteLeftRook = board->getPiece({1,1});
+	auto whiteLeftPawn = board->getPiece({1,2});
+
+	auto whiteRightRook = board->getPiece({8,1});
+	auto whiteRightPawn = board->getPiece({8,2});
+
+	auto whiteKing = board->getKing(COLORPLAYER1);
+	auto blackKing = board->getKing(COLORPLAYER2);
+
+	game.move(whiteLeftPawn, {1,4});
+	game.move(blackLeftPawn, { 1,5 });
+	game.move(whiteRightPawn, {8,4});
+	game.move(blackRightPawn, { 8,5 });
+
+	EXPECT_TRUE(whiteKing->canSmallCastle());
+	EXPECT_TRUE(whiteKing->canBigCastle());
+	EXPECT_TRUE(blackKing->canSmallCastle());
+	EXPECT_TRUE(blackKing->canBigCastle());
+
+	game.move(whiteLeftRook, { 1,2 });
+	EXPECT_FALSE(whiteKing->canBigCastle());
+	EXPECT_TRUE(whiteKing->canSmallCastle());
+
+	game.move(blackLeftRook, { 1,6 });
+	EXPECT_FALSE(blackKing->canBigCastle());
+	EXPECT_TRUE(blackKing->canSmallCastle());
+
+	game.move(whiteRightRook, { 8,2 });
+	EXPECT_FALSE(whiteKing->canSmallCastle());
+	EXPECT_FALSE(whiteKing->canBigCastle());
+
+	game.move(blackRightRook, { 8,6 });
+	EXPECT_FALSE(blackKing->canSmallCastle());
+	EXPECT_FALSE(blackKing->canBigCastle());
+
+	game.move(whiteLeftRook, { 1,1 });
+	game.move(blackLeftRook, { 2,6 });
+	game.move(whiteLeftRook, { 1,2 });
+	game.move(blackLeftRook, { 2,4 });
+	game.move(whiteLeftRook, { 1,1 });
+	game.move(blackLeftRook, { 1,4 });
+	
+}
+
+
+TEST(PromotionMove, promotion) {
+
+	Game game{};
+	game.start(Regular2PlayerGame{});
+
+	auto board = game.getBoard();
+
+	auto whitePawn = board->getPiece({8,2});
+
+	auto blackPawn = board->getPiece({ 1,7 });
+
+	game.move(whitePawn, { 8,4 });
+	game.move(blackPawn, { 1,5 });
+	game.move(whitePawn, {8,5});
+	game.move(blackPawn, { 1,4 });
+	game.move(whitePawn, { 8,6 });
+	game.move(blackPawn, { 1,3 });
+	game.move(whitePawn, { 7,7 });
+	game.move(blackPawn, { 2,2 });
+	game.move(whitePawn, { 8,8 });
+	game.move(blackPawn, {1,1});
+
+	auto whiteQueen = board->getPiece({ 8,8 });
+	auto whiteColor = whiteQueen->getColor();
+	EXPECT_TRUE(dynamic_cast<Queen*>(whiteQueen.get()));
+	EXPECT_EQ(whiteColor, COLORPLAYER1);
+
+	auto blackQueen = board->getPiece({ 1,1 });
+	auto blackColor = blackQueen->getColor();
+	EXPECT_TRUE(dynamic_cast<Queen*>(blackQueen.get()));
+	EXPECT_EQ(blackColor, COLORPLAYER2);
+
+}
+
+
+TEST(Board, Black_Small_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({5,1});
+	auto blackBishop = board->getPiece({ 6,1 });
+	auto blackKnight = board->getPiece({ 7,1 });
+	auto blackPawn = board->getPiece({ 7,2 });
+
+	auto whiteKnight = board->getPiece({ 2,8 });
+
+	game.move(blackPawn, { 7,3 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackKnight, { 8,3 });
+	game.move(whiteKnight, { 2,8 });
+	game.move(blackBishop, { 7,2 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackKing, { 7,1 });
+
+
+	auto rook = board->getPiece({ 6,1 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{7,1};
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
+
+
+TEST(Board, Black_Big_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({ 5,1 });
+	auto blackBishop = board->getPiece({ 3,1 });
+	auto blackKnight = board->getPiece({ 2,1 });
+	auto blackPawn = board->getPiece({ 4,2 });
+	auto blackQueen = board->getPiece({ 4,1 });
+
+	auto whiteKnight = board->getPiece({ 2,8 });
+
+	game.move(blackPawn, { 4,3 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackKnight, { 1,3 });
+	game.move(whiteKnight, { 2,8 });
+	game.move(blackBishop, { 8,6 });
+	game.move(whiteKnight, { 1,6 });
+	game.move(blackQueen, { 4,2 });
+	game.move(whiteKnight, { 2,8 });
+	game.move(blackKing, { 3,1 });
+
+	auto rook = board->getPiece({ 4,1 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{ 3,1 };
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
+
+TEST(Board, White_Big_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({ 5,8 });
+	auto blackBishop = board->getPiece({ 3,8 });
+	auto blackKnight = board->getPiece({ 2,8 });
+	auto blackPawn = board->getPiece({ 4,7 });
+	auto blackQueen = board->getPiece({ 4,8 });
+
+	auto whiteKnight = board->getPiece({ 2,1 });
+	auto whitePawn = board->getPiece({ 1,2 });
+
+	game.move(whitePawn, { 1,4 });
+	game.move(blackPawn, { 4,5 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackKnight, { 1,6 });
+	game.move(whiteKnight, { 2,1 });
+	game.move(blackBishop, { 8,3 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackQueen, { 4,7 });
+	game.move(whiteKnight, { 2,1 });
+	game.move(blackKing, { 3,8 });
+
+	auto rook = board->getPiece({ 4,8 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{ 3,8 };
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
+
+TEST(Board, White_Small_Castle) {
+	Game game{};
+	game.start(Regular2PlayerGame{});
+	Board* board = game.getBoard();
+
+	auto blackKing = board->getPiece({ 5,8 });
+	auto blackBishop = board->getPiece({ 6,8 });
+	auto blackKnight = board->getPiece({ 7,8 });
+	auto blackPawn = board->getPiece({ 7,7 });
+
+	auto whiteKnight = board->getPiece({ 2,1 });
+	auto whitePawn = board->getPiece({ 1,2 });
+
+	game.move(whitePawn, { 1,4 });
+	game.move(blackPawn, { 7,5 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackKnight, { 8,6 });
+	game.move(whiteKnight, { 2,1 });
+	game.move(blackBishop, { 7,7 });
+	game.move(whiteKnight, { 1,3 });
+	game.move(blackKing, { 7,8 });
+
+
+	auto rook = board->getPiece({ 6,8 });
+	EXPECT_TRUE(dynamic_cast<Rook*>(rook.get()));
+	Position kingPosition{ 7,8 };
+	EXPECT_EQ(kingPosition, blackKing->getPosition());
+}
+
+
 //TEST(Board, Restore) {}
 //
 //TEST(ImpossibleMove, call) {}
@@ -961,7 +1205,7 @@ TEST(Game, check) {
 //
 //TEST(Player, call) {}
 //
-//TEST(PromotionMove, call) {}
+//
 //
 //TEST(Queen, moves)
 //{}
@@ -970,6 +1214,7 @@ TEST(Game, check) {
 //{}
 //
 //
+
 
 
 
