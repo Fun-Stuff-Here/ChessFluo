@@ -131,7 +131,6 @@
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="PieceIcon.cpp" />
-    <ClCompile Include="Players.cpp" />
     <ClCompile Include="PositionView.cpp" />
     <ClCompile Include="Queen.cpp" />
     <ClCompile Include="Rook.cpp" />
@@ -151,7 +150,6 @@
     <ClInclude Include="Move.h" />
     <ClInclude Include="Pawn.h" />
     <QtMoc Include="PieceIcon.h" />
-    <ClInclude Include="Players.h" />
     <QtMoc Include="PositionView.h" />
     <ClInclude Include="Queen.h" />
     <ClInclude Include="Rook.h" />

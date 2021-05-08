@@ -12,7 +12,6 @@
 
 #include "Board.h"
 #include "Move.h"
-#include "Players.h"
 #include <set>
 
 namespace ChessModel {
@@ -76,7 +75,6 @@ namespace ChessModel {
 		std::vector<MovePtr> redoHistory_;
 		std::set<PiecePtr> piecesEat_;
 		bool isFinished_;
-		//std::vector<Player> players;
 
 		void redoClear();
 

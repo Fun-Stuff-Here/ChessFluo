@@ -97,9 +97,6 @@
     <ClCompile Include="Move.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Players.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
     <ClCompile Include="BoardView.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
@@ -157,9 +154,6 @@
       <Filter>Header Files\Model</Filter>
     </ClInclude>
     <ClInclude Include="Move.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Players.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
