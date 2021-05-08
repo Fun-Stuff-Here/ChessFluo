@@ -232,7 +232,10 @@ void Board::addPieces(std::vector<PiecePtr>&& piecesToAdd)
 
 
 
-
+bool Board::hasTwoKings()
+{
+	return nKing_ == 2;
+}
 
 
 std::string Board::getOpponentColor(const std::string& color)

@@ -42,97 +42,6 @@
 
 using namespace ChessModel;
 
-TEST(Knight, test_block_move) {
-
-
-	Board board;
-	std::string couleur = COLORPLAYER1;
-	PiecePtr bishop = board.getPiece({ 3,1 });
-	EXPECT_THROW(board.move(bishop, { 5,2 }), ImpossibleMove);
-	PiecePtr pawn = board.getPiece({ 4,2 });
-	board.move(pawn, { 4,4 });
-	board.move(bishop, { 4,2 });
-	PiecePtr knight = board.getPiece({ 2,1 });
-	std::vector<Position> expected =
-	{
-		{1,3},
-		//{4,2}, blocked by bishop
-		{3,3}
-	};
-
-	std::sort(expected.begin(), expected.end());
-	std::vector<Position> gotten = knight->getMoves();
-	std::sort(gotten.begin(), gotten.end());
-	EXPECT_EQ(expected, gotten);
-}
-
-TEST(Piece, move_out_of_bound) {
-
-	Board board;
-	auto piece = board.getPiece({ 3,1 });
-	EXPECT_THROW(board.move(piece, { 14,19 }), ImpossibleMove);
-}
-
-TEST(Board, piece_remove) {
-	Board board;
-	PiecePtr bishopRight2 = board.getPiece({ 6,8 });
-	PiecePtr pawn1 = board.getPiece({ 5,7 });
-	board.move(pawn1, { 5,5 });
-	board.move(bishopRight2, { 1,3 });
-
-
-	PiecePtr pawn = board.getPiece({ 2,2 });
-	PiecePtr eatenPiece = board.move(pawn, { 1,3 });
-	// Redirect cout to our stringstream 
-	std::stringstream buffer;
-	std::streambuf* sbuf = std::cout.rdbuf();
-	std::cout.rdbuf(buffer.rdbuf());
-
-	for (auto&& it : board.getPieces())
-	{
-		std::cout << typeid(*it.second).name() << " " << it.second->getPosition().first << ", " << it.second->getPosition().second << " " << it.second->getColor() << std::endl;
-	}
-
-	std::string expected =
-		"class ChessModel::Knight 2, 8 vertmoisi\n"
-		"class ChessModel::Pawn 8, 2 bluelaite\n"
-		"class ChessModel::Bishop 3, 1 bluelaite\n"
-		"class ChessModel::Pawn 1, 3 bluelaite\n"
-		"class ChessModel::Knight 7, 8 vertmoisi\n"
-		"class ChessModel::Pawn 8, 7 vertmoisi\n"
-		"class ChessModel::Bishop 6, 1 bluelaite\n"
-		"class ChessModel::Pawn 5, 2 bluelaite\n"
-		"class ChessModel::Knight 2, 1 bluelaite\n"
-		"class ChessModel::Pawn 1, 2 bluelaite\n"
-		"class ChessModel::Pawn 4, 7 vertmoisi\n"
-		"class ChessModel::Bishop 3, 8 vertmoisi\n"
-		"class ChessModel::Knight 7, 1 bluelaite\n"
-		"class ChessModel::Pawn 4, 2 bluelaite\n"
-		"class ChessModel::Pawn 1, 7 vertmoisi\n"
-		"class ChessModel::King 5, 1 bluelaite\n"
-		"class ChessModel::Pawn 6, 2 bluelaite\n"
-		"class ChessModel::Pawn 3, 7 vertmoisi\n"
-		"class ChessModel::King 5, 8 vertmoisi\n"
-		"class ChessModel::Rook 1, 1 bluelaite\n"
-		"class ChessModel::Rook 8, 8 vertmoisi\n"
-		"class ChessModel::Pawn 7, 7 vertmoisi\n"
-		"class ChessModel::Pawn 5, 5 vertmoisi\n"
-		"class ChessModel::Rook 8, 1 bluelaite\n"
-		"class ChessModel::Rook 1, 8 vertmoisi\n"
-		"class ChessModel::Queen 4, 1 bluelaite\n"
-		"class ChessModel::Pawn 7, 2 bluelaite\n"
-		"class ChessModel::Pawn 2, 7 vertmoisi\n"
-		"class ChessModel::Queen 4, 8 vertmoisi\n"
-		"class ChessModel::Pawn 3, 2 bluelaite\n"
-		"class ChessModel::Pawn 6, 7 vertmoisi\n";
-
-	std::string text = buffer.str();
-	// When done redirect cout to its old self
-	std::cout.rdbuf(sbuf);
-
-	EXPECT_EQ(text, expected);
-}
-
 TEST(Board, too_many_kings)
 {
 	Game game{};
@@ -162,84 +71,17 @@ TEST(Board, too_many_kings)
 
 }
 
-TEST(Pawn, moves)
-{
-	Board board{};
-
-	PiecePtr pawn = board.getPiece({ 2,2 });
-	std::vector<Position> expected =
-	{
-		{2,3},
-		{2,4}
-	};
-	std::sort(expected.begin(), expected.end());
-	std::vector<Position> gotten = pawn->getMoves();
-	std::sort(gotten.begin(), gotten.end());
-	EXPECT_EQ(expected, gotten);
-
-	PiecePtr pawn2 = board.getPiece({ 3,7 });
-	std::vector<Position> expected2 =
-	{
-		{3,6},
-		{3,5}
-	};
-	std::sort(expected2.begin(), expected2.end());
-	std::vector<Position> gotten2 = pawn2->getMoves();
-	std::sort(gotten2.begin(), gotten2.end());
-	EXPECT_EQ(expected2, gotten2);
-
-	board.move(pawn, { 2,4 });
-	board.move(pawn, { 2,5 });
-	board.move(pawn2, { 3,6 });
-
-	std::vector<Position> expected3 =
-	{
-		{2,6},
-		{3,6}
-	};
-	std::sort(expected3.begin(), expected3.end());
-	std::vector<Position> gotten3 = pawn->getMoves();
-	std::sort(gotten3.begin(), gotten3.end());
-	EXPECT_EQ(expected3, gotten3);
-
-	std::vector<Position> expected4 =
-	{
-		{3,5},
-		{2,5}
-	};
-	std::sort(expected4.begin(), expected4.end());
-	std::vector<Position> gotten4 = pawn2->getMoves();
-	std::sort(gotten4.begin(), gotten4.end());
-	EXPECT_EQ(expected4, gotten4);
-
-	PiecePtr bishop = board.getPiece({ 3,1 });
-	board.move(bishop, { 1, 3 });
-
-	std::vector<Position> expected5 =
-	{};
-	std::sort(expected5.begin(), expected5.end());
-	std::vector<Position> gotten5 = board.getPiece({ 1,2 })->getMoves();
-	std::sort(gotten5.begin(), gotten5.end());
-	EXPECT_EQ(expected5, gotten5);
-
-}
-
 TEST(Game, move) {
 
 	Game game;
 	game.start(Regular2PlayerGame{});
 	Board* board = game.getBoard();
-	auto Rook1 = board->getPiece({ 1,1 });
-	auto Rook2 = board->getPiece({ 1,8 });
-	auto Rook3 = board->getPiece({ 8,1 });
-	auto Rook4 = board->getPiece({ 8,8 });
 
 	auto pawn = board->getPiece({ 1,7 });
 	auto whitePawn = board->getPiece({ 1,2 });
 	Position to{ 1,6 };
 	EXPECT_THROW(game.moveTry(pawn, to), ImpossibleMove);
-	auto pieceEmpty = board->getPiece({ 5,5 });
-	EXPECT_THROW(game.move(pieceEmpty, to), ImpossibleMove);
+	EXPECT_EQ(game.getMovesPositions(to), std::vector<Position>{});
 
 	game.move(whitePawn, { 1,4 });
 	Position expected{ 1,4 };
@@ -1013,18 +855,6 @@ TEST(Game, checkMate) {
 
 }
 
-
-
-TEST(Board, verifie_check) {
-	Game game{};
-	game.start();
-	Position pos{ 3,4 };
-	std::string color = COLORPLAYER1;
-	PiecePtr king{ new King{pos,color,game.getBoard()} };
-	game.getBoard()->addPiece(king);
-	EXPECT_THROW(game.verifieCheck(COLORPLAYER2),NotTwoKings);
-
-}
 
 TEST(Game, check)
 {

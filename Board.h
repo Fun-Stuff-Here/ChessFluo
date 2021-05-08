@@ -64,6 +64,7 @@ namespace ChessModel
 
 		std::string getOpponentColor(const std::string& color);
 
+		bool hasTwoKings();
 
 		inline static const PiecePtr pieceNotFound = nullptr;
 

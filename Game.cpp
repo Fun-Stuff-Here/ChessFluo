@@ -32,14 +32,15 @@ void Game::verifieCheck(const std::string& color)
 	auto pieces = board_.getPieces();
 	auto king = std::find_if(pieces.begin(), pieces.end(),
 		[&color](auto it)->bool {return color == it.second->getColor() && dynamic_cast<King*>(it.second.get()); });
-	if (king == pieces.end())
-		throw NotTwoKings("Required two kings to move");
-
-	auto kingPosition = king->first;
-
-	if (board_.isCheckable(kingPosition, color))
+	if (king != pieces.end())
 	{
-		throw Check(color);
+		auto kingPosition = king->first;
+
+		if (board_.isCheckable(kingPosition, color))
+		{
+			throw Check(color);
+		}
+
 	}
 
 }
@@ -72,6 +73,7 @@ PiecePtr Game::move(PiecePtr& piece, Position&& position)
 
 PiecePtr Game::move(PiecePtr& piece, Position& position)
 {
+	if (!board_.hasTwoKings()) throw NotTwoKings("can't move if not two kings on the board");
 	auto positionPiece = piece->getPosition();
 	if (!isValidMove(positionPiece,position)) throw ImpossibleMove();
 	auto move = moveTry(piece, position);
